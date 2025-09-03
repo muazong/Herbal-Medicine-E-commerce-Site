@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { UsersModule } from 'src/users/users.module';
+import { DatabaseModule } from '../database/database.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -10,6 +11,8 @@ import { UsersModule } from 'src/users/users.module';
       rootPath: join(process.cwd(), 'public'),
     }),
     ConfigModule.forRoot({ isGlobal: true }),
+
+    DatabaseModule,
     UsersModule,
   ],
   controllers: [],
