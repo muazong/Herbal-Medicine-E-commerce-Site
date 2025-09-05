@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { User } from '../users/entities/user.entity';
+import { Media } from '../media/entities/media.entity';
 
 dotenv.config();
 
@@ -14,5 +15,5 @@ export default new DataSource({
   synchronize: false,
   logging: true,
   migrations: ['migrations/*.ts'],
-  entities: [User],
+  entities: [Media, User],
 });
