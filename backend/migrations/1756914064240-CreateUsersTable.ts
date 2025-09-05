@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class CreateUsersTable1756466820363 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -19,18 +24,8 @@ export class CreateUsersTable1756466820363 implements MigrationInterface {
           { name: 'username', type: 'varchar', length: '255', isUnique: true },
           { name: 'password', type: 'varchar', length: '255' },
           { name: 'address', type: 'varchar', length: '255', isNullable: true },
-          {
-            name: 'avatar',
-            type: 'varchar',
-            length: '255',
-            default: `'default_avatar.png'`,
-          },
-          {
-            name: 'cover',
-            type: 'varchar',
-            length: '255',
-            default: `'default_cover.png'`,
-          },
+          { name: 'avatarId', type: 'uuid', isNullable: true },
+          { name: 'coverId', type: 'uuid', isNullable: true },
           { name: 'fullName', type: 'varchar', length: '255' },
           {
             name: 'role',
@@ -47,6 +42,26 @@ export class CreateUsersTable1756466820363 implements MigrationInterface {
           { name: 'createdAt', type: 'timestamp', default: 'now()' },
           { name: 'updatedAt', type: 'timestamp', default: 'now()' },
         ],
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'users',
+      new TableForeignKey({
+        columnNames: ['avatarId'],
+        referencedTableName: 'media',
+        referencedColumnNames: ['id'],
+        onDelete: 'SET NULL',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'users',
+      new TableForeignKey({
+        columnNames: ['coverId'],
+        referencedTableName: 'media',
+        referencedColumnNames: ['id'],
+        onDelete: 'SET NULL',
       }),
     );
   }
