@@ -1,7 +1,14 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+} from 'typeorm';
 import { AccountStatus, Role } from '../../common/enums';
 import { AbstractEntity } from '../../database/abstract.entity';
-import { DefaultImages } from '../../common/contances';
+import { Media } from '../../media/entities/media.entity';
 
 @Entity({ name: 'users' })
 export class User extends AbstractEntity<User> {
@@ -23,11 +30,13 @@ export class User extends AbstractEntity<User> {
   @Column({ nullable: true })
   address?: string;
 
-  @Column({ default: DefaultImages.AVATAR })
-  avatar?: string;
+  @OneToOne(() => Media, { eager: true, nullable: true })
+  @JoinColumn()
+  avatar?: Media;
 
-  @Column({ default: DefaultImages.COVER })
-  cover?: string;
+  @OneToOne(() => Media, { eager: true, nullable: true })
+  @JoinColumn()
+  cover?: Media;
 
   @Column()
   fullName: string;
