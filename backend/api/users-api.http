@@ -1,12 +1,17 @@
 ### 
 
 @userHost = http://localhost:5500/users
-@userId = 60d7f703-70c7-4db0-ad86-ba09a0416f10
+@userId = 145319cd-64c4-4b82-879b-b26c4492578d
 
 
 ### GET /users
 
 GET {{userHost}} HTTP/1.1
+
+
+### GET /users?limit=1&page=1&sort=desc
+
+GET {{userHost}}?limit=2&page=4&sort=asc HTTP/1.1
 
 
 ### GET /user/:id
@@ -20,7 +25,8 @@ PATCH {{userHost}}/{{userId}} HTTP/1.1
 Content-Type: application/json
 
 {
-  "firstName": "test"
+  "firstName": "Mùa A",
+  "lastName": "Giống"
 }
 
 
@@ -30,11 +36,11 @@ POST {{userHost}} HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "azong5@gmail.com",
-  "firstName": "azong6",
-  "lastName": "moua2",
+  "email": "azong12@gmail.com",
+  "firstName": "zong",
+  "lastName": "muas",
   "password": "123456",
-  "username": "azonlll"
+  "username": "azong12"
 }
 
 
