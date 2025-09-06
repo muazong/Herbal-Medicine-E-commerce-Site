@@ -1,13 +1,20 @@
 ### 
 
-@host = http://localhost:5500
+@mediaHost = http://localhost:5500/media
+@mediaUserApi = {{mediaHost}}/user
+@userId = 60d7f703-70c7-4db0-ad86-ba09a0416f10
 
 
-### GET /media/:id/avatar
+### GET /media/user/:userId/avatar
 
-GET {{host}}/media/123/avatar HTTP/1.1
+GET {{mediaUserApi}}/{{userId}}/avatar HTTP/1.1
 
 
-### GET /media/:id/cover
+### GET /media/user/:userId/cover
 
-GET {{host}}/media/123/cover HTTP/1.1
+GET {{mediaUserApi}}/{{userId}}/cover HTTP/1.1
+
+
+### GET /media/user/:userId/images
+
+GET {{mediaUserApi}}/{{userId}}/images HTTP/1.1
