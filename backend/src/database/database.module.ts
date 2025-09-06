@@ -15,7 +15,7 @@ import { ConfigService } from '@nestjs/config';
           password: configService.getOrThrow('DB_PASSWORD'),
           database: configService.getOrThrow('DB_NAME'),
           autoLoadEntities: true,
-          synchronize: false,
+          synchronize: configService.getOrThrow('ENVIRONMENT') === 'Dev',
           logging: true,
         };
       },
