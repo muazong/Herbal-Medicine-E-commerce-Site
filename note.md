@@ -18,9 +18,23 @@ Tech: Next.js
 
 Tech: NestJS
 
-- [ ] Auth
-- [ ] Users
-- [ ] Products
+- [ ] Entities
+  - [ ] User
+  - [ ] Cart
+    - [ ] Cart item
+  - [ ] Product
+  - [ ] Category
+  - [ ] Comment
+  - [ ] Order
+    - [ ] Order item
+
+- [ ] API Enpoits
+  - [ ] Auth
+    - [ ] Resigter
+    - [ ] Login
+    - [ ] Logout
+  - [ ] Users
+  - [ ] Products
 
 ### Database
 
@@ -37,7 +51,9 @@ Tech: PostgreSQL
 | email      | VARCHAR(100)      | User email, unique                         |
 | password   | VARCHAR(255)      | Password (hashed)                          |
 | full_name  | VARCHAR(100)      | Full name of the user                      |
+| address    | VARCHAR           | User's address                             |
 | avatar     | VARCHAR           | User's avatar URL                          |
+| cover      | VARCHAR           | User's cover picture URL                   |
 | role       | ENUM              | User role (Admin, User, Moderator, etc.)   |
 | status     | ENUM              | Account status (active, blocked, inactive) |
 | created_at | TIMESTAMP WITH TZ | Date the user was created                  |
@@ -141,3 +157,14 @@ Tech: PostgreSQL
 | url        | VARCHAR           | Image URL                |
 | alt_text   | VARCHAR           | Optional description     |
 | created_at | TIMESTAMP WITH TZ | Date added               |
+
+11. Media
+
+| Attribute  | Data Type         | Description   |
+| ---------- | ----------------- | ------------- |
+| id         | UUID              | Primary key   |
+| path       | VARCHAR           | Path of image |
+| filename   | VARCHAR           | Name of file  |
+| mimetype   | VARCHAR           | Type of file  |
+| size       | VARCHAR           | Size of file  |
+| created_at | TIMESTAMP WITH TZ | Date added    |
