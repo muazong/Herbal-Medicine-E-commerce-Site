@@ -32,11 +32,11 @@ export class User extends AbstractEntity<User> {
 
   @OneToOne(() => Media, { eager: true, nullable: true })
   @JoinColumn()
-  avatar?: Media;
+  avatar: Media | null;
 
   @OneToOne(() => Media, { eager: true, nullable: true })
   @JoinColumn()
-  cover?: Media;
+  cover: Media | null;
 
   @Column()
   fullName: string;
