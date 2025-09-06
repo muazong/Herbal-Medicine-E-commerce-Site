@@ -3,13 +3,14 @@ import {
   Put,
   Post,
   Param,
+  Delete,
   Controller,
   UploadedFile,
   UseInterceptors,
-  Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
+import { userMedia } from '../common/enums';
 import { MediaService } from './media.service';
 import { userImageStorage } from '../common/utils';
 
@@ -19,12 +20,12 @@ export class MediaController {
 
   @Get('user/:id/avatar')
   findUserAvatar(@Param('id') id: string) {
-    return this.mediaService.findUserAvatar(id);
+    return this.mediaService.findUserMedia(id, userMedia.AVATAR);
   }
 
   @Get('user/:id/cover')
   findUserCover(@Param('id') id: string) {
-    return this.mediaService.findUserCover(id);
+    return this.mediaService.findUserMedia(id, userMedia.COVER);
   }
 
   @Get('user/:id/images')
@@ -42,20 +43,7 @@ export class MediaController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.mediaService.uploadUserAvatar(id, file);
-  }
-
-  @Put('user/:id/avatar')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: userImageStorage('avatar'),
-    }),
-  )
-  updateUserAvatar(
-    @Param('id') id: string,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    return this.mediaService.updateUserAvatar(id, file);
+    return this.mediaService.uploadUserMedia(id, file, userMedia.AVATAR);
   }
 
   @Post('user/:id/cover')
@@ -68,7 +56,20 @@ export class MediaController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.mediaService.uploadUserCover(id, file);
+    return this.mediaService.uploadUserMedia(id, file, userMedia.COVER);
+  }
+
+  @Put('user/:id/avatar')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: userImageStorage('avatar'),
+    }),
+  )
+  updateUserAvatar(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.mediaService.updateUserMedia(id, file, userMedia.AVATAR);
   }
 
   @Put('user/:id/cover')
@@ -81,15 +82,16 @@ export class MediaController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.mediaService.updateUserCover(id, file);
+    return this.mediaService.updateUserMedia(id, file, userMedia.COVER);
   }
 
-  @Delete('user/:id/avatar/:avatarId')
-  removeUserAvatar(
-    @Param('id') id: string,
-    @Param('avatarId') avatarId: string,
-  ) {}
+  @Delete('user/:id/avatar')
+  removeUserAvatar(@Param('id') id: string) {
+    return this.mediaService.removeUserMedia(id, userMedia.AVATAR);
+  }
 
-  @Delete('user/:id/cover/:coverId')
-  removeUserCover(@Param('id') id: string, @Param('coverId') coverId: string) {}
+  @Delete('user/:id/cover')
+  removeUserCover(@Param('id') id: string) {
+    return this.mediaService.removeUserMedia(id, userMedia.COVER);
+  }
 }

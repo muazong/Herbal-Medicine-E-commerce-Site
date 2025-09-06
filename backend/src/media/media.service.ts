@@ -1,8 +1,12 @@
+import * as fs from 'fs';
+import { join } from 'path';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 
+import { userMedia } from '../common/enums';
 import { Media } from './entities/media.entity';
+import { DefaultImages } from '../common/contances';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 
@@ -16,7 +20,9 @@ export class MediaService {
     private readonly userService: UsersService,
   ) {}
 
-  private async findUserMedia(userId: string, type: 'avatar' | 'cover') {
+  // TODO: Add Product media api
+
+  async findUserMedia(userId: string, type: userMedia) {
     try {
       const user = await this.userService.findOne(userId);
 
@@ -32,15 +38,20 @@ export class MediaService {
       throw err;
     }
   }
-  private async saveUserMedia(
+
+  async findUserImages(userId: string) {
+    const user = await this.userService.findOne(userId);
+    return { avatar: user.avatar, cover: user.cover };
+  }
+
+  async uploadUserMedia(
     userId: string,
-    media: Media,
     file: Express.Multer.File,
-    type: 'avatar' | 'cover',
+    type: userMedia,
   ) {
     try {
       const user = await this.userService.findOne(userId);
-      if (!media) throw new NotFoundException(`User's ${type} not found`);
+      const media = user[type] ?? (await this.findUserMedia(userId, type));
 
       media.path = file.path.replace(/^.*users/, '/users');
       media.filename = file.filename;
@@ -61,18 +72,20 @@ export class MediaService {
       throw err;
     }
   }
-  private async updateUserMedia(
-    media: Media,
+
+  async updateUserMedia(
+    userId: string,
     file: Express.Multer.File,
-    type: 'avatar' | 'cover',
+    type: userMedia,
   ) {
     try {
-      if (!media) throw new NotFoundException(`User's ${type} not found`);
+      const media = await this.findUserMedia(userId, type);
 
       media.filename = file.filename;
       media.mimetype = file.mimetype;
       media.path = file.path.replace(/^.*users/, '/users');
       media.size = file.size;
+      media.type = type;
 
       await this.mediaRepo.save(media);
 
@@ -84,34 +97,52 @@ export class MediaService {
     }
   }
 
-  async findUserAvatar(userId: string) {
-    return await this.findUserMedia(userId, 'avatar');
-  }
-  async findUserCover(userId: string) {
-    return await this.findUserMedia(userId, 'cover');
-  }
-  async findUserImages(userId: string) {
-    const user = await this.userService.findOne(userId);
-    return { avatar: user.avatar, cover: user.cover };
-  }
+  async removeUserMedia(userId: string, type: userMedia) {
+    try {
+      const user = await this.userService.findOne(userId);
+      const media = user[type] ?? (await this.findUserMedia(userId, type));
 
-  async uploadUserAvatar(userId: string, file: Express.Multer.File) {
-    const avatar = await this.findUserAvatar(userId);
-    return await this.saveUserMedia(userId, avatar, file, 'avatar');
-  }
-  async uploadUserCover(userId: string, file: Express.Multer.File) {
-    const cover = await this.findUserCover(userId);
-    return await this.saveUserMedia(userId, cover, file, 'cover');
-  }
+      // Delete avatar or cover image in user's folder
+      const filePath = join(process.cwd(), 'uploads', media.path);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        this.logger.log(
+          `Deleted ${type} file for user ${user.id}: ${filePath}`,
+        );
+      } else {
+        this.logger.log(
+          `${type} file not found for user ${user.id}, skip delete`,
+        );
+      }
 
-  async updateUserAvatar(userId: string, file: Express.Multer.File) {
-    const avatar = await this.findUserAvatar(userId);
-    return await this.updateUserMedia(avatar, file, 'avatar');
-  }
-  async updateUserCover(userId: string, file: Express.Multer.File) {
-    const cover = await this.findUserCover(userId);
-    return await this.updateUserMedia(cover, file, 'cover');
-  }
+      media.path =
+        type === userMedia.AVATAR ? DefaultImages.AVATAR : DefaultImages.COVER;
+      media.filename = `default_${type}`;
+      media.mimetype = 'svg';
+      media.size = 0;
 
-  async removeUserAvatar(userId: string, avatarId: string) {}
+      await this.mediaRepo.save(media);
+
+      user[type] = media;
+      await this.userRepo.save(user);
+
+      // Delete the user's folder if no file exists
+      const userFolder = join(process.cwd(), 'uploads', 'users', user.id);
+      if (fs.existsSync(userFolder)) {
+        const files = fs.readdirSync(userFolder);
+        if (files.length === 0) {
+          fs.rmdirSync(userFolder);
+          this.logger.log(
+            `Deleted empty folder for user ${user.id}: ${userFolder}`,
+          );
+        }
+      }
+
+      return { message: `User ${type} deleted` };
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(`Failed to delete user ${type}`, err.stack);
+      throw err;
+    }
+  }
 }
