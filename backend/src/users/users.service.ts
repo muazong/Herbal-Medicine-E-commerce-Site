@@ -1,20 +1,21 @@
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  BadRequestException,
-  Injectable,
   Logger,
+  Injectable,
+  BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
 import * as fs from 'fs';
+import { join } from 'path';
 
 import { User } from './entities/user.entity';
+import { DefaultImages } from '../common/contances';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { DefaultImages } from '../common/contances';
 import { Media } from '../media/entities/media.entity';
-import { join } from 'path';
+import { generateHashedPassword } from '../common/utils/generate-hashed-password';
 
 @Injectable()
 export class UsersService {
@@ -23,47 +24,63 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     @InjectRepository(Media) private readonly mediaRepo: Repository<Media>,
+    private readonly dataSource: DataSource,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<CreateUserDto> {
+  async create(createUserDto: CreateUserDto) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
     try {
-      const avatar = new Media({
+      const avatar = queryRunner.manager.create(Media, {
         path: DefaultImages.AVATAR,
         filename: 'default_avatar',
         mimetype: 'svg',
         size: 0,
+        type: 'avatar',
       });
-      const cover = new Media({
+      const cover = queryRunner.manager.create(Media, {
         path: DefaultImages.COVER,
         filename: 'default_cover',
         mimetype: 'svg',
         size: 0,
+        type: 'cover',
       });
-      await this.mediaRepo.save([avatar, cover]);
+      await queryRunner.manager.save([avatar, cover]);
 
-      const user = this.userRepo.create({
+      const newUser = queryRunner.manager.create(User, {
+        ...createUserDto,
         avatar,
         cover,
-        firstName: createUserDto.firstName,
-        lastName: createUserDto.lastName,
-        email: createUserDto.email,
-        password: createUserDto.password,
-        username: createUserDto.username,
+        password: await generateHashedPassword(createUserDto.password),
       });
+      await queryRunner.manager.save(newUser);
 
-      await this.userRepo.save(user);
-
-      return { ...createUserDto };
+      await queryRunner.commitTransaction();
+      return { ...newUser };
     } catch (error) {
+      await queryRunner.rollbackTransaction(); // Rollback if an error occurs
+
       const err = error as Error;
       this.logger.error(`Failed to create user: ${err.message}`, err.stack);
       throw err;
+    } finally {
+      await queryRunner.release();
     }
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(
+    limit: number = 10,
+    page = 1,
+    sort: 'desc' | 'asc' = 'desc',
+  ): Promise<User[]> {
     try {
-      const users = await this.userRepo.find();
+      const users = await this.userRepo.find({
+        take: limit,
+        skip: (page - 1) * limit,
+        order: { createdAt: sort },
+      });
       return users;
     } catch (error) {
       const err = error as Error;
@@ -104,7 +121,7 @@ export class UsersService {
       await this.userRepo.save(user);
       this.logger.log(`Updated the user with id: ${id}`);
 
-      return updateUserDto;
+      return user;
     } catch (error) {
       const err = error as Error;
       this.logger.error(`Failed to update user: ${err.message}`, err.stack);
@@ -124,7 +141,8 @@ export class UsersService {
         }
 
         const avatar = user.avatar;
-        user.avatar = null;
+        user.avatar = null; // remove FK with avatar before remove user
+
         await this.userRepo.save(user);
         await this.mediaRepo.remove(avatar);
       }
@@ -136,7 +154,7 @@ export class UsersService {
         }
 
         const cover = user.cover;
-        user.cover = null;
+        user.cover = null; // remove FK with cover before remove user
 
         await this.userRepo.save(user);
         await this.mediaRepo.remove(cover);

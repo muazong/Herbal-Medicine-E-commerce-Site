@@ -1,13 +1,14 @@
 import {
-  Controller,
   Get,
   Post,
   Body,
+  Query,
   Patch,
   Param,
   Delete,
-  HttpStatus,
   HttpCode,
+  HttpStatus,
+  Controller,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
@@ -25,8 +26,12 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+    @Query('sort') sort: 'asc' | 'desc',
+  ) {
+    return this.usersService.findAll(limit, page, sort);
   }
 
   @Get(':id')
