@@ -122,7 +122,11 @@ export class UsersService {
         if (fs.existsSync(avatarPath)) {
           fs.unlinkSync(user.avatar.path);
         }
-        await this.mediaRepo.remove(user.avatar);
+
+        const avatar = user.avatar;
+        user.avatar = null;
+        await this.userRepo.save(user);
+        await this.mediaRepo.remove(avatar);
       }
       if (user.cover) {
         const coverPath = join(process.cwd(), user.cover.path);
@@ -131,7 +135,11 @@ export class UsersService {
           fs.unlinkSync(user.cover.path);
         }
 
-        await this.mediaRepo.remove(user.cover);
+        const cover = user.cover;
+        user.cover = null;
+
+        await this.userRepo.save(user);
+        await this.mediaRepo.remove(cover);
       }
 
       await this.userRepo.remove(user);
