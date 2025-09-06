@@ -6,6 +6,7 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import * as fs from 'fs';
 import { join } from 'path';
@@ -15,7 +16,7 @@ import { DefaultImages } from '../common/contances';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Media } from '../media/entities/media.entity';
-import { generateHashedPassword } from '../common/utils/generate-hashed-password';
+import { generateHashedPassword } from '../common/utils';
 
 @Injectable()
 export class UsersService {
@@ -28,6 +29,19 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    const [existedByUsername, existedByEmail] = await Promise.all([
+      this.userRepo.findOneBy({ username: createUserDto.username }),
+      this.userRepo.findOneBy({ email: createUserDto.email }),
+    ]);
+
+    if (existedByUsername) {
+      throw new ConflictException('Username already exists');
+    }
+
+    if (existedByEmail) {
+      throw new ConflictException('Email already exists');
+    }
+
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
