@@ -1,0 +1,57 @@
+### 
+
+@authHost = http://localhost:5500/api/auth
+
+
+### 
+
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYTkxNzg4MS0xZmQ4LTQ0YWUtYmQ2OS02ZTE4MjQxYjA5YzQiLCJ1c2VybmFtZSI6ImF6b25nMiIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NTczNDkzMDUsImV4cCI6MTc1NzM1MDIwNX0.aJ95ag6cNw8KQlb-cGCRvi91TqZ6ST9Nv8UOpS3tDi4
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwYmRhNGZiMi0xZDA5LTQ2ZDEtYTQ0ZC03ODg1ZDg2YjI1NjciLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc1NzM0NDI5NSwiZXhwIjoxNzU3OTQ5MDk1fQ.ZSFNSRnxeIdD-iDkUq-O9YSYGDPnk3eJiBQfBlZaN88
+
+
+### GET /auth/me
+
+GET {{authHost}}/me HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+
+### GET /auth/refresh
+
+GET {{authHost}}/refresh HTTP/1.1
+Cookie: refresh={{refreshToken}}
+
+
+### GET /auth/google
+
+GET {{authHost}}/google HTTP/1.1
+
+
+### POST /auth/register
+
+POST {{authHost}}/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "address": "Vietnam",
+  "email": "azong1@gmail.com",
+  "firstName": "zong",
+  "lastName": "muas",
+  "password": "123456",
+  "username": "azong2"
+}
+
+
+### POST /auth/login
+
+POST {{authHost}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "password": "123456",
+  "username": "azong2"
+}
+
+
+### POST /auth/logout
+
+POST {{authHost}}/logout HTTP/1.1

@@ -1,6 +1,6 @@
 ### 
 
-@mediaHost = http://localhost:5500/media
+@mediaHost = http://localhost:5500/api/media
 @mediaUserApi = {{mediaHost}}/user
 @userId = 7a4ad4be-32da-488e-86bd-e751706748ad
 
