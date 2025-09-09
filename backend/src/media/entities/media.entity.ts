@@ -1,5 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { AbstractEntity } from '../../database/abstract.entity';
+import { MediaType } from '../../common/enums';
 
 @Entity({ name: 'media' })
 export class Media extends AbstractEntity<Media> {
@@ -15,6 +16,6 @@ export class Media extends AbstractEntity<Media> {
   @Column()
   size: number;
 
-  @Column()
-  type: 'avatar' | 'cover' | 'product';
+  @Column({ type: 'enum', enum: MediaType })
+  type: MediaType;
 }
