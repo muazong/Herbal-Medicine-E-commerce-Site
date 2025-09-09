@@ -11,6 +11,7 @@ import {
 import * as fs from 'fs';
 import { join } from 'path';
 
+import { MediaType } from '../common/enums';
 import { User } from './entities/user.entity';
 import { DefaultImages } from '../common/contances';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -52,14 +53,14 @@ export class UsersService {
         filename: 'default_avatar',
         mimetype: 'svg',
         size: 0,
-        type: 'avatar',
+        type: MediaType.AVATAR,
       });
       const cover = queryRunner.manager.create(Media, {
         path: DefaultImages.COVER,
         filename: 'default_cover',
         mimetype: 'svg',
         size: 0,
-        type: 'cover',
+        type: MediaType.COVER,
       });
       await queryRunner.manager.save([avatar, cover]);
 
