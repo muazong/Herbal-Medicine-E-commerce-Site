@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { userMedia } from '../common/enums';
+import { UserMedia } from '../common/enums';
 import { MediaService } from './media.service';
 import { userImageStorage } from '../common/utils';
 
@@ -20,12 +20,12 @@ export class MediaController {
 
   @Get('user/:id/avatar')
   findUserAvatar(@Param('id') id: string) {
-    return this.mediaService.findUserMedia(id, userMedia.AVATAR);
+    return this.mediaService.findUserMedia(id, UserMedia.AVATAR);
   }
 
   @Get('user/:id/cover')
   findUserCover(@Param('id') id: string) {
-    return this.mediaService.findUserMedia(id, userMedia.COVER);
+    return this.mediaService.findUserMedia(id, UserMedia.COVER);
   }
 
   @Get('user/:id/images')
@@ -43,7 +43,7 @@ export class MediaController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.mediaService.uploadUserMedia(id, file, userMedia.AVATAR);
+    return this.mediaService.uploadUserMedia(id, file, UserMedia.AVATAR);
   }
 
   @Post('user/:id/cover')
@@ -56,7 +56,7 @@ export class MediaController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.mediaService.uploadUserMedia(id, file, userMedia.COVER);
+    return this.mediaService.uploadUserMedia(id, file, UserMedia.COVER);
   }
 
   @Put('user/:id/avatar')
@@ -69,7 +69,7 @@ export class MediaController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.mediaService.updateUserMedia(id, file, userMedia.AVATAR);
+    return this.mediaService.updateUserMedia(id, file, UserMedia.AVATAR);
   }
 
   @Put('user/:id/cover')
@@ -82,16 +82,16 @@ export class MediaController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.mediaService.updateUserMedia(id, file, userMedia.COVER);
+    return this.mediaService.updateUserMedia(id, file, UserMedia.COVER);
   }
 
   @Delete('user/:id/avatar')
   removeUserAvatar(@Param('id') id: string) {
-    return this.mediaService.removeUserMedia(id, userMedia.AVATAR);
+    return this.mediaService.removeUserMedia(id, UserMedia.AVATAR);
   }
 
   @Delete('user/:id/cover')
   removeUserCover(@Param('id') id: string) {
-    return this.mediaService.removeUserMedia(id, userMedia.COVER);
+    return this.mediaService.removeUserMedia(id, UserMedia.COVER);
   }
 }

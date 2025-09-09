@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 
-import { userMedia } from '../common/enums';
+import { UserMedia } from '../common/enums';
 import { Media } from './entities/media.entity';
 import { DefaultImages } from '../common/contances';
 import { User } from '../users/entities/user.entity';
@@ -22,7 +22,7 @@ export class MediaService {
 
   // TODO: Add Product media api
 
-  async findUserMedia(userId: string, type: userMedia) {
+  async findUserMedia(userId: string, type: UserMedia) {
     try {
       const user = await this.userService.findOne(userId);
 
@@ -47,7 +47,7 @@ export class MediaService {
   async uploadUserMedia(
     userId: string,
     file: Express.Multer.File,
-    type: userMedia,
+    type: UserMedia,
   ) {
     try {
       const user = await this.userService.findOne(userId);
@@ -76,7 +76,7 @@ export class MediaService {
   async updateUserMedia(
     userId: string,
     file: Express.Multer.File,
-    type: userMedia,
+    type: UserMedia,
   ) {
     try {
       const media = await this.findUserMedia(userId, type);
@@ -97,7 +97,7 @@ export class MediaService {
     }
   }
 
-  async removeUserMedia(userId: string, type: userMedia) {
+  async removeUserMedia(userId: string, type: UserMedia) {
     try {
       const user = await this.userService.findOne(userId);
       const media = user[type] ?? (await this.findUserMedia(userId, type));
@@ -116,7 +116,7 @@ export class MediaService {
       }
 
       media.path =
-        type === userMedia.AVATAR ? DefaultImages.AVATAR : DefaultImages.COVER;
+        type === UserMedia.AVATAR ? DefaultImages.AVATAR : DefaultImages.COVER;
       media.filename = `default_${type}`;
       media.mimetype = 'svg';
       media.size = 0;
