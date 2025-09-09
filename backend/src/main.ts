@@ -8,12 +8,12 @@ import { AppModule } from './app/app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const logger = new Logger();
-  const configService = new ConfigService();
-  const PORT = configService.getOrThrow('PORT') as number;
+  const logger = app.get(Logger);
+  const configService = app.get(ConfigService);
+  const PORT = configService.getOrThrow('PORT');
 
   app.enableCors({
-    origin: process.env.CLIENT_URL,
+    origin: configService.getOrThrow('CLIENT_URL'),
     credentials: true,
   });
 
