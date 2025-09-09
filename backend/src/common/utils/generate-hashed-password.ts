@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 
-const SALTORROUNDS = 10;
+const salt = bcrypt.genSaltSync(10);
 
 export const generateHashedPassword = (password: string) => {
-  return bcrypt.hash(password, SALTORROUNDS);
+  return bcrypt.hash(password, salt);
 };
