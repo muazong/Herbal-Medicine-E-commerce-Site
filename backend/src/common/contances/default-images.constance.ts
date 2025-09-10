@@ -1,4 +1,4 @@
-export const DefaultImages = {
-  AVATAR: '/avatar.svg',
-  COVER: '/cover.svg',
+export const DefaultImagesPath = {
+  LOCAL_AVATAR: '/avatar.svg',
+  LOCAL_COVER: '/cover.svg',
 };
