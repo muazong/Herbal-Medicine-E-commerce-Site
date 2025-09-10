@@ -1,7 +1,7 @@
 ### 
 
 @userHost = http://localhost:5500/api/users
-@userId = 4040f009-ea9b-4e77-8f45-bd34e10ae312
+@userId = 2f8610db-6cd2-492c-8a9b-73c14c4727c5
 
 
 ### GET /users
