@@ -19,9 +19,10 @@ Tech: Next.js
 Tech: NestJS
 
 - [ ] Entities
-  - [ ] User
+  - [x] User
   - [ ] Cart
     - [ ] Cart item
+  - [x] Media
   - [ ] Product
   - [ ] Category
   - [ ] Comment
@@ -33,7 +34,9 @@ Tech: NestJS
     - [ ] Resigter
     - [ ] Login
     - [ ] Logout
-  - [ ] Users
+  - [x] Users
+  - [ ] Media
+    - [x] User media
   - [ ] Products
 
 ### Database
