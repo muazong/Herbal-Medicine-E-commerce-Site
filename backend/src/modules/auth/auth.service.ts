@@ -6,10 +6,10 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
+import { UserProvider } from '../../common/enums';
 import { User } from '../users/entities/user.entity';
 import { MediaService } from '../media/media.service';
 import { UsersService } from '../users/users.service';
-import { UserProvider } from '../../common/enums';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { DefaultImagesName, InitialUserMedia } from '../../common/contances';
 
@@ -154,7 +154,12 @@ export class AuthService {
       }
 
       const newAccessToken = this.jwtService.sign(
-        { username: user.username, sub: payload.sub, type: 'access' },
+        {
+          fullName: user.fullName,
+          sub: payload.sub,
+          role: user.role,
+          type: 'access',
+        },
         { expiresIn: '15m' },
       );
 
