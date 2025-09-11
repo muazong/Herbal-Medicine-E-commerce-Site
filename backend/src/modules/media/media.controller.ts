@@ -7,14 +7,20 @@ import {
   Controller,
   UploadedFile,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { UserMedia } from '../../common/enums';
+import { JwtAuthGuard } from '../auth/guards';
 import { MediaService } from './media.service';
+import { Roles } from '../../common/decorators';
+import { Role, UserMedia } from '../../common/enums';
 import { userImageStorage } from '../../common/utils';
+import { RolesGuard } from '../../common/guards';
 
 @Controller('media')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN, Role.CLIENT)
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
