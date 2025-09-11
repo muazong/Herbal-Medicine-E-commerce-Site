@@ -1,7 +1,11 @@
-import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
+import { DataSource } from 'typeorm';
+
 import { User } from '../users/entities/user.entity';
 import { Media } from '../media/entities/media.entity';
+import { Product } from '../products/entities/product.entity';
+import { Cart } from '../carts/entities/cart.entity';
+import { CartItem } from '../cart-items/entities/cart-item.entity';
 
 dotenv.config();
 
@@ -15,5 +19,5 @@ export default new DataSource({
   synchronize: false,
   logging: true,
   migrations: ['migrations/*.ts'],
-  entities: [Media, User],
+  entities: [Media, User, Product, Cart, CartItem],
 });
