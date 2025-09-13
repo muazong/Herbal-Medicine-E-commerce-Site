@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import * as fs from 'fs';
 import { join } from 'path';
+import * as lodash from 'lodash';
 import { Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -28,14 +29,9 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const [existedByUsername, existedByEmail] = await Promise.all([
-      this.userRepo.findOneBy({ username: createUserDto.username }),
-      this.userRepo.findOneBy({ email: createUserDto.email }),
-    ]);
-
-    if (existedByUsername) {
-      throw new ConflictException('Username already exists!');
-    }
+    const existedByEmail = await this.userRepo.findOneBy({
+      email: createUserDto.email,
+    });
 
     if (existedByEmail) {
       throw new ConflictException('Email already exists!');
@@ -96,16 +92,24 @@ export class UsersService {
     }
   }
 
-  async update(
-    id: string,
-    updateUserDto: UpdateUserDto,
-  ): Promise<UpdateUserDto> {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     try {
       const user = await this.findOne(id);
+      const fieldsToUpdate = lodash.pickBy(
+        updateUserDto,
+        (value) => value !== undefined,
+      );
 
-      Object.assign(user, updateUserDto);
-      await this.userRepo.save(user);
+      if ('password' in fieldsToUpdate) {
+        fieldsToUpdate.password = await generateHashedPassword(
+          fieldsToUpdate.password!,
+        );
+      }
+
+      Object.assign(user, fieldsToUpdate);
       this.logger.log(`Updated the user with id: ${id}`);
+
+      await this.userRepo.save(user);
 
       return user;
     } catch (error) {
