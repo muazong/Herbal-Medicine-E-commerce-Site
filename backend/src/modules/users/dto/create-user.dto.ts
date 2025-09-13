@@ -19,11 +19,7 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
-  @Length(3, 255)
-  username: string;
-
-  @IsString()
-  @MinLength(6)
+  @MinLength(8)
   password: string;
 
   @IsOptional()
