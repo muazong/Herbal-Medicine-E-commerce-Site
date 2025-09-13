@@ -101,6 +101,7 @@ Tech: PostgreSQL
 | id          | UUID              | Primary key, unique for category |
 | name        | VARCHAR(100)      | Category name                    |
 | description | TEXT              | Optional description             |
+| avatar     | VARCHAR           | Category's avatar URL                          |
 | created_at  | TIMESTAMP WITH TZ | Date category was created        |
 | updated_at  | TIMESTAMP WITH TZ | Date category was last updated   |
 
