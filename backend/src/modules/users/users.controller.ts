@@ -7,18 +7,18 @@ import {
   Param,
   Delete,
   HttpCode,
+  UseGuards,
   HttpStatus,
   Controller,
-  UseGuards,
 } from '@nestjs/common';
 
 import { Role } from '../../common/enums';
+import { JwtAuthGuard } from '../auth/guards';
 import { UsersService } from './users.service';
+import { Roles } from '../../common/decorators';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Roles } from '../../common/decorators';
 import { RolesGuard } from '../../common/guards/roles.guard';
-import { JwtAuthGuard } from '../auth/guards';
 
 @Controller('users')
 @Roles(Role.ADMIN)
