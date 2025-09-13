@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import * as fs from 'fs';
 import { join } from 'path';
+import { Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
-import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from './entities/user.entity';
@@ -16,7 +16,6 @@ import { UserProvider } from '../../common/enums';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Media } from '../media/entities/media.entity';
-import { InitialUserMedia } from '../../common/contances';
 import { generateHashedPassword } from '../../common/utils';
 
 @Injectable()
@@ -26,7 +25,6 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     @InjectRepository(Media) private readonly mediaRepo: Repository<Media>,
-    private readonly dataSource: DataSource,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -43,40 +41,18 @@ export class UsersService {
       throw new ConflictException('Email already exists!');
     }
 
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
     try {
-      const avatar = queryRunner.manager.create(
-        Media,
-        InitialUserMedia['avatar'],
-      );
-      const cover = queryRunner.manager.create(
-        Media,
-        InitialUserMedia['cover'],
-      );
-      await queryRunner.manager.save([avatar, cover]);
-
-      const newUser = queryRunner.manager.create(User, {
+      const newUser = this.userRepo.create({
         ...createUserDto,
-        avatar,
-        cover,
         password: await generateHashedPassword(createUserDto.password),
-        provider: UserProvider.LOCAL,
       });
-      await queryRunner.manager.save(newUser);
 
-      await queryRunner.commitTransaction();
+      await this.userRepo.save(newUser);
       return { ...newUser };
     } catch (error) {
-      await queryRunner.rollbackTransaction(); // Rollback if an error occurs
-
       const err = error as Error;
       this.logger.error(`Failed to create user: ${err.message}`, err.stack);
       throw err;
-    } finally {
-      await queryRunner.release();
     }
   }
 
