@@ -6,6 +6,10 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { DatabaseModule } from '../database/database.module';
 import { UsersModule } from '../users/users.module';
 import { AuthModule } from '../auth/auth.module';
+import { CartsModule } from '../carts/carts.module';
+import { ProductsModule } from '../products/products.module';
+import { CategoriesModule } from '../categories/categories.module';
+import { CartItemsModule } from '../cart-items/cart-items.module';
 
 @Module({
   imports: [
@@ -28,6 +32,10 @@ import { AuthModule } from '../auth/auth.module';
     DatabaseModule,
     UsersModule,
     AuthModule,
+    CartsModule,
+    CartItemsModule,
+    ProductsModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [Logger],
