@@ -5,8 +5,8 @@
 
 ### 
 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzliYTI4MC0zNDI2LTRlYzUtYTNjZS04MGNhYTU4NmViMDEiLCJmdWxsTmFtZSI6InpvbmcgbXVhcyIsInJvbGUiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU3NTE2OTUwLCJleHAiOjE3NTc1MTc4NTB9.-70yLvm5RLn4MtnNhkFVwtAiJ3iuyOTzVb6EVZYL8VM
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYzhhODIzOS1jOWY4LTQ3YTctOGU5ZS1jZmFkOGU2NDE4YTMiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc1NzQ0MDcyMiwiZXhwIjoxNzU4MDQ1NTIyfQ.tvubSIQoWFzf4Mmx9mZMplCuG_VL5Z8iUichMi8VoUw
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZDcyZWVmNi0xMzhhLTQxZjktODNkNS1jZTMwNjU0YzU2NWIiLCJmdWxsTmFtZSI6Ik1pa2UgbXVhcyIsInJvbGUiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU3NzMwMDQ2LCJleHAiOjE3NTc3MzA5NDZ9.dhKQCG5p-meIXcB7XA8Ltny5pWAgKBvYvYda4GtW_w0
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Mzg1NWY0Ny04YTE1LTQ3ODYtYjM3Zi0yYjA2YTI0MzE4YTMiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc1NzU1NTkxOCwiZXhwIjoxNzU4MTYwNzE4fQ.4RsPnmsuurih7ETgOCZrFwF-V9IUSkxX56nh-oOer2c
 
 
 ### GET /auth/me
@@ -33,11 +33,10 @@ Content-Type: application/json
 
 {
   "address": "Vietnam",
-  "email": "azong1@gmail.com",
+  "email": "azong@gmail.com",
   "firstName": "zong",
   "lastName": "muas",
-  "password": "123456",
-  "username": "azong2"
+  "password": "12345678"
 }
 
 
@@ -47,8 +46,8 @@ POST {{authHost}}/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "password": "123456",
-  "username": "azong2"
+  "email": "azong@gmail.com",
+  "password": "123456789"
 }
 
 

@@ -1,0 +1,33 @@
+### 
+
+@productHost = http://localhost:5500/api/products
+@productId = 8e722bef-dbe1-4d6e-a9b8-e85c4c3793fe
+
+
+### GET /products
+
+GET {{productHost}} HTTP/1.1
+
+
+### GET /products/:id
+
+GET {{productHost}}/{{productId}} HTTP/1.1
+
+
+### POST /products
+
+POST {{productHost}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "description": "A delicious fruit",
+  "name": "Apple",
+  "price": 100,
+  "rating": 5,
+  "stock": 100
+}
+
+
+### DELETE /products/:id
+
+DELETE {{productHost}}/{{productId}} HTTP/1.1

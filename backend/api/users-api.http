@@ -1,49 +1,57 @@
 ### 
 
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZDcyZWVmNi0xMzhhLTQxZjktODNkNS1jZTMwNjU0YzU2NWIiLCJmdWxsTmFtZSI6ImFab25nIGhlbGxvIiwicm9sZSI6ImNsaWVudCIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NTc3MzAzMTYsImV4cCI6MTc1NzczMTIxNn0.YsAMXH1xhZ43fnXlYYQ7tX-Wx93wzwReqFTZ-HDYTnI
 @userHost = http://localhost:5500/api/users
-@userId = 2f8610db-6cd2-492c-8a9b-73c14c4727c5
+@userId = ed72eef6-138a-41f9-83d5-ce30654c565b
 
 
 ### GET /users
 
 GET {{userHost}} HTTP/1.1
+Authorization: Bearer {{accessToken}}
 
 
 ### GET /users?limit=1&page=1&sort=desc
 
-GET {{userHost}}?limit=2&page=4&sort=asc HTTP/1.1
+GET {{userHost}}?limit=2&page=1&sort=asc HTTP/1.1
+Authorization: Bearer {{accessToken}}
 
 
 ### GET /user/:id
 
 GET {{userHost}}/{{userId}} HTTP/1.1
+Authorization: Bearer {{accessToken}}
 
 
 ### PATCH /users/:id
 
 PATCH {{userHost}}/{{userId}} HTTP/1.1
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "firstName": "Mùa A",
-  "lastName": "Giống"
+  "firstName": "aZong",
+  "lastName": "hello",
+  "password": "123456789"
 }
 
 
-### POST /users
+### POST /users -- for admin only
 
 POST {{userHost}} HTTP/1.1
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
+  "address": "Vietnam",
   "email": "azong12@gmail.com",
   "firstName": "zong",
   "lastName": "muas",
-  "password": "123456",
-  "username": "azong12"
+  "password": "123456"
 }
 
 
 ### DELETE /user/:id
 
 DELETE {{userHost}}/{{userId}} HTTP/1.1
+Authorization: Bearer {{accessToken}}
