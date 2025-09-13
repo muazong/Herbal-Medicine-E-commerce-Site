@@ -1,16 +1,17 @@
 import {
-  BeforeInsert,
-  BeforeUpdate,
   Column,
   Entity,
-  JoinColumn,
   OneToOne,
+  JoinColumn,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { AccountStatus, Role, UserProvider } from '../../../common/enums';
-import { AbstractEntity } from '../../database/abstract.entity';
+import { Cart } from '../../carts/entities/cart.entity';
 import { Media } from '../../media/entities/media.entity';
+import { AbstractEntity } from '../../database/abstract.entity';
+import { AccountStatus, Role, UserProvider } from '../../../common/enums';
 
 @Entity({ name: 'users' })
 export class User extends AbstractEntity<User> {
@@ -23,20 +24,20 @@ export class User extends AbstractEntity<User> {
   @Column({ unique: true })
   email: string;
 
-  @Column({ unique: true })
-  username: string;
-
   @Column({ default: uuidv4() })
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: 255 })
   address?: string;
 
-  @OneToOne(() => Media, { eager: true, nullable: true })
+  @OneToOne(() => Cart, (cart) => cart.user, { cascade: true })
+  cart: Cart;
+
+  @OneToOne(() => Media, { nullable: true })
   @JoinColumn()
   avatar: Media | null;
 
-  @OneToOne(() => Media, { eager: true, nullable: true })
+  @OneToOne(() => Media, { nullable: true })
   @JoinColumn()
   cover: Media | null;
 
