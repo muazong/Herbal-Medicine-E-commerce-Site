@@ -28,6 +28,6 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  @Length(0, 100)
+  @Length(0, 255)
   address?: string;
 }
