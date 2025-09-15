@@ -7,10 +7,10 @@ import {
 } from '@nestjs/common';
 import * as fs from 'fs';
 import { join } from 'path';
-import * as lodash from 'lodash';
 import { Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as lodash from 'lodash';
 
 import { User } from './entities/user.entity';
 import { UserProvider } from '../../common/enums';
