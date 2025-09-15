@@ -1,9 +1,9 @@
 ### 
 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMTE3MTBjZS1kNDBiLTRmNTYtOTdjZS1lNTI4MjVjOWYyNTkiLCJmdWxsTmFtZSI6InpvbmcgbXVhcyIsInJvbGUiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU3NzIzOTc4LCJleHAiOjE3NTc3MjQ4Nzh9.hHwtGw6sZbbaMZ7sxwlrV5sSUHFtV0mCrvXSvbJCl1E
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDE1YTc0NS0wYTg2LTRhNzgtOWNhZi1kMzlmYjU0MTQyN2EiLCJmdWxsTmFtZSI6InpvbmcgbXVhcyIsInJvbGUiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU3ODk3MDczLCJleHAiOjE3NTc4OTc5NzN9.5x8oPaDOacOKj3S0MRHWSj7r7LULtXcCH-F03W0Tnw8
 @mediaHost = http://localhost:5500/api/media
 @mediaUserApi = {{mediaHost}}/user
-@userId = c11710ce-d40b-4f56-97ce-e52825c9f259
+@userId = 5d15a745-0a86-4a78-9caf-d39fb541427a
 
 
 ### GET /media/user/:userId/avatar
@@ -34,20 +34,6 @@ Content-Type: multipart/form-data
 ### POST /media/user/:userId/cover
 
 POST {{mediaUserApi}}/{{userId}}/cover HTTP/1.1
-Authorization: Bearer {{accessToken}}
-Content-Type: multipart/form-data
-
-
-### PUT /media/user/:userId/avatar
-
-PUT {{mediaUserApi}}/{{userId}}/avatar HTTP/1.1
-Authorization: Bearer {{accessToken}}
-Content-Type: multipart/form-data
-
-
-### PUT /media/user/:userId/cover
-
-PUT {{mediaUserApi}}/{{userId}}/cover HTTP/1.1
 Authorization: Bearer {{accessToken}}
 Content-Type: multipart/form-data
 

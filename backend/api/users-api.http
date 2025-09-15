@@ -1,8 +1,8 @@
 ### 
 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZDcyZWVmNi0xMzhhLTQxZjktODNkNS1jZTMwNjU0YzU2NWIiLCJmdWxsTmFtZSI6ImFab25nIGhlbGxvIiwicm9sZSI6ImNsaWVudCIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NTc3MzAzMTYsImV4cCI6MTc1NzczMTIxNn0.YsAMXH1xhZ43fnXlYYQ7tX-Wx93wzwReqFTZ-HDYTnI
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDE1YTc0NS0wYTg2LTRhNzgtOWNhZi1kMzlmYjU0MTQyN2EiLCJmdWxsTmFtZSI6InpvbmcgbXVhcyIsInJvbGUiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU3ODk3MDczLCJleHAiOjE3NTc4OTc5NzN9.5x8oPaDOacOKj3S0MRHWSj7r7LULtXcCH-F03W0Tnw8
 @userHost = http://localhost:5500/api/users
-@userId = ed72eef6-138a-41f9-83d5-ce30654c565b
+@userId = 5d15a745-0a86-4a78-9caf-d39fb541427a
 
 
 ### GET /users

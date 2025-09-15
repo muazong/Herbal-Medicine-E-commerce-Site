@@ -1,7 +1,8 @@
 ### 
 
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDE1YTc0NS0wYTg2LTRhNzgtOWNhZi1kMzlmYjU0MTQyN2EiLCJmdWxsTmFtZSI6InpvbmcgbXVhcyIsInJvbGUiOiJhZG1pbiIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NTc5MDI1NzgsImV4cCI6MTc1NzkwMzQ3OH0.H9J6qIEFDz1_URaF70ECzKIfr55O1dktkVQxm1eh7Ao
 @productHost = http://localhost:5500/api/products
-@productId = 8e722bef-dbe1-4d6e-a9b8-e85c4c3793fe
+@productId = de8e878c-a412-476c-acad-082efe99520a
 
 
 ### GET /products
@@ -17,17 +18,30 @@ GET {{productHost}}/{{productId}} HTTP/1.1
 ### POST /products
 
 POST {{productHost}} HTTP/1.1
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
   "description": "A delicious fruit",
-  "name": "Apple",
+  "name": "Pineapple",
   "price": 100,
-  "rating": 5,
+  "rating": 1,
   "stock": 100
+}
+
+
+### PATCH /products/:id
+
+PATCH {{productHost}}/{{productId}} HTTP/1.1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "rating": 4
 }
 
 
 ### DELETE /products/:id
 
 DELETE {{productHost}}/{{productId}} HTTP/1.1
+Authorization: Bearer {{accessToken}}

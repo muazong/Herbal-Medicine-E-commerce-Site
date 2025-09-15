@@ -5,8 +5,8 @@
 
 ### 
 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZDcyZWVmNi0xMzhhLTQxZjktODNkNS1jZTMwNjU0YzU2NWIiLCJmdWxsTmFtZSI6Ik1pa2UgbXVhcyIsInJvbGUiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU3NzMwMDQ2LCJleHAiOjE3NTc3MzA5NDZ9.dhKQCG5p-meIXcB7XA8Ltny5pWAgKBvYvYda4GtW_w0
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Mzg1NWY0Ny04YTE1LTQ3ODYtYjM3Zi0yYjA2YTI0MzE4YTMiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc1NzU1NTkxOCwiZXhwIjoxNzU4MTYwNzE4fQ.4RsPnmsuurih7ETgOCZrFwF-V9IUSkxX56nh-oOer2c
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDE1YTc0NS0wYTg2LTRhNzgtOWNhZi1kMzlmYjU0MTQyN2EiLCJmdWxsTmFtZSI6InpvbmcgbXVhcyIsInJvbGUiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU3ODk3MDczLCJleHAiOjE3NTc4OTc5NzN9.5x8oPaDOacOKj3S0MRHWSj7r7LULtXcCH-F03W0Tnw8
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDE1YTc0NS0wYTg2LTRhNzgtOWNhZi1kMzlmYjU0MTQyN2EiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc1Nzg5NzkzOCwiZXhwIjoxNzU4NTAyNzM4fQ.uuY97VsPg5mXvYra5FOL03SLb0lAVN4Ce02miiFUUtU
 
 
 ### GET /auth/me
@@ -47,7 +47,7 @@ Content-Type: application/json
 
 {
   "email": "azong@gmail.com",
-  "password": "123456789"
+  "password": "12345678"
 }
 
 
