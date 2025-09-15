@@ -10,7 +10,7 @@ import { join } from 'path';
 import { Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as lodash from 'lodash';
+import pickBy from 'lodash/pickBy';
 
 import { User } from './entities/user.entity';
 import { UserProvider } from '../../common/enums';
@@ -95,7 +95,7 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
       const user = await this.findOne(id);
-      const fieldsToUpdate = lodash.pickBy(
+      const fieldsToUpdate = pickBy(
         updateUserDto,
         (value) => value !== undefined,
       );
