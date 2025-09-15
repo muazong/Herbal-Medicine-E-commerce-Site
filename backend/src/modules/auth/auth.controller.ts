@@ -15,6 +15,7 @@ import {
   GithubAuthGuard,
   GoogleAuthGuard,
 } from './guards';
+import { env } from '../../common/config';
 import { AuthService } from './auth.service';
 import { User } from '../users/entities/user.entity';
 import { CreateUserDto } from '../users/dto/create-user.dto';
@@ -31,9 +32,7 @@ export class AuthController {
 
   @Get('refresh')
   refreshAccessToken(@Req() req: Request) {
-    const refreshTokenName =
-      process.env.ENVIRONMENT === 'PROD' ? '__Host-refresh' : 'refresh';
-    const token = req.cookies[refreshTokenName];
+    const token = req.cookies[env.refreshTokenName];
     return this.authService.refreshAccessToken(token);
   }
 
