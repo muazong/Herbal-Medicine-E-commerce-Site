@@ -5,7 +5,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import pickBy from 'lodash/pickBy';
+import { pickBy } from 'lodash';
 import { Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';

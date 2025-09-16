@@ -10,7 +10,7 @@ import { join } from 'path';
 import { Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
-import pickBy from 'lodash/pickBy';
+import { pickBy } from 'lodash';
 
 import { User } from './entities/user.entity';
 import { UserProvider } from '../../common/enums';
