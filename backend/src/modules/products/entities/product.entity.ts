@@ -21,6 +21,7 @@ export class Product extends AbstractEntity<Product> {
   rating: number;
 
   @ManyToOne(() => Category, (category) => category.products, {
+    nullable: true,
     onDelete: 'SET NULL',
   })
   @JoinColumn()
