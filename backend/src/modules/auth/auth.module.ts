@@ -23,7 +23,10 @@ import { Media } from '../media/entities/media.entity';
       useFactory: (configService: ConfigService) => {
         return {
           secret: configService.getOrThrow('JWT_SECRET'),
-          signOptions: { expiresIn: '1d' },
+          signOptions: {
+            issuer: configService.getOrThrow('ISSUER'),
+            audience: configService.getOrThrow('AUDIENCE'),
+          },
         };
       },
       inject: [ConfigService],
