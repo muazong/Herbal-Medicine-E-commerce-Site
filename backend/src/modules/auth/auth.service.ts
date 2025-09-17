@@ -1,3 +1,4 @@
+import * as ms from 'ms';
 import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
 import { Repository } from 'typeorm';
@@ -52,19 +53,19 @@ export class AuthService {
 
     const token = {
       accessToken: this.jwtService.sign(accessTokenPayload, {
-        expiresIn: '15m',
+        expiresIn: ms(`${env.accessExpiration}`),
       }),
       refreshToken: this.jwtService.sign(refreshTokenPayload, {
-        expiresIn: '7d',
+        expiresIn: ms(`${env.refreshExpiration}`),
       }),
     };
 
     res.cookie(env.refreshTokenName, token.refreshToken, {
       httpOnly: true,
       secure: env.environment === 'PROD',
-      sameSite: 'lax',
+      sameSite: env.sameSite,
       path: '/api/auth/refresh',
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      maxAge: Number(ms(`${env.cookieExpiration}`)),
     });
 
     return {
@@ -173,7 +174,7 @@ export class AuthService {
     res.clearCookie(env.refreshTokenName, {
       httpOnly: true,
       secure: env.environment === 'PROD',
-      sameSite: 'lax',
+      sameSite: env.sameSite,
       path: '/api/auth/refresh',
       expires: new Date(0),
     });
