@@ -17,12 +17,13 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: any) {
-    const { emails, username, photos } = profile;
+    const { emails, username, photos, provider } = profile;
 
     const user = await this.authService.validateGithubUser(
       emails[0].value,
       username,
       photos[0].value,
+      provider,
     );
 
     return user;

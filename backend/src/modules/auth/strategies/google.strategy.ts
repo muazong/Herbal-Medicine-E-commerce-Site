@@ -22,13 +22,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     profile: any,
     done: VerifyCallback,
   ): Promise<any> {
-    const { name, emails, photos } = profile;
+    const { name, emails, photos, provider } = profile;
 
     const user = await this.authService.validateGoogleUser(
       emails[0].value,
       name.givenName,
       name.familyName,
       photos[0].value,
+      provider,
     );
 
     done(null, { ...user });
