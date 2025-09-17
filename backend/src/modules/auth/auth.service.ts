@@ -29,6 +29,10 @@ export class AuthService {
   async validateUser(email: string, password: string) {
     const user = await this.userRepo.findOneBy({ email });
 
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      throw new UnauthorizedException('Email or password is incorrect');
+    }
+
     if (user && (await bcrypt.compare(password, user.password))) {
       const { password, ...result } = user;
       return result;
@@ -73,8 +77,9 @@ export class AuthService {
     firstName: string,
     lastName: string,
     image: string,
+    provider: UserProvider,
   ) {
-    const user = await this.userRepo.findOneBy({ email });
+    const user = await this.userRepo.findOneBy({ email, provider });
     if (user) return user;
 
     const avatar = await this.mediaService.createUserMedia({
@@ -84,13 +89,8 @@ export class AuthService {
       filename: DefaultImagesName.GOOGLE_AVATAR,
     });
 
-    const cover = await this.mediaService.createUserMedia(
-      InitialUserMedia['cover'],
-    );
-
     const newUser = this.userRepo.create({
       avatar,
-      cover,
       email,
       firstName,
       lastName,
@@ -100,8 +100,13 @@ export class AuthService {
     return await this.userRepo.save(newUser);
   }
 
-  async validateGithubUser(email: string, name: string, image: string) {
-    const user = await this.userRepo.findOneBy({ email });
+  async validateGithubUser(
+    email: string,
+    name: string,
+    image: string,
+    provider: UserProvider,
+  ) {
+    const user = await this.userRepo.findOneBy({ email, provider });
     if (user) return user;
 
     const avatar = await this.mediaService.createUserMedia({
@@ -111,13 +116,8 @@ export class AuthService {
       filename: DefaultImagesName.GITHUB_AVATAR,
     });
 
-    const cover = await this.mediaService.createUserMedia(
-      InitialUserMedia['cover'],
-    );
-
     const newUser = this.userRepo.create({
       avatar,
-      cover,
       email,
       firstName: name,
       lastName: '',
