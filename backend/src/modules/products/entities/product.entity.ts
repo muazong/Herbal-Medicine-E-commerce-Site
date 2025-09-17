@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { AbstractEntity } from '../../database/abstract.entity';
 import { Category } from '../../categories/entities/category.entity';
+import { Media } from '../../media/entities/media.entity';
 
 @Entity({ name: 'products' })
 export class Product extends AbstractEntity<Product> {
@@ -19,6 +20,13 @@ export class Product extends AbstractEntity<Product> {
 
   @Column({ type: 'decimal', precision: 2, scale: 1 })
   rating: number;
+
+  @OneToMany(() => Media, (media) => media.product, {
+    cascade: true,
+    eager: true,
+    nullable: true,
+  })
+  media: Media[] | null;
 
   @ManyToOne(() => Category, (category) => category.products, {
     nullable: true,
