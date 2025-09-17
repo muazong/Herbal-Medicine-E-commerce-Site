@@ -23,7 +23,8 @@ export class Product extends AbstractEntity<Product> {
   @ManyToOne(() => Category, (category) => category.products, {
     nullable: true,
     onDelete: 'SET NULL',
+    eager: true,
   })
   @JoinColumn()
-  category: Category;
+  category: Category | null;
 }
