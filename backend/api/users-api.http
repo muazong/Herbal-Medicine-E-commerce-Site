@@ -1,33 +1,27 @@
-### 
-
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDE1YTc0NS0wYTg2LTRhNzgtOWNhZi1kMzlmYjU0MTQyN2EiLCJmdWxsTmFtZSI6InpvbmcgbXVhcyIsInJvbGUiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU3ODk3MDczLCJleHAiOjE3NTc4OTc5NzN9.5x8oPaDOacOKj3S0MRHWSj7r7LULtXcCH-F03W0Tnw8
-@userHost = http://localhost:5500/api/users
-@userId = 5d15a745-0a86-4a78-9caf-d39fb541427a
+@userHost = {{BASE_URL}}/users
 
 
 ### GET /users
 
 GET {{userHost}} HTTP/1.1
-Authorization: Bearer {{accessToken}}
-
+Authorization: {{Security.Auth}}
 
 ### GET /users?limit=1&page=1&sort=desc
 
-GET {{userHost}}?limit=2&page=1&sort=asc HTTP/1.1
-Authorization: Bearer {{accessToken}}
-
+GET {{userHost}}?limit=2
+  &page=1
+  &sort=asc HTTP/1.1
+Authorization: {{Security.Auth}}
 
 ### GET /user/:id
 
-GET {{userHost}}/{{userId}} HTTP/1.1
-Authorization: Bearer {{accessToken}}
-
+GET {{userHost}}/{{USER_ID}} HTTP/1.1
+Authorization: {{Security.Auth}}
 
 ### PATCH /users/:id
 
-PATCH {{userHost}}/{{userId}} HTTP/1.1
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
+PATCH {{userHost}}/{{USER_ID}} HTTP/1.1
+Authorization: {{Security.Auth}}
 
 {
   "firstName": "aZong",
@@ -35,12 +29,10 @@ Content-Type: application/json
   "password": "123456789"
 }
 
-
 ### POST /users -- for admin only
 
 POST {{userHost}} HTTP/1.1
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
+Authorization: {{Security.Auth}}
 
 {
   "address": "Vietnam",
@@ -50,8 +42,7 @@ Content-Type: application/json
   "password": "123456"
 }
 
-
 ### DELETE /user/:id
 
-DELETE {{userHost}}/{{userId}} HTTP/1.1
-Authorization: Bearer {{accessToken}}
+DELETE {{userHost}}/{{USER_ID}} HTTP/1.1
+Authorization: {{Security.Auth}}

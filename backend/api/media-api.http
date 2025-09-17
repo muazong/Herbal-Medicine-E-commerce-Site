@@ -1,50 +1,40 @@
-### 
-
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDE1YTc0NS0wYTg2LTRhNzgtOWNhZi1kMzlmYjU0MTQyN2EiLCJmdWxsTmFtZSI6InpvbmcgbXVhcyIsInJvbGUiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU3ODk3MDczLCJleHAiOjE3NTc4OTc5NzN9.5x8oPaDOacOKj3S0MRHWSj7r7LULtXcCH-F03W0Tnw8
-@mediaHost = http://localhost:5500/api/media
+@mediaHost = {{BASE_URL}}/media
 @mediaUserApi = {{mediaHost}}/user
-@userId = 5d15a745-0a86-4a78-9caf-d39fb541427a
 
 
 ### GET /media/user/:userId/avatar
 
-GET {{mediaUserApi}}/{{userId}}/avatar HTTP/1.1
-Authorization: Bearer {{accessToken}}
-
+GET {{mediaUserApi}}/{{USER_ID}}/avatar HTTP/1.1
+Authorization: {{Security.Auth}}
 
 ### GET /media/user/:userId/cover
 
-GET {{mediaUserApi}}/{{userId}}/cover HTTP/1.1
-Authorization: Bearer {{accessToken}}
-
+GET {{mediaUserApi}}/{{USER_ID}}/cover HTTP/1.1
+Authorization: {{Security.Auth}}
 
 ### GET /media/user/:userId/images
 
-GET {{mediaUserApi}}/{{userId}}/images HTTP/1.1
-Authorization: Bearer {{accessToken}}
-
+GET {{mediaUserApi}}/{{USER_ID}}/images HTTP/1.1
+Authorization: {{Security.Auth}}
 
 ### POST /media/user/:userId/avatar
 
-POST {{mediaUserApi}}/{{userId}}/avatar HTTP/1.1
-Authorization: Bearer {{accessToken}}
+POST {{mediaUserApi}}/{{USER_ID}}/avatar HTTP/1.1
+Authorization: {{Security.Auth}}
 Content-Type: multipart/form-data
-
 
 ### POST /media/user/:userId/cover
 
-POST {{mediaUserApi}}/{{userId}}/cover HTTP/1.1
-Authorization: Bearer {{accessToken}}
+POST {{mediaUserApi}}/{{USER_ID}}/cover HTTP/1.1
+Authorization: {{Security.Auth}}
 Content-Type: multipart/form-data
-
 
 ### DELETE /media/user/:userId/avatar
 
-DELETE {{mediaUserApi}}/{{userId}}/avatar HTTP/1.1
-Authorization: Bearer {{accessToken}}
-
+DELETE {{mediaUserApi}}/{{USER_ID}}/avatar HTTP/1.1
+Authorization: {{Security.Auth}}
 
 ### DELETE /media/user/:userId/cover
 
-DELETE {{mediaUserApi}}/{{userId}}/cover HTTP/1.1
-Authorization: Bearer {{accessToken}}
+DELETE {{mediaUserApi}}/{{USER_ID}}/cover HTTP/1.1
+Authorization: {{Security.Auth}}

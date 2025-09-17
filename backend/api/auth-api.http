@@ -1,35 +1,23 @@
-### 
-
-@authHost = http://localhost:5500/api/auth
-
-
-### 
-
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDE1YTc0NS0wYTg2LTRhNzgtOWNhZi1kMzlmYjU0MTQyN2EiLCJmdWxsTmFtZSI6InpvbmcgbXVhcyIsInJvbGUiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU3ODk3MDczLCJleHAiOjE3NTc4OTc5NzN9.5x8oPaDOacOKj3S0MRHWSj7r7LULtXcCH-F03W0Tnw8
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDE1YTc0NS0wYTg2LTRhNzgtOWNhZi1kMzlmYjU0MTQyN2EiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc1Nzg5NzkzOCwiZXhwIjoxNzU4NTAyNzM4fQ.uuY97VsPg5mXvYra5FOL03SLb0lAVN4Ce02miiFUUtU
+@authHost = {{BASE_URL}}/auth
 
 
 ### GET /auth/me
 
 GET {{authHost}}/me HTTP/1.1
-Authorization: Bearer {{accessToken}}
-
+Authorization: {{Security.Auth}}
 
 ### GET /auth/refresh
 
 GET {{authHost}}/refresh HTTP/1.1
-Cookie: refresh={{refreshToken}}
-
+Cookie: {{Security.Refresh}}
 
 ### GET /auth/google
 
 GET {{authHost}}/google HTTP/1.1
 
-
 ### POST /auth/register
 
 POST {{authHost}}/register HTTP/1.1
-Content-Type: application/json
 
 {
   "address": "Vietnam",
@@ -39,17 +27,14 @@ Content-Type: application/json
   "password": "12345678"
 }
 
-
 ### POST /auth/login
 
 POST {{authHost}}/login HTTP/1.1
-Content-Type: application/json
 
 {
   "email": "azong@gmail.com",
   "password": "12345678"
 }
-
 
 ### POST /auth/logout
 
