@@ -53,10 +53,10 @@ export class AuthService {
 
     const token = {
       accessToken: this.jwtService.sign(accessTokenPayload, {
-        expiresIn: ms(`${env.accessExpiration}`),
+        expiresIn: env.accessExpiration,
       }),
       refreshToken: this.jwtService.sign(refreshTokenPayload, {
-        expiresIn: ms(`${env.refreshExpiration}`),
+        expiresIn: env.refreshExpiration,
       }),
     };
 
