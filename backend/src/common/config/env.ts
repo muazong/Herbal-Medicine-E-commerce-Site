@@ -11,8 +11,8 @@ export const env = {
   refreshTokenName: configService.getOrThrow('REFRESH_TOKEN_KEY') as string,
   issue: configService.getOrThrow('ISSUER') as string,
   audience: configService.getOrThrow('AUDIENCE') as string,
-  refreshExpiration: configService.getOrThrow('REFRESH_EXPIRATION'),
-  accessExpiration: configService.getOrThrow('ACCESS_EXPIRATION'),
+  refreshExpiration: configService.getOrThrow('REFRESH_EXPIRATION') as string,
+  accessExpiration: configService.getOrThrow('ACCESS_EXPIRATION') as string,
   cookieExpiration: configService.getOrThrow('COOKIE_EXPIRATION'),
 
   // Google
