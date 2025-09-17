@@ -32,10 +32,20 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
+  @Post(':id/category')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  assignCategory(
+    @Param('id') productId: string,
+    @Body('categoryId') categoryId: string,
+  ) {
+    return this.productsService.assignCategory(productId, categoryId);
+  }
+
   @Get()
   findAll(
-    @Query('limit') limit: number,
-    @Query('page') page: number,
+    @Query('limit') limit: number = 10,
+    @Query('page') page: number = 1,
     @Query('sort') sort: 'asc' | 'desc',
     @Query('search') search: string,
   ) {
@@ -52,6 +62,13 @@ export class ProductsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.update(id, updateProductDto);
+  }
+
+  @Delete(':id/category')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  unsignedCategory(@Param('id') productId: string) {
+    return this.productsService.unsignedCategory(productId);
   }
 
   @Delete(':id')

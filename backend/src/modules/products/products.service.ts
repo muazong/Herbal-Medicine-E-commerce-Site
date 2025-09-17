@@ -4,6 +4,8 @@ import {
   ConflictException,
   NotFoundException,
   BadRequestException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { pickBy } from 'lodash';
 import { Repository } from 'typeorm';
@@ -13,6 +15,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class ProductsService {
@@ -21,6 +24,9 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepo: Repository<Product>,
+
+    @Inject(forwardRef(() => CategoriesService))
+    private readonly categoriesService: CategoriesService,
   ) {}
 
   async create(createProductDto: CreateProductDto) {
@@ -43,27 +49,29 @@ export class ProductsService {
   }
 
   async findAll(
-    limit: number = 10,
-    page = 1,
+    limit?: number,
+    page?: number,
     sort: 'desc' | 'asc' = 'desc',
     search?: string,
   ) {
     try {
-      if (search) {
-        const products = await this.productRepo.find();
+      if (limit && page) {
+        return await this.productRepo.find({
+          take: limit,
+          skip: (page - 1) * limit,
+          order: {
+            createdAt: sort,
+          },
+        });
+      }
 
+      const products = await this.productRepo.find();
+
+      if (search) {
         return products.filter((product) =>
           product.name.toLowerCase().includes(search.toLowerCase()),
         );
       }
-
-      const products = await this.productRepo.find({
-        take: limit,
-        skip: (page - 1) * limit,
-        order: {
-          createdAt: sort,
-        },
-      });
 
       return products;
     } catch (error) {
@@ -83,14 +91,57 @@ export class ProductsService {
 
     try {
       const product = await this.productRepo.findOneBy({ id });
+
       if (!product) {
         this.logger.warn(`Product with id ${id} not found`, 'ProductsService');
         throw new NotFoundException(`Product with id ${id} not found`);
       }
+
       return product;
     } catch (error) {
       const err = error as Error;
       this.logger.error(`Failed to find product: ${err.message}`, err.stack);
+      throw err;
+    }
+  }
+
+  async assignCategory(productId: string, categoryId: string) {
+    try {
+      const existedCategory = await this.categoriesService.findOne(categoryId);
+      const existedProduct = await this.findOne(productId);
+
+      existedProduct.category = existedCategory;
+      await this.productRepo.save(existedProduct);
+
+      return existedProduct;
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(
+        `Failed to assign category to product: ${err.message}`,
+        err.stack,
+      );
+      throw err;
+    }
+  }
+
+  async unsignedCategory(productId: string) {
+    try {
+      const existedProduct = await this.findOne(productId);
+
+      if (!existedProduct.category) {
+        throw new BadRequestException('Product has no category!');
+      }
+
+      existedProduct.category = null;
+      await this.productRepo.save(existedProduct);
+
+      return existedProduct;
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(
+        `Failed to unsigned category to product: ${err.message}`,
+        err.stack,
+      );
       throw err;
     }
   }
