@@ -26,6 +26,10 @@ import { CartItemsModule } from '../cart-items/cart-items.module';
         rootPath: join(process.cwd(), 'uploads/products'),
         serveRoot: '/products',
       },
+      {
+        rootPath: join(process.cwd(), 'uploads/categories'),
+        serveRoot: '/categories',
+      },
     ),
     ConfigModule.forRoot({ isGlobal: true }),
 
