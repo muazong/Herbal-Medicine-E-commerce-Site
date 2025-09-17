@@ -5,6 +5,7 @@ import {
   JoinColumn,
   BeforeInsert,
   BeforeUpdate,
+  Unique,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,6 +15,7 @@ import { AbstractEntity } from '../../database/abstract.entity';
 import { AccountStatus, Role, UserProvider } from '../../../common/enums';
 
 @Entity({ name: 'users' })
+@Unique(['email', 'provider'])
 export class User extends AbstractEntity<User> {
   @Column()
   firstName: string;
@@ -21,7 +23,7 @@ export class User extends AbstractEntity<User> {
   @Column()
   lastName: string;
 
-  @Column({ unique: true })
+  @Column()
   email: string;
 
   @Column({ default: uuidv4() })
@@ -56,6 +58,6 @@ export class User extends AbstractEntity<User> {
   @BeforeInsert()
   @BeforeUpdate()
   generateFullNameOnUpdate(): void {
-    this.fullName = `${this.firstName} ${this.lastName}`;
+    this.fullName = `${this.firstName.trim()} ${this.lastName.trim()}`;
   }
 }
