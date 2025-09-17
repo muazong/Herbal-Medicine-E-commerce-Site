@@ -1,4 +1,4 @@
-import { userImageStorage } from './user-image-storage';
+import { mediaStorage } from './media-storage';
 import { generateHashedPassword } from './generate-hashed-password';
 
-export { userImageStorage, generateHashedPassword };
+export { mediaStorage, generateHashedPassword };
