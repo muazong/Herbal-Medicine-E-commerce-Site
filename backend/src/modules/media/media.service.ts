@@ -15,6 +15,10 @@ import { Media } from './entities/media.entity';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { CreateMediaDto } from './dtos/create-media.dto';
+import { Product } from '../products/entities/product.entity';
+import { ProductsService } from '../products/products.service';
+import { Category } from '../categories/entities/category.entity';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class MediaService {
@@ -23,7 +27,14 @@ export class MediaService {
   constructor(
     @InjectRepository(Media) private readonly mediaRepo: Repository<Media>,
     @InjectRepository(User) private readonly userRepo: Repository<User>,
+    @InjectRepository(Product)
+    private readonly productRepo: Repository<Product>,
+    @InjectRepository(Category)
+    private readonly categoryRepo: Repository<Category>,
+
     private readonly userService: UsersService,
+    private readonly productService: ProductsService,
+    private readonly categoryService: CategoriesService,
   ) {}
 
   async findUserMedia(userId: string, type: MediaType) {
@@ -70,6 +81,17 @@ export class MediaService {
     } catch (error) {
       const err = error as Error;
       this.logger.error(`Failed to fetch user images`, err.stack);
+      throw err;
+    }
+  }
+
+  async findProductImages(productId: string) {
+    try {
+      const product = await this.productService.findOne(productId);
+      return product.media;
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(`Failed to fetch product images`, err.stack);
       throw err;
     }
   }
@@ -133,6 +155,87 @@ export class MediaService {
     } catch (error) {
       const err = error as Error;
       this.logger.error(`Failed to update ${type}`, err.stack);
+      throw err;
+    }
+  }
+
+  async uploadCategoryImage(id: string, file: Express.Multer.File) {
+    try {
+      let category = await this.categoryService.findOne(id);
+
+      if (!category.image) {
+        const image = this.mediaRepo.create({
+          path: file.path.replace(/^.*categories/, '/categories'),
+          mimetype: file.mimetype,
+          filename: file.filename,
+          size: file.size,
+          type: MediaType.CATEGORY,
+        });
+
+        await this.mediaRepo.save(image);
+        category.image = image;
+        await this.categoryRepo.save(category);
+      } else {
+        category = await this.updateCategoryImage(
+          category,
+          category.image,
+          file,
+        );
+      }
+
+      return category;
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(`Failed to upload category image`, err.stack);
+      throw err;
+    }
+  }
+
+  async updateCategoryImage(
+    category: Category,
+    image: Media,
+    file: Express.Multer.File,
+  ) {
+    try {
+      image.path = file.path.replace(/^.*categories/, '/categories');
+      image.mimetype = file.mimetype;
+      image.filename = file.filename;
+      image.size = file.size;
+      image.type = MediaType.CATEGORY;
+
+      category.image = image;
+
+      return category;
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(`Failed to update category image`, err.stack);
+      throw err;
+    }
+  }
+
+  async uploadProductImages(productId: string, files: Express.Multer.File[]) {
+    try {
+      const product = await this.productService.findOne(productId);
+
+      const mediaList = files.map((file) => {
+        return this.mediaRepo.create({
+          path: file.path.replace(/^.*products/, '/products'),
+          mimetype: file.mimetype,
+          filename: file.filename,
+          size: file.size,
+          type: MediaType.PRODUCT,
+          product,
+        });
+      });
+
+      await this.mediaRepo.save(mediaList);
+      product.media = mediaList;
+      await this.productRepo.save(product);
+
+      return product;
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(`Failed to upload product images`, err.stack);
       throw err;
     }
   }
