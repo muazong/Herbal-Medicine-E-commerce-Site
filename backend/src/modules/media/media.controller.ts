@@ -6,16 +6,17 @@ import {
   UseGuards,
   Controller,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 import { JwtAuthGuard } from '../auth/guards';
 import { MediaService } from './media.service';
 import { Roles } from '../../common/decorators';
 import { RolesGuard } from '../../common/guards';
+import { mediaStorage } from '../../common/utils';
 import { MediaType, Role } from '../../common/enums';
-import { userImageStorage } from '../../common/utils';
 
 @Controller('media')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -41,7 +42,7 @@ export class MediaController {
   @Post('user/:id/avatar')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: userImageStorage('avatar'),
+      storage: mediaStorage('avatar'),
     }),
   )
   uploadUserAvatar(
@@ -54,7 +55,7 @@ export class MediaController {
   @Post('user/:id/cover')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: userImageStorage('cover'),
+      storage: mediaStorage('cover'),
     }),
   )
   uploadUserCover(
@@ -72,5 +73,36 @@ export class MediaController {
   @Delete('user/:id/cover')
   removeUserCover(@Param('id') id: string) {
     return this.mediaService.removeUserMedia(id, MediaType.COVER);
+  }
+
+  @Get('product/:id/images')
+  findProductImages(@Param('id') id: string) {
+    return this.mediaService.findProductImages(id);
+  }
+
+  @Post('product/:id/images')
+  @UseInterceptors(
+    FilesInterceptor('files', 6, {
+      storage: mediaStorage('product'),
+    }),
+  )
+  uploadProductImages(
+    @Param('id') id: string,
+    @UploadedFiles() files: Express.Multer.File[],
+  ) {
+    return this.mediaService.uploadProductImages(id, files);
+  }
+
+  @Post('category/:id/image')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: mediaStorage('category'),
+    }),
+  )
+  uploadCategoryImage(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.mediaService.uploadCategoryImage(id, file);
   }
 }
