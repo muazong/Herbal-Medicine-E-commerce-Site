@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
-import { AbstractEntity } from '../../database/abstract.entity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+
 import { MediaType } from '../../../common/enums';
-import { Category } from '../../categories/entities/category.entity';
+import { AbstractEntity } from '../../database/abstract.entity';
 import { Product } from '../../products/entities/product.entity';
 
 @Entity({ name: 'media' })
@@ -26,11 +26,4 @@ export class Media extends AbstractEntity<Media> {
   })
   @JoinColumn()
   product: Product;
-
-  // TODO: Add relationship
-  /* @ManyToOne(() => Category, (category) => category.images, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn()
-  category: Category; */
 }
