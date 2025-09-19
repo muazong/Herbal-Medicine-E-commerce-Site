@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { AuthService } from '../auth.service';
-import { UserProvider } from '../../../common/enums';
+import { AccountStatus, UserProvider } from '../../../common/enums';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
@@ -16,6 +16,10 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
 
     if (!user || user.provider !== UserProvider.LOCAL) {
       throw new UnauthorizedException('Invalid credentials');
+    }
+
+    if (user.status === AccountStatus.BLOCKED) {
+      throw new UnauthorizedException('Account is blocked');
     }
 
     return user;
