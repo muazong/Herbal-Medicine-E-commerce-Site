@@ -1,16 +1,16 @@
 import {
   Logger,
   Injectable,
-  BadRequestException,
   NotFoundException,
   ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
 import * as fs from 'fs';
 import { join } from 'path';
+import { pickBy } from 'lodash';
 import { Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
-import { pickBy } from 'lodash';
 
 import { User } from './entities/user.entity';
 import { UserProvider } from '../../common/enums';
