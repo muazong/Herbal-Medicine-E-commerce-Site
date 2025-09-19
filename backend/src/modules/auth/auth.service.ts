@@ -47,6 +47,7 @@ export class AuthService {
       sub: user.id,
       fullName: user.fullName,
       role: user.role,
+      status: user.status,
       type: 'access',
     };
     const refreshTokenPayload = { sub: user.id, type: 'refresh' };
@@ -135,6 +136,7 @@ export class AuthService {
         iat: number;
         sub: string;
         type: string;
+        status: string;
       } = this.jwtService.verify(token, {
         secret: env.jwtSecret,
       });
@@ -155,6 +157,7 @@ export class AuthService {
           sub: payload.sub,
           role: user.role,
           type: 'access',
+          status: user.status,
         },
         { expiresIn: '15m' },
       );
