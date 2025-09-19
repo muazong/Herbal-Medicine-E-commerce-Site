@@ -13,7 +13,6 @@ import { isUUID } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from './entities/user.entity';
-import { UserProvider } from '../../common/enums';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Media } from '../media/entities/media.entity';
@@ -28,7 +27,14 @@ export class UsersService {
     @InjectRepository(Media) private readonly mediaRepo: Repository<Media>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  /**
+   * Creates a new user.
+   * @param createUserDto - The user data to create.
+   * @returns Promise<User> - The created user.
+   * @throws ConflictException if email already exists.
+   * @throws Error if any other error occurs.
+   */
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const existedByEmail = await this.userRepo.findOneBy({
       email: createUserDto.email,
     });
@@ -43,8 +49,7 @@ export class UsersService {
         password: await generateHashedPassword(createUserDto.password),
       });
 
-      await this.userRepo.save(newUser);
-      return { ...newUser };
+      return await this.userRepo.save(newUser);
     } catch (error) {
       const err = error as Error;
       this.logger.error(`Failed to create user: ${err.message}`, err.stack);
@@ -52,6 +57,14 @@ export class UsersService {
     }
   }
 
+  /**
+   * Finds all users.
+   * @param limit - The number of users to fetch.
+   * @param page - The page number to fetch.
+   * @param sort - The sort order of the users.
+   * @returns Promise<User[]> - The list of users.
+   * @throws Error if any other error occurs.
+   */
   async findAll(
     limit: number = 10,
     page = 1,
@@ -71,6 +84,14 @@ export class UsersService {
     }
   }
 
+  /**
+   * Finds a user by ID.
+   * @param id - The ID of the user to fetch.
+   * @returns Promise<User> - The user with the given ID.
+   * @throws BadRequestException if the ID is invalid.
+   * @throws NotFoundException if the user is not found.
+   * @throws Error if any other error occurs.
+   */
   async findOne(id: string): Promise<User> {
     if (!isUUID(id)) {
       throw new BadRequestException('Invalid user ID!');
@@ -92,6 +113,15 @@ export class UsersService {
     }
   }
 
+  /**
+   * Updates a user.
+   * @param id - The ID of the user to update.
+   * @param updateUserDto - The updated user data.
+   * @returns Promise<User> - The updated user.
+   * @throws BadRequestException if the ID is invalid.
+   * @throws NotFoundException if the user is not found.
+   * @throws Error if any other error occurs.
+   */
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
       const user = await this.findOne(id);
@@ -109,9 +139,7 @@ export class UsersService {
       Object.assign(user, fieldsToUpdate);
       this.logger.log(`Updated the user with id: ${id}`);
 
-      await this.userRepo.save(user);
-
-      return user;
+      return await this.userRepo.save(user);
     } catch (error) {
       const err = error as Error;
       this.logger.error(`Failed to update user: ${err.message}`, err.stack);
@@ -119,6 +147,12 @@ export class UsersService {
     }
   }
 
+  /**
+   * Deletes a user.
+   * @param id - The ID of the user to delete.
+   * @returns Promise<{ message: string }> - A message indicating the deletion was successful.
+   * @throws Error if any other error occurs.
+   */
   async remove(id: string): Promise<{ message: string }> {
     try {
       const user = await this.findOne(id);

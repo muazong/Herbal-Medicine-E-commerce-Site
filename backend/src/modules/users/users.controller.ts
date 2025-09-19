@@ -1,4 +1,5 @@
 import {
+  Res,
   Get,
   Post,
   Body,
@@ -11,6 +12,7 @@ import {
   HttpStatus,
   Controller,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { Role } from '../../common/enums';
 import { JwtAuthGuard } from '../auth/guards';
@@ -28,12 +30,13 @@ export class UsersController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    const user = await this.usersService.create(createUserDto);
+    return res.location(`/users/${user.id}`).json(user);
   }
 
   @Get()
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.FOUND)
   findAll(
     @Query('limit') limit: number,
     @Query('page') page: number,
@@ -43,23 +46,27 @@ export class UsersController {
   }
 
   @Get(':id')
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.FOUND)
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
 
   @Patch(':id')
+  @HttpCode(HttpStatus.OK)
   @Roles(Role.ADMIN, Role.CLIENT)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @HttpCode(HttpStatus.OK)
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Res() res: Response,
+  ) {
+    const user = await this.usersService.update(id, updateUserDto);
+    return res.location(`/users/${user.id}`).json(user);
   }
 
   @Delete(':id')
   @Roles(Role.ADMIN, Role.CLIENT)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
