@@ -30,6 +30,7 @@ export class UsersController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  // Create user with admin role
   async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
     const user = await this.usersService.create(createUserDto);
     return res.location(`/users/${user.id}`).json(user);
@@ -37,6 +38,7 @@ export class UsersController {
 
   @Get()
   @HttpCode(HttpStatus.FOUND)
+  // Get all users
   findAll(
     @Query('limit') limit: number,
     @Query('page') page: number,
@@ -47,6 +49,7 @@ export class UsersController {
 
   @Get(':id')
   @HttpCode(HttpStatus.FOUND)
+  // Get user by id
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
@@ -55,6 +58,7 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   @Roles(Role.ADMIN, Role.CLIENT)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  // Update user
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -67,6 +71,7 @@ export class UsersController {
   @Delete(':id')
   @Roles(Role.ADMIN, Role.CLIENT)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  // Delete user
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
