@@ -1,4 +1,5 @@
 import {
+  Res,
   Get,
   Post,
   Body,
@@ -8,6 +9,7 @@ import {
   UseGuards,
   Controller,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { Role } from '../../common/enums';
 import { JwtAuthGuard } from '../auth/guards';
@@ -21,42 +23,57 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  @Post()
-  @Roles(Role.ADMIN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
-  }
-
   @Get()
+  // Get all categories
   findAll() {
     return this.categoriesService.findAll();
   }
 
-  @Get(':id/products')
-  findProducts(@Param('id') id: string) {
-    return this.categoriesService.findProducts(id);
+  @Get(':categoryId/products')
+  // Get products of a category
+  findProducts(@Param('categoryId') categoryId: string) {
+    return this.categoriesService.findProductsByCategory(categoryId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriesService.findOne(id);
+  @Get(':categoryId')
+  // Get category by categoryId
+  findOne(@Param('categoryId') categoryId: string) {
+    return this.categoriesService.findOne(categoryId);
   }
 
-  @Patch(':id')
+  @Post()
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  update(
-    @Param('id') id: string,
-    @Body() updateCategoryDto: UpdateCategoryDto,
+  // Create category
+  async create(
+    @Body() createCategoryDto: CreateCategoryDto,
+    @Res() res: Response,
   ) {
-    return this.categoriesService.update(id, updateCategoryDto);
+    const category = await this.categoriesService.create(createCategoryDto);
+    return res.location(`/categories/${category.id}`).json(category);
   }
 
-  @Delete(':id')
+  @Patch(':categoryId')
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  remove(@Param('id') id: string) {
-    return this.categoriesService.remove(id);
+  // Update category
+  async update(
+    @Param('categoryId') categoryId: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+    @Res() res: Response,
+  ) {
+    const category = await this.categoriesService.update(
+      categoryId,
+      updateCategoryDto,
+    );
+    return res.location(`/categories/${category.id}`).json(category);
+  }
+
+  @Delete(':categoryId')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  // Delete category
+  remove(@Param('categoryId') categoryId: string) {
+    return this.categoriesService.remove(categoryId);
   }
 }

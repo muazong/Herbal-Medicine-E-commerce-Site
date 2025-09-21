@@ -14,6 +14,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Product } from '../products/entities/product.entity';
 import { ProductsService } from '../products/products.service';
 
 @Injectable()
@@ -28,7 +29,14 @@ export class CategoriesService {
     private readonly productService: ProductsService,
   ) {}
 
-  async create(createCategoryDto: CreateCategoryDto) {
+  /**
+   * Creates a new category.
+   * @param createCategoryDto - The category data to create.
+   * @returns Promise<Category> - The created category.
+   * @throws ConflictException if a category with the same name already exists.
+   * @throws Error if any other error occurs.
+   */
+  async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     try {
       const existedCategory = await this.categoryRepo.findOneBy({
         name: createCategoryDto.name,
@@ -47,7 +55,12 @@ export class CategoriesService {
     }
   }
 
-  async findAll() {
+  /**
+   * Finds all categories.
+   * @returns Promise<Category[]> - The list of categories.
+   * @throws Error if any other error occurs.
+   */
+  async findAll(): Promise<Category[]> {
     try {
       const categories = await this.categoryRepo.find();
       return categories;
@@ -61,9 +74,15 @@ export class CategoriesService {
     }
   }
 
-  async findProducts(id: string) {
+  /**
+   * Finds all products in a category.
+   * @param categoryId - The ID of the category to find products in.
+   * @returns Promise<Product[]> - The list of products in the category.
+   * @throws Error if any other error occurs.
+   */
+  async findProductsByCategory(categoryId: string): Promise<Product[]> {
     try {
-      const existedCategory = await this.findOne(id);
+      const existedCategory = await this.findOne(categoryId);
       const products = await this.productService.findAll();
 
       return products.filter((product) => {
@@ -82,20 +101,30 @@ export class CategoriesService {
     }
   }
 
-  async findOne(id: string) {
-    if (!isUUID(id)) {
+  /**
+   * Finds a category by ID.
+   * @param categoryId - The ID of the category to find.
+   * @returns Promise<Category> - The category with the given ID.
+   * @throws BadRequestException if the ID is invalid.
+   * @throws NotFoundException if the category is not found.
+   * @throws Error if any other error occurs.
+   */
+  async findOne(categoryId: string): Promise<Category> {
+    if (!isUUID(categoryId)) {
       throw new BadRequestException('Invalid category ID!');
     }
 
     try {
-      const category = await this.categoryRepo.findOneBy({ id });
+      const category = await this.categoryRepo.findOneBy({ id: categoryId });
 
       if (!category) {
         this.logger.warn(
-          `Category with id ${id} not found`,
+          `Category with categoryId ${categoryId} not found`,
           'CategoriesService',
         );
-        throw new BadRequestException(`Category with id ${id} not found`);
+        throw new BadRequestException(
+          `Category with categoryId ${categoryId} not found`,
+        );
       }
 
       return category;
@@ -106,9 +135,21 @@ export class CategoriesService {
     }
   }
 
-  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+  /**
+   * Updates a category.
+   * @param categoryId - The ID of the category to update.
+   * @param updateCategoryDto - The updated category data.
+   * @returns Promise<Category> - The updated category.
+   * @throws BadRequestException if the ID is invalid.
+   * @throws NotFoundException if the category is not found.
+   * @throws Error if any other error occurs.
+   */
+  async update(
+    categoryId: string,
+    updateCategoryDto: UpdateCategoryDto,
+  ): Promise<Category> {
     try {
-      const existedCategory = await this.findOne(id);
+      const existedCategory = await this.findOne(categoryId);
 
       const fieldsToUpdate = pickBy(
         updateCategoryDto,
@@ -124,13 +165,25 @@ export class CategoriesService {
     }
   }
 
-  async remove(id: string) {
-    if (!isUUID(id)) {
+  /**
+   * Deletes a category.
+   * @param categoryId - The ID of the category to delete.
+   * @returns Promise<DeleteResult | undefined> - The result of the deletion.
+   * @throws BadRequestException if the ID is invalid.
+   * @throws NotFoundException if the category is not found.
+   * @throws Error if any other error occurs.
+   */
+  async remove(categoryId: string): Promise<{ message: string } | undefined> {
+    if (!isUUID(categoryId)) {
       throw new BadRequestException('Invalid category ID!');
     }
 
     try {
-      return await this.categoryRepo.delete({ id });
+      const result = await this.categoryRepo.delete({ id: categoryId });
+
+      if (result.affected !== 0) {
+        return { message: 'Delete the category successfully!' };
+      }
     } catch (error) {
       const err = error as Error;
       this.logger.error(`Failed to delete category: ${err.message}`, err.stack);
