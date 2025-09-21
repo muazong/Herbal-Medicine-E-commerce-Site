@@ -1,11 +1,11 @@
 import {
+  Inject,
   Logger,
+  forwardRef,
   Injectable,
   ConflictException,
   NotFoundException,
   BadRequestException,
-  Inject,
-  forwardRef,
 } from '@nestjs/common';
 import { pickBy } from 'lodash';
 import { Repository } from 'typeorm';
@@ -29,7 +29,14 @@ export class ProductsService {
     private readonly categoriesService: CategoriesService,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  /**
+   * Creates a new product.
+   * @param createProductDto - The product data to create.
+   * @returns Promise<Product> - The created product.
+   * @throws {ConflictException} - If a product with the same name already exists.
+   * @throws {Error} - If an error occurs during the product creation process.
+   */
+  async create(createProductDto: CreateProductDto): Promise<Product> {
     const existedProduct = await this.productRepo.findOneBy({
       name: createProductDto.name,
     });
@@ -48,12 +55,21 @@ export class ProductsService {
     }
   }
 
+  /**
+   * Finds all products.
+   * @param limit - The maximum number of products to return.
+   * @param page - The page number to retrieve.
+   * @param sort - The sort order of the products.
+   * @param search - The search query to filter products by name.
+   * @returns Promise<Product[]> - An array of products.
+   * @throws {Error} - If an error occurs during the product retrieval process.
+   */
   async findAll(
     limit?: number,
     page?: number,
     sort: 'desc' | 'asc' = 'desc',
     search?: string,
-  ) {
+  ): Promise<Product[]> {
     try {
       if (limit && page) {
         return await this.productRepo.find({
@@ -84,7 +100,15 @@ export class ProductsService {
     }
   }
 
-  async findOne(id: string) {
+  /**
+   * Finds a product by its ID.
+   * @param id - The ID of the product to find.
+   * @returns Promise<Product> - The found product.
+   * @throws {BadRequestException} - If the ID is invalid.
+   * @throws {NotFoundException} - If the product is not found.
+   * @throws {Error} - If an error occurs during the product retrieval process.
+   */
+  async findOne(id: string): Promise<Product> {
     if (!isUUID(id)) {
       throw new BadRequestException('Invalid product ID!');
     }
@@ -105,15 +129,24 @@ export class ProductsService {
     }
   }
 
-  async assignCategory(productId: string, categoryId: string) {
+  /**
+   * Assigns a category to a product.
+   * @param productId - The ID of the product to assign the category to.
+   * @param categoryId - The ID of the category to assign.
+   * @returns Promise<Product> - The updated product.
+   * @throws {BadRequestException} - If the product has no category.
+   * @throws {Error} - If an error occurs during the category assignment process.
+   */
+  async assignCategory(
+    productId: string,
+    categoryId: string,
+  ): Promise<Product> {
     try {
       const existedCategory = await this.categoriesService.findOne(categoryId);
       const existedProduct = await this.findOne(productId);
 
       existedProduct.category = existedCategory;
-      await this.productRepo.save(existedProduct);
-
-      return existedProduct;
+      return await this.productRepo.save(existedProduct);
     } catch (error) {
       const err = error as Error;
       this.logger.error(
@@ -124,7 +157,14 @@ export class ProductsService {
     }
   }
 
-  async unsignedCategory(productId: string) {
+  /**
+   * Unsigneds a category from a product.
+   * @param productId - The ID of the product to unsigned the category from.
+   * @returns Promise<Product> - The updated product.
+   * @throws {BadRequestException} - If the product has no category.
+   * @throws {Error} - If an error occurs during the category unsigned process.
+   */
+  async unsignedCategory(productId: string): Promise<Product> {
     try {
       const existedProduct = await this.findOne(productId);
 
@@ -146,7 +186,19 @@ export class ProductsService {
     }
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  /**
+   * Updates a product.
+   * @param id - The ID of the product to update.
+   * @param updateProductDto - The updated product data.
+   * @returns Promise<Product> - The updated product.
+   * @throws {BadRequestException} - If the ID is invalid.
+   * @throws {NotFoundException} - If the product is not found.
+   * @throws {Error} - If an error occurs during the product update process.
+   */
+  async update(
+    id: string,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product> {
     try {
       const existedProduct = await this.findOne(id);
 
@@ -166,7 +218,15 @@ export class ProductsService {
     }
   }
 
-  async remove(id: string) {
+  /**
+   * Removes a product.
+   * @param id - The ID of the product to remove.
+   * @returns Promise<{ message: string }> - A message indicating the success of the removal.
+   * @throws {BadRequestException} - If the ID is invalid.
+   * @throws {NotFoundException} - If the product is not found.
+   * @throws {Error} - If an error occurs during the product removal process.
+   */
+  async remove(id: string): Promise<{ message: string }> {
     try {
       await this.findOne(id);
       await this.productRepo.delete(id);
