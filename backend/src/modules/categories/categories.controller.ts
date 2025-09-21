@@ -6,8 +6,10 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
   UseGuards,
   Controller,
+  HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -24,18 +26,21 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Get()
+  @HttpCode(HttpStatus.FOUND)
   // Get all categories
   findAll() {
     return this.categoriesService.findAll();
   }
 
   @Get(':categoryId/products')
+  @HttpCode(HttpStatus.FOUND)
   // Get products of a category
   findProducts(@Param('categoryId') categoryId: string) {
     return this.categoriesService.findProductsByCategory(categoryId);
   }
 
   @Get(':categoryId')
+  @HttpCode(HttpStatus.FOUND)
   // Get category by categoryId
   findOne(@Param('categoryId') categoryId: string) {
     return this.categoriesService.findOne(categoryId);
@@ -44,6 +49,7 @@ export class CategoriesController {
   @Post()
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @HttpCode(HttpStatus.CREATED)
   // Create category
   async create(
     @Body() createCategoryDto: CreateCategoryDto,
@@ -56,6 +62,7 @@ export class CategoriesController {
   @Patch(':categoryId')
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @HttpCode(HttpStatus.OK)
   // Update category
   async update(
     @Param('categoryId') categoryId: string,
@@ -72,6 +79,7 @@ export class CategoriesController {
   @Delete(':categoryId')
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @HttpCode(HttpStatus.OK)
   // Delete category
   remove(@Param('categoryId') categoryId: string) {
     return this.categoriesService.remove(categoryId);
