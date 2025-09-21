@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 
 import { env } from '../../../common/config';
 import { AccountStatus } from '../../../common/enums';
+import { JwtPayload, RequestUser } from '../../../common/interfaces';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -15,12 +16,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: JwtPayload) {
     if (payload.status === AccountStatus.BLOCKED) {
       throw new UnauthorizedException('Account is blocked');
     }
 
-    const user = {
+    const user: RequestUser = {
       id: payload.sub,
       fullName: payload.fullName,
       role: payload.role,
