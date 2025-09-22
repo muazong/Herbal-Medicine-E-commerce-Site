@@ -60,12 +60,12 @@ export class ProductsController {
     return res.location(`/product/${product.id}`).json(product);
   }
 
-  @Post(':productId/category')
+  @Post(':productId/category/:categoryId')
   @HttpCode(HttpStatus.CREATED)
   // Assigns a category to a product.
   async assignCategory(
     @Param('productId') productId: string,
-    @Body('categoryId') categoryId: string,
+    @Param('categoryId') categoryId: string,
     @Res() res: Response,
   ) {
     const product = await this.productsService.assignCategory(
