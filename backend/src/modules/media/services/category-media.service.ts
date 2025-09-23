@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Logger, Injectable } from '@nestjs/common';
+import { Logger, Injectable, Inject, forwardRef } from '@nestjs/common';
 
 import { Media } from '../entities/media.entity';
 import { MediaType } from '../../../common/enums';
@@ -15,6 +15,8 @@ export class CategoryMediaService {
     @InjectRepository(Media) private readonly mediaRepo: Repository<Media>,
     @InjectRepository(Category)
     private readonly categoryRepo: Repository<Category>,
+
+    @Inject(forwardRef(() => CategoriesService))
     private readonly categoryService: CategoriesService,
   ) {}
 
