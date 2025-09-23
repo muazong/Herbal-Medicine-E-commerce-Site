@@ -1,11 +1,15 @@
 import {
+  Res,
   Post,
   Param,
   UseGuards,
   Controller,
   UploadedFile,
   UseInterceptors,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { Role } from '../../../common/enums';
@@ -27,10 +31,14 @@ export class CategoryMediaController {
       storage: mediaStorage('category'),
     }),
   )
-  uploadImage(
+  @HttpCode(HttpStatus.CREATED)
+  // Upload category image
+  async uploadImage(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
+    @Res() res: Response,
   ) {
-    return this.categoryMediaService.uploadImage(id, file);
+    const category = await this.categoryMediaService.uploadImage(id, file);
+    return res.location(`/categories/${category.id}`).json(category);
   }
 }
