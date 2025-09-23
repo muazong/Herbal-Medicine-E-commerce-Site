@@ -1,6 +1,8 @@
 import {
   Logger,
+  Inject,
   Injectable,
+  forwardRef,
   NotFoundException,
   ConflictException,
   BadRequestException,
@@ -17,6 +19,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Media } from '../media/entities/media.entity';
 import { generateHashedPassword } from '../../common/utils';
+import { MediaType } from '../../common/enums';
+import { UserMediaService } from '../media/services';
 
 @Injectable()
 export class UsersService {
@@ -25,6 +29,9 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     @InjectRepository(Media) private readonly mediaRepo: Repository<Media>,
+
+    @Inject(forwardRef(() => UserMediaService))
+    private readonly userMediaService: UserMediaService,
   ) {}
 
   /**
@@ -145,6 +152,22 @@ export class UsersService {
       this.logger.error(`Failed to update user: ${err.message}`, err.stack);
       throw error;
     }
+  }
+
+  /**
+   * Uploads user media
+   * @param user - The ID of the user to upload the media for.
+   * @param file - The media file to upload.
+   * @param type - The type of media to upload.
+   * @returns Promise<Media> - The uploaded media file.
+   * @throws Error if any other error occurs.
+   */
+  async uploadMedia(
+    userId: string,
+    file: Express.Multer.File,
+    type: MediaType,
+  ) {
+    return this.userMediaService.uploadMedia(userId, file, type);
   }
 
   /**
