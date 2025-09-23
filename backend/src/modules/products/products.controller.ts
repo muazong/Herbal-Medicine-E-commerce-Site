@@ -11,16 +11,20 @@ import {
   UseGuards,
   HttpStatus,
   Controller,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { Response } from 'express';
 
 import { Role } from '../../common/enums';
 import { JwtAuthGuard } from '../auth/guards';
 import { RolesGuard } from '../../common/guards';
+import { mediaStorage } from '../../common/utils';
 import { ProductsService } from './products.service';
 import { Public, Roles } from '../../common/decorators';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Roles(Role.ADMIN)
 @Controller('products')
@@ -28,6 +32,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  // ======================GET============================
   @Get()
   @Public()
   @HttpCode(HttpStatus.FOUND)
@@ -49,6 +54,7 @@ export class ProductsController {
     return this.productsService.findOne(productId);
   }
 
+  // ======================POST============================
   @Post()
   @HttpCode(HttpStatus.CREATED)
   // Creates a new product.
@@ -75,6 +81,24 @@ export class ProductsController {
     return res.location(`/product/${product.id}`).json(product);
   }
 
+  @Post(':productId/images')
+  @HttpCode(HttpStatus.FOUND)
+  @UseInterceptors(
+    FilesInterceptor('files', 6, {
+      storage: mediaStorage('product'),
+    }),
+  )
+  // Uploads product images.
+  async uploadImages(
+    @Param('productId') productId: string,
+    @UploadedFiles() files: Express.Multer.File[],
+    @Res() res: Response,
+  ) {
+    const product = await this.productsService.uploadImages(productId, files);
+    return res.location(`/media/product/${productId}/images`).json(product);
+  }
+
+  // ======================PATCH============================
   @Patch(':productId')
   @HttpCode(HttpStatus.OK)
   // Updates a product.
@@ -90,6 +114,7 @@ export class ProductsController {
     return res.location(`/product/${product.id}`).json(product);
   }
 
+  // ======================DELETE============================
   @Delete(':productId/category')
   @HttpCode(HttpStatus.OK)
   // Unsigneds a category from a product.

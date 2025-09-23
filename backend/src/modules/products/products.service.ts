@@ -16,6 +16,7 @@ import { Product } from './entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CategoriesService } from '../categories/categories.service';
+import { ProductMediaService } from '../media/services';
 
 @Injectable()
 export class ProductsService {
@@ -24,6 +25,9 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepo: Repository<Product>,
+
+    @Inject(forwardRef(() => ProductMediaService))
+    private readonly productMediaService: ProductMediaService,
 
     @Inject(forwardRef(() => CategoriesService))
     private readonly categoriesService: CategoriesService,
@@ -184,6 +188,20 @@ export class ProductsService {
       );
       throw err;
     }
+  }
+
+  /**
+   * Uploads product images.
+   * @param productId - The ID of the product to upload the images for.
+   * @param files - The product images to upload.
+   * @returns Promise<Product> - The updated product.
+   * @throws Error if any other error occurs.
+   */
+  async uploadImages(
+    productId: string,
+    files: Express.Multer.File[],
+  ): Promise<Product> {
+    return this.productMediaService.uploadImages(productId, files);
   }
 
   /**
