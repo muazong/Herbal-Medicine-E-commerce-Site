@@ -2,12 +2,12 @@ import {
   Res,
   Post,
   Param,
+  HttpCode,
   UseGuards,
+  HttpStatus,
   Controller,
   UploadedFile,
   UseInterceptors,
-  HttpCode,
-  HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
