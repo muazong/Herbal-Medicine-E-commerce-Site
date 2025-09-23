@@ -7,15 +7,17 @@ export const mediaStorage = (
 ) => {
   return diskStorage({
     destination: (req, _, cb) => {
+      let id: string = req.params.userId;
       let folder: 'users' | 'products' | 'categories' = 'users';
 
       if (type === 'product') {
+        id = req.params.productId;
         folder = 'products';
       } else if (type === 'category') {
+        id = req.params.categoryId;
         folder = 'categories';
       }
 
-      const id = req.params.id;
       const dir = join(process.cwd(), 'uploads', folder, `${id}`);
 
       if (!fs.existsSync(dir)) {
