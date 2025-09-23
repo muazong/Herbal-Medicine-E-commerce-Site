@@ -28,14 +28,7 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  // Create user with admin role
-  async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
-    const user = await this.usersService.create(createUserDto);
-    return res.location(`/users/${user.id}`).json(user);
-  }
-
+  // ======================GET============================
   @Get()
   @HttpCode(HttpStatus.FOUND)
   // Get all users
@@ -54,6 +47,16 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  // ======================POST============================
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  // Create user with admin role
+  async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    const user = await this.usersService.create(createUserDto);
+    return res.location(`/users/${user.id}`).json(user);
+  }
+
+  // ======================PATCH============================
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @Roles(Role.ADMIN, Role.CLIENT)
@@ -68,6 +71,7 @@ export class UsersController {
     return res.location(`/users/${user.id}`).json(user);
   }
 
+  // ======================DELETE============================
   @Delete(':id')
   @Roles(Role.ADMIN, Role.CLIENT)
   @UseGuards(JwtAuthGuard, RolesGuard)
