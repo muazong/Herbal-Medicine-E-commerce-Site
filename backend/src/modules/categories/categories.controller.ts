@@ -25,6 +25,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
+  // ======================GET============================
   @Get()
   @HttpCode(HttpStatus.FOUND)
   // Get all categories
@@ -46,6 +47,7 @@ export class CategoriesController {
     return this.categoriesService.findOne(categoryId);
   }
 
+  // ======================POST============================
   @Post()
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -59,6 +61,7 @@ export class CategoriesController {
     return res.location(`/categories/${category.id}`).json(category);
   }
 
+  // ======================PATCH============================
   @Patch(':categoryId')
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -76,6 +79,7 @@ export class CategoriesController {
     return res.location(`/categories/${category.id}`).json(category);
   }
 
+  // ======================DELETE============================
   @Delete(':categoryId')
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
