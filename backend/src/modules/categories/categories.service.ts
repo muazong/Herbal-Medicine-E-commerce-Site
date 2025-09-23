@@ -16,6 +16,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Product } from '../products/entities/product.entity';
 import { ProductsService } from '../products/products.service';
+import { CategoryMediaService } from '../media/services';
 
 @Injectable()
 export class CategoriesService {
@@ -27,6 +28,9 @@ export class CategoriesService {
 
     @Inject(forwardRef(() => ProductsService))
     private readonly productService: ProductsService,
+
+    @Inject(forwardRef(() => CategoryMediaService))
+    private readonly categoryMediaService: CategoryMediaService,
   ) {}
 
   /**
@@ -53,6 +57,17 @@ export class CategoriesService {
       this.logger.error(`Failed to create category: ${err.message}`, err.stack);
       throw err;
     }
+  }
+
+  /**
+   * Upload category image
+   * @param id category id
+   * @param file file to upload
+   * @returns Promise<Category> - category
+   * @throws Error
+   */
+  async uploadImage(id: string, file: Express.Multer.File): Promise<Category> {
+    return await this.categoryMediaService.uploadImage(id, file);
   }
 
   /**

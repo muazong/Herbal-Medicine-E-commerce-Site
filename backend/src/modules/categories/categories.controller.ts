@@ -10,23 +10,30 @@ import {
   UseGuards,
   Controller,
   HttpStatus,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { Role } from '../../common/enums';
 import { JwtAuthGuard } from '../auth/guards';
-import { Roles } from '../../common/decorators';
 import { RolesGuard } from '../../common/guards';
+import { mediaStorage } from '../../common/utils';
+import { Public, Roles } from '../../common/decorators';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
+@Roles(Role.ADMIN)
 @Controller('categories')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   // ======================GET============================
   @Get()
+  @Public()
   @HttpCode(HttpStatus.FOUND)
   // Get all categories
   findAll() {
@@ -34,6 +41,7 @@ export class CategoriesController {
   }
 
   @Get(':categoryId/products')
+  @Public()
   @HttpCode(HttpStatus.FOUND)
   // Get products of a category
   findProducts(@Param('categoryId') categoryId: string) {
@@ -49,8 +57,6 @@ export class CategoriesController {
 
   // ======================POST============================
   @Post()
-  @Roles(Role.ADMIN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.CREATED)
   // Create category
   async create(
@@ -61,10 +67,25 @@ export class CategoriesController {
     return res.location(`/categories/${category.id}`).json(category);
   }
 
+  @Post(':categoryId/image')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: mediaStorage('category'),
+    }),
+  )
+  @HttpCode(HttpStatus.CREATED)
+  // Upload category image
+  async uploadImage(
+    @Param('categoryId') categoryId: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Res() res: Response,
+  ) {
+    const category = await this.categoriesService.uploadImage(categoryId, file);
+    return res.location(`/categories/${category.id}`).json(category);
+  }
+
   // ======================PATCH============================
   @Patch(':categoryId')
-  @Roles(Role.ADMIN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.OK)
   // Update category
   async update(
@@ -81,8 +102,6 @@ export class CategoriesController {
 
   // ======================DELETE============================
   @Delete(':categoryId')
-  @Roles(Role.ADMIN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.OK)
   // Delete category
   remove(@Param('categoryId') categoryId: string) {
