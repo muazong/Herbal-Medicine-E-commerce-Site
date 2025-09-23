@@ -10,7 +10,7 @@ export class CartItem extends AbstractEntity<CartItem> {
   @JoinColumn()
   cart: Cart;
 
-  @ManyToOne(() => Product, { eager: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => Product, { onDelete: 'CASCADE' })
   @JoinColumn()
   product: Product;
 
