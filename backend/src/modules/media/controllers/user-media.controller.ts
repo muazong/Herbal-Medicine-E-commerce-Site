@@ -27,6 +27,7 @@ import { MediaType, Role } from '../../../common/enums';
 export class UserMediaController {
   constructor(private readonly userMediaService: UserMediaService) {}
 
+  // ======================GET============================
   @Get(':userId/avatar')
   @HttpCode(HttpStatus.FOUND)
   findAvatar(@Param('userId') userId: string) {
@@ -45,6 +46,7 @@ export class UserMediaController {
     return this.userMediaService.findImages(userId);
   }
 
+  // ======================POST============================
   @Post(':userId/avatar')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(
@@ -85,6 +87,7 @@ export class UserMediaController {
     return res.location(`/media/user/${userId}/cover`).json(cover);
   }
 
+  // ======================DELETE============================
   @Delete(':userId/avatar')
   @HttpCode(HttpStatus.OK)
   removeAvatar(@Param('userId') userId: string) {
