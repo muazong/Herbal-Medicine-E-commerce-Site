@@ -10,6 +10,8 @@ import { CartsModule } from '../carts/carts.module';
 import { ProductsModule } from '../products/products.module';
 import { CategoriesModule } from '../categories/categories.module';
 import { CartItemsModule } from '../cart-items/cart-items.module';
+import { OrdersModule } from '../orders/orders.module';
+import { OrderItemsModule } from '../order-items/order-items.module';
 
 @Module({
   imports: [
@@ -40,6 +42,8 @@ import { CartItemsModule } from '../cart-items/cart-items.module';
     CartItemsModule,
     ProductsModule,
     CategoriesModule,
+    OrdersModule,
+    OrderItemsModule,
   ],
   controllers: [],
   providers: [Logger],
