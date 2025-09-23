@@ -29,6 +29,6 @@ import { CategoryMediaController } from './controllers/category-media.controller
     CategoryMediaController,
   ],
   providers: [UserMediaService, ProductMediaService, CategoryMediaService],
-  exports: [UserMediaService, ProductMediaService],
+  exports: [UserMediaService, ProductMediaService, CategoryMediaService],
 })
 export class MediaModule {}
