@@ -4,12 +4,14 @@ import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
 
 import { Product } from './entities/product.entity';
+import { MediaModule } from '../media/media.module';
 import { Category } from '../categories/entities/category.entity';
 import { CategoriesModule } from '../categories/categories.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Product, Category]),
+    forwardRef(() => MediaModule),
     forwardRef(() => CategoriesModule),
   ],
   controllers: [ProductsController],
