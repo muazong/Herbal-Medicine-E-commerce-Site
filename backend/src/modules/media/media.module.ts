@@ -1,15 +1,15 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { forwardRef, Module } from '@nestjs/common';
 
-import { MediaService } from './media.service';
 import { Media } from './entities/media.entity';
 import { UsersModule } from '../users/users.module';
 import { User } from '../users/entities/user.entity';
-import { MediaController } from './media.controller';
 import { ProductsModule } from '../products/products.module';
 import { Product } from '../products/entities/product.entity';
 import { Category } from '../categories/entities/category.entity';
 import { CategoriesModule } from '../categories/categories.module';
+import { ProductMediaService, UserMediaService } from './services';
+import { ProductMediaController, UserMediaController } from './controllers';
 
 @Module({
   imports: [
@@ -18,8 +18,8 @@ import { CategoriesModule } from '../categories/categories.module';
     ProductsModule,
     CategoriesModule,
   ],
-  controllers: [MediaController],
-  providers: [MediaService],
-  exports: [MediaService],
+  controllers: [UserMediaController, ProductMediaController],
+  providers: [UserMediaService, ProductMediaService],
+  exports: [UserMediaService, ProductMediaService],
 })
 export class MediaModule {}
