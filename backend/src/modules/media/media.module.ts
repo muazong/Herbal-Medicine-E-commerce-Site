@@ -19,9 +19,9 @@ import { CategoryMediaController } from './controllers/category-media.controller
 @Module({
   imports: [
     TypeOrmModule.forFeature([Media, User, Product, Category]),
-    forwardRef(() => UsersModule),
-    ProductsModule,
     CategoriesModule,
+    forwardRef(() => UsersModule),
+    forwardRef(() => ProductsModule),
   ],
   controllers: [
     UserMediaController,
