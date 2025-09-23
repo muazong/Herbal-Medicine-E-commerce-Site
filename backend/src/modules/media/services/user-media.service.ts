@@ -3,6 +3,8 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import * as fs from 'fs';
 import { join } from 'path';
@@ -24,6 +26,7 @@ export class UserMediaService {
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     @InjectRepository(Media) private readonly mediaRepo: Repository<Media>,
 
+    @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
   ) {}
 
