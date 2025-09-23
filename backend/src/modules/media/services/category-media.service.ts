@@ -18,7 +18,14 @@ export class CategoryMediaService {
     private readonly categoryService: CategoriesService,
   ) {}
 
-  async uploadImage(id: string, file: Express.Multer.File) {
+  /**
+   * Upload category image
+   * @param id category id
+   * @param file file to upload
+   * @returns Promise<Category> - category
+   * @throws Error
+   */
+  async uploadImage(id: string, file: Express.Multer.File): Promise<Category> {
     try {
       let category = await this.categoryService.findOne(id);
 
@@ -46,11 +53,19 @@ export class CategoryMediaService {
     }
   }
 
+  /**
+   * Update category image
+   * @param category category
+   * @param image image
+   * @param file file to upload
+   * @returns Promise<Category> - category
+   * @throws Error
+   */
   async updateImage(
     category: Category,
     image: Media,
     file: Express.Multer.File,
-  ) {
+  ): Promise<Category> {
     try {
       image.path = file.path.replace(/^.*categories/, '/categories');
       image.mimetype = file.mimetype;
