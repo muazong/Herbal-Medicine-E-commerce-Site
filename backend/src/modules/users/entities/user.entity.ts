@@ -6,6 +6,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -36,7 +37,7 @@ export class User extends AbstractEntity<User> {
   @OneToOne(() => Cart, (cart) => cart.user, { cascade: true })
   cart: Cart;
 
-  @OneToOne(() => Order, (order) => order.user)
+  @OneToMany(() => Order, (order) => order.user)
   order: Order;
 
   @OneToOne(() => Media, { nullable: true })
