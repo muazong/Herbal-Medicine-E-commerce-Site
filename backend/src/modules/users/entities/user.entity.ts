@@ -13,6 +13,7 @@ import { Cart } from '../../carts/entities/cart.entity';
 import { Media } from '../../media/entities/media.entity';
 import { AbstractEntity } from '../../database/abstract.entity';
 import { AccountStatus, Role, UserProvider } from '../../../common/enums';
+import { Order } from '../../orders/entities/order.entity';
 
 @Entity({ name: 'users' })
 @Unique(['email', 'provider'])
@@ -34,6 +35,9 @@ export class User extends AbstractEntity<User> {
 
   @OneToOne(() => Cart, (cart) => cart.user, { cascade: true })
   cart: Cart;
+
+  @OneToOne(() => Order, (order) => order.user)
+  order: Order;
 
   @OneToOne(() => Media, { nullable: true })
   @JoinColumn()
