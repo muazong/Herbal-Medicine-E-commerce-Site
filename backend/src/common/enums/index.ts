@@ -3,6 +3,7 @@ import { MediaType } from './media-type.enum';
 import { UserMedia } from './user-media.enum';
 import { UserProvider } from './user-provider.enum';
 import { AccountStatus } from './account-status.enum';
+import { PaymentMethods } from './payment-methods.enum';
 import { OrderItemStatus } from './order-item-status.enum';
 
 export {
@@ -11,5 +12,6 @@ export {
   MediaType,
   UserProvider,
   AccountStatus,
+  PaymentMethods,
   OrderItemStatus,
 };
