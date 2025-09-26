@@ -14,6 +14,7 @@ import { CartsService } from '../carts/carts.service';
 import { CartItem } from './entities/cart-item.entity';
 import { ProductsService } from '../products/products.service';
 import { CreateCartItemDto } from './dto/create-cart-item.dto';
+import { Product } from '../products/entities/product.entity';
 
 @Injectable()
 export class CartItemsService {
@@ -88,7 +89,7 @@ export class CartItemsService {
     productId: string,
   ): Promise<CartItem | null> {
     if (!isUUID(cartId)) {
-      throw new BadRequestException('Invalid id');
+      throw new BadRequestException('Invalid cart id');
     }
 
     try {
@@ -133,7 +134,7 @@ export class CartItemsService {
    * @throws BadRequestException if the ID is invalid.
    * @throws Error if any other error occurs.
    */
-  async findProductsFromCart(cartId: string): Promise<CartItem[]> {
+  async findProductsFromCart(cartId: string): Promise<Product[]> {
     try {
       const cartItems = await this.cartItemRepo.find({
         where: { cart: { id: cartId } },
@@ -144,7 +145,11 @@ export class CartItemsService {
         return [];
       }
 
-      return cartItems;
+      const products = cartItems.map((cartItem) => {
+        return cartItem.product;
+      });
+
+      return products;
     } catch (error) {
       const err = error as Error;
       this.logger.error('Failed to find user products', err.message);
