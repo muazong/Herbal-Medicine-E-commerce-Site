@@ -11,8 +11,11 @@ export class CartItem extends AbstractEntity<CartItem> {
   cart: Cart;
 
   @ManyToOne(() => Product, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @JoinColumn({ name: 'productId' })
   product: Product;
+
+  @Column({ name: 'productId' })
+  productId: string;
 
   @Column()
   quantity: number;
