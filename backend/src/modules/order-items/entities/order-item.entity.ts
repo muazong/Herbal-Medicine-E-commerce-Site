@@ -11,6 +11,9 @@ export class OrderItem extends AbstractEntity<OrderItem> {
   @JoinColumn()
   order: Order;
 
+  @Column({ name: 'orderId' })
+  orderId: string;
+
   @ManyToOne(() => Product, { onDelete: 'SET NULL', nullable: true })
   @JoinColumn({ name: 'productId' })
   product: Product;
@@ -18,7 +21,7 @@ export class OrderItem extends AbstractEntity<OrderItem> {
   @Column({ name: 'productId' })
   productId: string;
 
-  @Column({ type: 'number', default: 0 })
+  @Column({ default: 0 })
   quantity: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
