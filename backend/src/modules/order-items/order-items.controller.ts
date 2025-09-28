@@ -1,34 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Controller,
+  UseGuards,
+} from '@nestjs/common';
+
+import { Role } from '../../common/enums';
+import { JwtAuthGuard } from '../auth/guards';
+import { Roles } from '../../common/decorators';
+import { RolesGuard } from '../../common/guards';
 import { OrderItemsService } from './order-items.service';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
 import { UpdateOrderItemDto } from './dto/update-order-item.dto';
 
+@Roles(Role.ADMIN)
 @Controller('order-items')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class OrderItemsController {
   constructor(private readonly orderItemsService: OrderItemsService) {}
 
   @Post()
   create(@Body() createOrderItemDto: CreateOrderItemDto) {
     return this.orderItemsService.create(createOrderItemDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.orderItemsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderItemsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderItemDto: UpdateOrderItemDto) {
-    return this.orderItemsService.update(+id, updateOrderItemDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderItemsService.remove(+id);
   }
 }

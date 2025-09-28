@@ -1,26 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+
+import { OrderItem } from './entities/order-item.entity';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
 import { UpdateOrderItemDto } from './dto/update-order-item.dto';
 
 @Injectable()
 export class OrderItemsService {
-  create(createOrderItemDto: CreateOrderItemDto) {
-    return 'This action adds a new orderItem';
-  }
+  private readonly logger = new Logger(OrderItemsService.name);
 
-  findAll() {
-    return `This action returns all orderItems`;
-  }
+  constructor(
+    @InjectRepository(OrderItem)
+    private readonly orderItemRepo: Repository<OrderItem>,
+  ) {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} orderItem`;
-  }
+  async create(createOrderItemDto: CreateOrderItemDto) {
+    try {
+      const newOrderItem = this.orderItemRepo.create({
+        product: createOrderItemDto.product,
+        order: createOrderItemDto.order,
+        quantity: createOrderItemDto.quantity,
+        totalPrice:
+          createOrderItemDto.quantity * createOrderItemDto.product.price,
+      });
 
-  update(id: number, updateOrderItemDto: UpdateOrderItemDto) {
-    return `This action updates a #${id} orderItem`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} orderItem`;
+      return await this.orderItemRepo.save(newOrderItem);
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error('Failed to create order item', err.stack);
+      throw err;
+    }
   }
 }
