@@ -9,7 +9,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { env } from '../../common/config';
 import { UserProvider } from '../../common/enums';
 import { User } from '../users/entities/user.entity';
-import { MediaService } from '../media/media.service';
+import { UserMediaService } from '../media/services';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { DefaultImagesName, InitialUserMedia } from '../../common/contances';
@@ -20,7 +20,7 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly userService: UsersService,
-    private readonly mediaService: MediaService,
+    private readonly userMediaService: UserMediaService,
   ) {}
 
   async register(createUserDto: CreateUserDto) {
@@ -84,7 +84,7 @@ export class AuthService {
     const user = await this.userRepo.findOneBy({ email, provider });
     if (user) return user;
 
-    const avatar = await this.mediaService.createUserMedia({
+    const avatar = await this.userMediaService.createMedia({
       ...InitialUserMedia['avatar'],
       path: image,
       mimetype: 'jpg',
@@ -111,7 +111,7 @@ export class AuthService {
     const user = await this.userRepo.findOneBy({ email, provider });
     if (user) return user;
 
-    const avatar = await this.mediaService.createUserMedia({
+    const avatar = await this.userMediaService.createMedia({
       ...InitialUserMedia['avatar'],
       path: image,
       mimetype: 'jpg',
