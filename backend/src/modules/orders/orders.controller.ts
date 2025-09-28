@@ -1,34 +1,80 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Res,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  UseGuards,
+  HttpStatus,
+  Controller,
+} from '@nestjs/common';
+import { Response } from 'express';
+
+import { Role } from '../../common/enums';
+import { JwtAuthGuard } from '../auth/guards';
+import { RolesGuard } from '../../common/guards';
 import { OrdersService } from './orders.service';
+import { RequestUser } from '../../common/interfaces';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { CurrentUser, Roles } from '../../common/decorators';
 
+@Roles(Role.ADMIN)
 @Controller('orders')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(createOrderDto);
-  }
-
+  // ======================GET============================
   @Get()
+  @HttpCode(HttpStatus.FOUND)
+  // Get all orders
   findAll() {
     return this.ordersService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(+id);
+  @Get(':orderId')
+  @HttpCode(HttpStatus.FOUND)
+  // Get order by id
+  findOne(@Param('orderId') orderId: string) {
+    return this.ordersService.findOne(orderId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(+id, updateOrderDto);
+  // ======================POST============================
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  // Create order
+  async create(
+    @Body() createOrderDto: CreateOrderDto,
+    @CurrentUser() user: RequestUser,
+    @Res() res: Response,
+  ) {
+    const order = await this.ordersService.create(createOrderDto, user.id);
+    return res.location(`/orders/${order.id}`).json(order);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ordersService.remove(+id);
+  @Post('products')
+  @HttpCode(HttpStatus.CREATED)
+  // Order products
+  async orderProducts(@CurrentUser() user: RequestUser) {
+    return await this.ordersService.orderProducts(user.id);
+  }
+
+  // ======================PATCH============================
+  @Patch(':orderId')
+  update(
+    @Param('orderId') orderId: string,
+    @Body() updateOrderDto: UpdateOrderDto,
+  ) {
+    return this.ordersService.update(orderId, updateOrderDto);
+  }
+
+  // ======================DELETE============================
+  @Delete(':orderId')
+  remove(@Param('orderId') orderId: string) {
+    return this.ordersService.remove(orderId);
   }
 }
