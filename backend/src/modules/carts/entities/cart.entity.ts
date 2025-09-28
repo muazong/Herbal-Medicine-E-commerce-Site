@@ -16,6 +16,7 @@ export class Cart extends AbstractEntity<Cart> {
   @OneToMany(() => CartItem, (cartItem) => cartItem.cart, {
     eager: true,
     nullable: true,
+    cascade: true,
   })
   cartItems?: CartItem[];
 }
