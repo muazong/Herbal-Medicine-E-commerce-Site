@@ -55,7 +55,7 @@ export class CartItemsService {
    */
   async findOne(cartItemId: string): Promise<CartItem> {
     if (!isUUID(cartItemId)) {
-      throw new BadRequestException('Invalid id');
+      throw new BadRequestException('Invalid cart item id');
     }
 
     try {
