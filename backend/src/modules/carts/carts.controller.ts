@@ -1,4 +1,5 @@
 import {
+  Res,
   Get,
   Post,
   Body,
@@ -9,8 +10,8 @@ import {
   UseGuards,
   HttpStatus,
   Controller,
-  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { Role } from '../../common/enums';
 import { JwtAuthGuard } from '../auth/guards';
@@ -20,7 +21,6 @@ import { CreateCartDto } from './dto/create-cart.dto';
 import { RequestUser } from '../../common/interfaces';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { CurrentUser, Roles } from '../../common/decorators';
-import { Response } from 'express';
 
 @Roles(Role.ADMIN)
 @Controller('carts')
@@ -53,7 +53,7 @@ export class CartsController {
   @HttpCode(HttpStatus.FOUND)
   // Finds all products in a user's cart.
   findUserProducts(@CurrentUser() user: RequestUser) {
-    return this.cartsService.findUserProductsFromCart(user.id);
+    return this.cartsService.findUserProductsFromCartByUserId(user.id);
   }
 
   @Post()
@@ -76,7 +76,9 @@ export class CartsController {
       user.id,
       createCartDto,
     );
-    return res.location(`/carts/${response.cartItem.cart.id}`).json(response);
+
+    // FIX: return cart id
+    return res.location(`/carts/${response.cartItem.id}`).json(response);
   }
 
   @Patch('update-quantity')
@@ -91,7 +93,9 @@ export class CartsController {
       user.id,
       updateCartDto,
     );
-    return res.location(`/carts/${response.cartItem.cart.id}`).json(response);
+
+    // FIX: return cart id
+    return res.location(`/carts/${response.cartItem.id}`).json(response);
   }
 
   @Delete(':cartId')

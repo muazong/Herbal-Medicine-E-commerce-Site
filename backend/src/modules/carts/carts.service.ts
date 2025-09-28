@@ -18,6 +18,7 @@ import { UpdateCartDto } from './dto/update-cart.dto';
 import { ProductsService } from '../products/products.service';
 import { CartItem } from '../cart-items/entities/cart-item.entity';
 import { CartItemsService } from '../cart-items/cart-items.service';
+import { Product } from '../products/entities/product.entity';
 
 @Injectable()
 export class CartsService {
@@ -57,7 +58,7 @@ export class CartsService {
    */
   async findOne(cartId: string): Promise<Cart> {
     if (!isUUID(cartId)) {
-      throw new BadRequestException('Invalid id');
+      throw new BadRequestException('Invalid cart id');
     }
 
     try {
@@ -87,13 +88,12 @@ export class CartsService {
    */
   async findCartByUserId(userId: string): Promise<Cart> {
     if (!isUUID(userId)) {
-      throw new BadRequestException('Invalid id');
+      throw new BadRequestException('Invalid user id');
     }
 
     try {
       const cart = await this.cartRepo.findOne({
         where: { user: { id: userId } },
-        relations: ['user'],
       });
 
       if (!cart) {
@@ -136,7 +136,7 @@ export class CartsService {
    * @throws NotFoundException if the products are not found.
    * @throws Error if any other error occurs.
    */
-  async findUserProductsFromCart(userId: string): Promise<CartItem[]> {
+  async findUserProductsFromCartByUserId(userId: string): Promise<Product[]> {
     try {
       const cart = await this.cartRepo.findOne({
         where: { user: { id: userId } },
@@ -285,7 +285,6 @@ export class CartsService {
   async remove(cartId: string): Promise<Cart> {
     try {
       const cart = await this.findOne(cartId);
-      await this.cartItemService.remove(cart.id);
       return await this.cartRepo.remove(cart);
     } catch (error) {
       const err = error as Error;
