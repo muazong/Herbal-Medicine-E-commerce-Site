@@ -3,4 +3,6 @@ export enum PATH {
   ABOUT = '/about',
   CONTACT = '/contact',
   PRODUCTS = '/products',
+  CART = '/cart',
+  AUTH = '/auth',
 }
