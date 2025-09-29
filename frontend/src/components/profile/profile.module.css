@@ -1,0 +1,50 @@
+.container {
+  cursor: pointer;
+  position: relative;
+}
+
+.avatar {
+  --size: 46px;
+  position: inherit;
+  width: var(--size);
+  height: var(--size);
+
+  .img {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid var(--secondary-color);
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      border: 2px solid var(--gray-color);
+    }
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: 50px;
+  right: -30px;
+  width: 130px;
+  --border-radius: 4px;
+  background-color: var(--secondary-text-color);
+  border-radius: var(--border-radius);
+  display: none;
+
+  .dropdownList {
+    li {
+      width: 100%;
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: var(--gray-color);
+      }
+
+      a {
+        color: #fff;
+      }
+    }
+  }
+}
