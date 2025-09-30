@@ -1,0 +1,23 @@
+.container {
+}
+
+.navList {
+  display: flex;
+  gap: 40px;
+
+  li {
+    a {
+      color: var(--secondary-text-color);
+      transition: all 0.2s ease-in-out;
+      font-weight: 500;
+
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+  }
+
+  .active {
+    color: var(--primary-color);
+  }
+}
