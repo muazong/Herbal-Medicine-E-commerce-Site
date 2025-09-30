@@ -1,10 +1,10 @@
+import Image from 'next/image';
 import styles from './trust-badges.module.css';
 
 import freeShipping from '@/assets/images/free_ship_no_bg.png';
 import twentyFourHours from '@/assets/images/24h_no_bg.png';
 import allowGoodsInspection from '@/assets/images/allow_goods_inspection_no_bg.png';
 import quality from '@/assets/images/quality_no_bg.png';
-import Image from 'next/image';
 
 function TrustBadges() {
   return (
