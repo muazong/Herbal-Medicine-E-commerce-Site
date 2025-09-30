@@ -1,5 +1,29 @@
+:root {
+  --primary-color: #1b5e20;
+  --secondary-color: #c5e1a5;
+  --secondary-text-color: #757575;
+  --accent-color: #d4af37;
+
+  --gray-color: #444444;
+  --brown-color: #5d4037;
+
+  --max-width: 1440px;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  background-color: #ffffff;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
 }
