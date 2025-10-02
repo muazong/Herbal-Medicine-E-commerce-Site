@@ -10,6 +10,20 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '**',
       },
+      {
+        protocol: process.env.NEXT_PUBLIC_API_PROTOCOL as 'http' | 'https',
+        hostname: process.env.NEXT_PUBLIC_API_HOST as string,
+        port: process.env.NEXT_PUBLIC_API_PORT,
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
     ],
   },
 };
