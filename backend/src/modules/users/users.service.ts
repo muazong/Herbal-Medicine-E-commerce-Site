@@ -41,7 +41,9 @@ export class UsersService {
    * @throws ConflictException if email already exists.
    * @throws Error if any other error occurs.
    */
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(
+    createUserDto: CreateUserDto,
+  ): Promise<Omit<User, 'password' | 'generateFullNameOnUpdate'>> {
     const existedByEmail = await this.userRepo.findOneBy({
       email: createUserDto.email,
     });
@@ -56,7 +58,9 @@ export class UsersService {
         password: await generateHashedPassword(createUserDto.password),
       });
 
-      return await this.userRepo.save(newUser);
+      const { password, ...user } = await this.userRepo.save(newUser);
+
+      return user;
     } catch (error) {
       const err = error as Error;
       this.logger.error(`Failed to create user: ${err.message}`, err.stack);
