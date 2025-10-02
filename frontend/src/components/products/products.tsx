@@ -4,13 +4,13 @@ import CartProduct from '../card-product/card-product';
 import Title from '../title/title';
 
 type ProductsProps = {
-  title: string;
+  title?: string;
 };
 
 function Products({ title }: ProductsProps) {
   return (
     <section className={styles.container}>
-      <Title text={title} />
+      {title && <Title text={title} />}
 
       <div className={styles.content}>
         {products.map((product) => {
