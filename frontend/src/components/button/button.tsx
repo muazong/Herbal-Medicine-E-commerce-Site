@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import styles from './button.module.css';
 
 type ButtonProps = {
   text: string;
