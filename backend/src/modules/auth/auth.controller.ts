@@ -57,7 +57,12 @@ export class AuthController {
     @Req() req: any,
     @Res({ passthrough: true }) res: Response,
   ) {
-    return this.authService.login(req.user as User, res);
+    const result = await this.authService.login(req.user as User, res);
+    if (result) {
+      return res.redirect(
+        `${env.clientUrl}/callback?token=${result.accessToken}`,
+      );
+    }
   }
 
   @Get('github/login')
@@ -70,7 +75,12 @@ export class AuthController {
     @Req() req: any,
     @Res({ passthrough: true }) res: Response,
   ) {
-    return this.authService.login(req.user as User, res);
+    const result = await this.authService.login(req.user as User, res);
+    if (result) {
+      return res.redirect(
+        `${env.clientUrl}/callback?token=${result.accessToken}`,
+      );
+    }
   }
 
   // WARN: For test only
