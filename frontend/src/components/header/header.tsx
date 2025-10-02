@@ -7,11 +7,7 @@ import Navbar from '../navbar/navbar';
 import styles from './header.module.css';
 import logo from '@/assets/images/logo.png';
 import { PATH } from '@/common/enums';
-import Button from '../button/button';
-import Profile from '../profile/profile';
-
-// TODO: implement user logged in
-const user_logged_in = true;
+import UserMenu from './user-menu';
 
 function Header() {
   return (
@@ -35,16 +31,7 @@ function Header() {
             <FaShoppingCart className={styles.cartIcon} />
           </Link>
 
-          {user_logged_in ? (
-            <Button
-              text="Đăng ký"
-              type="link"
-              href={PATH.LOGIN}
-              className={styles.register}
-            />
-          ) : (
-            <Profile />
-          )}
+          <UserMenu />
         </div>
       </header>
     </div>
