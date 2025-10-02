@@ -1,3 +1,5 @@
+'use client';
+
 import { env } from '../config';
 
 function setAccessToken(value: string) {
@@ -8,4 +10,8 @@ function getAccessToken() {
   return localStorage.getItem(env.ACCESS_TOKEN);
 }
 
-export { setAccessToken, getAccessToken };
+function removeAccessToken() {
+  localStorage.removeItem(env.ACCESS_TOKEN);
+}
+
+export { setAccessToken, getAccessToken, removeAccessToken };
