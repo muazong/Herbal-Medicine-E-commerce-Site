@@ -5,5 +5,15 @@ import Products from './products/products';
 import Title from './title/title';
 import Categories from './categories/categories';
 import CardCategory from './card-category/card-category';
+import Footer from './footer/footer';
 
-export { Header, Button, Profile, Products, Title, Categories, CardCategory };
+export {
+  Header,
+  Button,
+  Profile,
+  Products,
+  Title,
+  Categories,
+  CardCategory,
+  Footer,
+};
