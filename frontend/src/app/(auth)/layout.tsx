@@ -4,6 +4,8 @@ import { notoSerif, roboto } from '@/common/fonts';
 import styles from './layout.module.css';
 import '../globals.css';
 import logo from '@/assets/images/logo_no_text.png';
+import Link from 'next/link';
+import { PATH } from '@/common/enums';
 
 export default function AuthLayout({
   children,
@@ -33,6 +35,9 @@ export default function AuthLayout({
           </div>
         </div>
         <div className={styles.content}>{children}</div>
+        <Link href={PATH.HOME} className={styles.link}>
+          Quay về trang chủ
+        </Link>
       </div>
     </div>
   );

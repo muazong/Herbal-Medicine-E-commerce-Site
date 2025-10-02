@@ -2,7 +2,10 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import styles from '../page.module.css';
 import { PATH } from '@/common/enums';
-import { LoginForm } from '@/components/auth-page/auth-form';
+import {
+  LoginChoiceButtons,
+  LoginForm,
+} from '@/components/auth-page/auth-form';
 
 export const metadata: Metadata = {
   title: 'Đăng nhập',
@@ -21,6 +24,7 @@ function LoginPage() {
       <p className={styles.text}>
         Chưa có tài khoản? <Link href={PATH.REGISTER}>Đăng ký ngay!</Link>
       </p>
+      <LoginChoiceButtons text="Đăng nhập" />
     </div>
   );
 }
