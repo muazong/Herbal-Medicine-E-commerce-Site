@@ -31,8 +31,8 @@ export class User extends AbstractEntity<User> {
   @Column({ default: uuidv4() })
   password: string;
 
-  @Column()
-  phone: string;
+  @Column({ nullable: true })
+  phone?: string;
 
   @Column({ nullable: true, length: 255 })
   address?: string;
@@ -43,11 +43,11 @@ export class User extends AbstractEntity<User> {
   @OneToMany(() => Order, (order) => order.user)
   order: Order;
 
-  @OneToOne(() => Media, { nullable: true })
+  @OneToOne(() => Media, { nullable: true, eager: true })
   @JoinColumn()
   avatar: Media | null;
 
-  @OneToOne(() => Media, { nullable: true })
+  @OneToOne(() => Media, { nullable: true, eager: true })
   @JoinColumn()
   cover: Media | null;
 
