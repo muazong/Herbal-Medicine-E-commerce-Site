@@ -1,11 +1,9 @@
 import { Metadata } from 'next';
 
 import styles from './page.module.css';
-import { Categories, Products } from '@/components';
-import { Hero, Propose, TrustBadges } from '@/components/home';
 
 export const metadata: Metadata = {
-  title: 'Trang chủ',
+  title: 'Liên hệ',
   description:
     'Anvita – cửa hàng thuốc Đông dược uy tín. Sản phẩm thảo dược an toàn, chất lượng, hỗ trợ chăm sóc sức khỏe tự nhiên và bền vững cho mọi nhà.',
   icons: {
@@ -13,15 +11,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+function ContactPage() {
   return (
     <div className={styles.container}>
-      <Hero />
-      <TrustBadges />
-      <Products title="sản phẩm nổi bật" />
-      <Categories />
-      <Products title="Sản phẩm mới nhất" />
-      <Propose />
+      <h1>Liên hệ với chúng tôi</h1>
     </div>
   );
 }
+
+export default ContactPage;
