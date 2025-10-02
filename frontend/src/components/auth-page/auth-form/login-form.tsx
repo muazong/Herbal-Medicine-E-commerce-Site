@@ -1,17 +1,26 @@
 'use client';
 
 import { useState } from 'react';
+import { AxiosError } from 'axios';
 import { roboto } from '@/common/fonts';
+import { useRouter } from 'next/navigation';
 import styles from './auth-form.module.css';
+import { IoEyeSharp } from 'react-icons/io5';
+import { BsEyeSlashFill } from 'react-icons/bs';
+
 import { api } from '@/common/config';
 import { setAccessToken } from '@/common/lib/local-storage-actions';
+import { PATH } from '@/common/enums';
 
 export default function LoginForm() {
   const [formState, setFormState] = useState({
     email: '',
     password: '',
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
+  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,19 +39,24 @@ export default function LoginForm() {
     }
 
     try {
+      setIsLoading(true);
       const res = await api.post('/auth/login', formState, {
         withCredentials: true,
       });
 
-      if (!res.data.accessToken) {
-        throw new Error('Không thể kết nối tới hệ thống!');
+      if (res.data.accessToken) {
+        setAccessToken(res.data.accessToken);
       }
 
-      setAccessToken(res.data.accessToken);
+      router.push(PATH.HOME);
     } catch (error) {
-      const err = error as Error;
-      setError('Email hoặc mật khẩu không đúng!');
-      throw new Error(err.message);
+      setIsLoading(false);
+      const err = error as AxiosError;
+      if (err.response) {
+        if (err.response.status === 401) {
+          setError('Email hoặc mật khẩu không chính xác');
+        }
+      }
     }
   };
 
@@ -59,18 +73,28 @@ export default function LoginForm() {
         placeholder="Email"
         onChange={handleInput}
       />
-      <input
-        className={styles.input}
-        type="password"
-        name="password"
-        value={formState.password}
-        placeholder="Mật khẩu"
-        onChange={handleInput}
-      />
+      <div className={styles.passwordWrapper}>
+        <input
+          name="password"
+          value={formState.password}
+          className={styles.password}
+          type={isShowPassword ? 'text' : 'password'}
+          placeholder="Mật khẩu"
+          onChange={handleInput}
+        />
+        <span
+          className={styles.eye}
+          onClick={() => setIsShowPassword(!isShowPassword)}
+        >
+          {isShowPassword ? <IoEyeSharp /> : <BsEyeSlashFill />}
+        </span>
+      </div>
 
       {error && <p className={styles.error}>{error}</p>}
 
-      <button type="submit">Đăng nhập</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? 'Vui lòng đợi...' : 'Đăng nhập'}
+      </button>
     </form>
   );
 }
