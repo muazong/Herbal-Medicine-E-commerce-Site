@@ -35,6 +35,40 @@ export const categories: Category[] = [
     createdAt: '2023-03-01T00:00:00.000Z',
     updatedAt: '2023-03-01T00:00:00.000Z',
   },
+  {
+    id: '3',
+    name: 'Dietary',
+    description: 'Dietary products',
+    image: {
+      id: '2',
+      path: 'https://placehold.co/600x400',
+      filename: 'dietary.png',
+      mimetype: 'image/png',
+      size: 1024,
+      type: 'image/png',
+      createdAt: '2023-03-01T00:00:00.000Z',
+      updatedAt: '2023-03-01T00:00:00.000Z',
+    },
+    createdAt: '2023-03-01T00:00:00.000Z',
+    updatedAt: '2023-03-01T00:00:00.000Z',
+  },
+  {
+    id: '4',
+    name: 'Dietary',
+    description: 'Dietary products',
+    image: {
+      id: '2',
+      path: 'https://placehold.co/600x400',
+      filename: 'dietary.png',
+      mimetype: 'image/png',
+      size: 1024,
+      type: 'image/png',
+      createdAt: '2023-03-01T00:00:00.000Z',
+      updatedAt: '2023-03-01T00:00:00.000Z',
+    },
+    createdAt: '2023-03-01T00:00:00.000Z',
+    updatedAt: '2023-03-01T00:00:00.000Z',
+  },
 ];
 
 export const products: Product[] = [
