@@ -5,6 +5,7 @@ import '@smastrom/react-rating/style.css';
 
 import styles from './card-product.module.css';
 import { type Product } from '@/common/interfaces';
+import { PATH } from '@/common/enums';
 
 function CartProduct({ product }: { product: Product }) {
   return (
@@ -20,14 +21,12 @@ function CartProduct({ product }: { product: Product }) {
         </div>
       </div>
 
-      <div className={styles.content}>
+      <Link href={`${PATH.PRODUCTS}/${product.id}`} className={styles.content}>
         <div className={styles.rating}>
           <Rating className={styles.stars} value={product.rating} readOnly />
           <hr />
           {/* TODO: Redicrect to product page with category id */}
-          <Link className={styles.category} href="">
-            {product.category.name}
-          </Link>
+          <p className={styles.category}>{product.category.name}</p>
         </div>
         <div className={styles.text}>
           <div>
@@ -35,12 +34,14 @@ function CartProduct({ product }: { product: Product }) {
             <p>{product.description}</p>
           </div>
 
-          <p className={styles.price}>{product.price}vnđ</p>
+          <div>
+            <p className={styles.price}>{product.price}vnđ</p>
 
-          {/* TODO: Add product to cart */}
-          <button className={styles.btn}>Thêm vào giỏ hàng</button>
+            {/* TODO: Add product to cart */}
+            <button className={styles.btn}>Thêm vào giỏ hàng</button>
+          </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

@@ -37,6 +37,7 @@
   padding-top: 100px;
   display: flex;
   flex-direction: column;
+  color: inherit;
 
   .rating {
     display: flex;
