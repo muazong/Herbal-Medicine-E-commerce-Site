@@ -1,0 +1,29 @@
+.container {
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .item {
+    --border-radius: 4px;
+    background-color: #b8c4a9;
+    border-radius: var(--border-radius);
+    border: 1px solid #b8c4a9;
+
+    a {
+      font-size: 16px;
+      display: block;
+      padding: 10px;
+      color: var(--gray-color);
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: var(--primary-color);
+        background-color: var(--secondary-color);
+        border-radius: var(--border-radius);
+      }
+    }
+  }
+}
