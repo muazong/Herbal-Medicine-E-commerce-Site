@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 const configService = new ConfigService();
 
 export const env = {
+  clientUrl: configService.getOrThrow('CLIENT_URL') as string,
   jwtSecret: configService.getOrThrow('JWT_SECRET') as string,
   environment: configService.getOrThrow('ENVIRONMENT') as string,
   sameSite: configService.getOrThrow<'lax' | 'strict' | 'none'>(
