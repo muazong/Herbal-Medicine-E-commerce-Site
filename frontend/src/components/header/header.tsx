@@ -11,7 +11,7 @@ import Button from '../button/button';
 import Profile from '../profile/profile';
 
 // TODO: implement user logged in
-const user_logged_in = false;
+const user_logged_in = true;
 
 function Header() {
   return (
@@ -39,7 +39,7 @@ function Header() {
             <Button
               text="Đăng ký"
               type="link"
-              href={PATH.AUTH}
+              href={PATH.LOGIN}
               className={styles.register}
             />
           ) : (
