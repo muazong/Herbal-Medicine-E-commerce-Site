@@ -31,6 +31,9 @@ export class User extends AbstractEntity<User> {
   @Column({ default: uuidv4() })
   password: string;
 
+  @Column()
+  phone: string;
+
   @Column({ nullable: true, length: 255 })
   address?: string;
 
