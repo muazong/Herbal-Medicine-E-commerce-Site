@@ -1,26 +1,36 @@
-import { AxiosError } from 'axios';
-
-import { api } from '@/common/config';
-import { getAccessToken } from '@/common/lib/local-storage-actions';
+import { api, apiWithRefreshToken } from '@/services';
+import {
+  getAccessToken,
+  setAccessToken,
+} from '@/common/lib/local-storage-actions';
 import { CurrentUser } from '@/common/interfaces';
+import { isJwtExpired } from '@/common/lib/jwt';
 
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<CurrentUser | null> {
   const token = getAccessToken();
-  if (!token) {
-    return null;
-  }
+  if (!token || isJwtExpired(token))
+    return await getCurrentUserByRefreshToken(); // Get new token if token was not found or expired
 
   try {
     const res = await api.get('/auth/me', {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     return res.data as CurrentUser;
-  } catch (error) {
-    const err = error as AxiosError;
+  } catch {
+    return await getCurrentUserByRefreshToken(); // Get new token if token was expired
+  }
+}
 
-    if (err.response?.status === 401) {
-      return null;
-    }
-    throw error;
+export async function getCurrentUserByRefreshToken(): Promise<CurrentUser | null> {
+  try {
+    const res = await apiWithRefreshToken.get('/auth/refresh');
+    if (res.data.isInvalid) return null;
+
+    setAccessToken(res.data.accessToken);
+    return await getCurrentUser();
+  } catch {
+    return null;
   }
 }
