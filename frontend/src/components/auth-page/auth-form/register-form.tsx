@@ -24,13 +24,13 @@ type FormState = {
 
 export default function RegisterForm() {
   const [formState, setFormState] = useState<FormState>({
-    firstName: 'user',
-    lastName: '1',
-    email: 'user@gmail.com',
-    phone: '0387654321',
-    address: 'Vietnam',
-    password: 'user1234',
-    confirmPassword: 'user1234',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    password: '',
+    confirmPassword: '',
   });
   const [errors, setErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
