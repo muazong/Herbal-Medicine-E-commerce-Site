@@ -8,7 +8,7 @@ import { every, isEmpty } from 'lodash';
 
 import styles from './auth-form.module.css';
 import { roboto } from '@/common/fonts';
-import { api } from '@/common/config';
+import { api } from '@/services';
 import { AxiosError } from 'axios';
 import { PATH } from '@/common/enums';
 

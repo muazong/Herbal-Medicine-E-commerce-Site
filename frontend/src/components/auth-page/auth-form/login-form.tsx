@@ -8,7 +8,7 @@ import styles from './auth-form.module.css';
 import { IoEyeSharp } from 'react-icons/io5';
 import { BsEyeSlashFill } from 'react-icons/bs';
 
-import { api } from '@/common/config';
+import { api } from '@/services';
 import { setAccessToken } from '@/common/lib/local-storage-actions';
 import { PATH } from '@/common/enums';
 
