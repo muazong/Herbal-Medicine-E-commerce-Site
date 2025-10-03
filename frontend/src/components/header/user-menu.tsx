@@ -14,38 +14,35 @@ function UserMenu() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCurrentUser = async () => {
+    (async () => {
       try {
         const user = await getCurrentUser();
-
-        if (user) {
+        if (!user) {
+          setCurrentUser(null);
+        } else {
           setCurrentUser(user);
         }
-      } catch (error) {
-        console.log(error);
       } finally {
         setLoading(false);
       }
-    };
-
-    fetchCurrentUser();
+    })();
   }, []);
 
   if (loading) {
-    return <></>;
+    return <p className={styles.loading}>Đang tải...</p>;
   }
 
   return (
     <>
-      {currentUser ? (
-        <Profile currentUser={currentUser} />
-      ) : (
+      {!currentUser ? (
         <Button
           text="Đăng nhập"
           type="link"
           href={PATH.LOGIN}
           className={styles.register}
         />
+      ) : (
+        <Profile currentUser={currentUser} />
       )}
     </>
   );

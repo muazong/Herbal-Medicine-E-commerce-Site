@@ -59,6 +59,11 @@
       }
     }
 
+    .loading {
+      font-size: 14px;
+      font-weight: 300;
+    }
+
     .register {
       color: white;
       font-weight: 500;
