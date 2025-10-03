@@ -6,6 +6,8 @@ import {
   Body,
   Controller,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 
@@ -33,6 +35,10 @@ export class AuthController {
   @Get('refresh')
   refreshAccessToken(@Req() req: Request) {
     const token = req.cookies[env.refreshTokenName];
+    const isHasCookie = this.authService.checkCookie(token);
+    if (!isHasCookie) {
+      return { isInvalid: true };
+    }
     return this.authService.refreshAccessToken(token);
   }
 
@@ -83,11 +89,8 @@ export class AuthController {
     }
   }
 
-  // WARN: For test only
-  // https://github.com/logout
-  // https://google.com/accounts/Logout
-
   @Post('logout')
+  @HttpCode(HttpStatus.OK)
   logout(@Res({ passthrough: true }) res: Response) {
     return this.authService.logout(res);
   }
