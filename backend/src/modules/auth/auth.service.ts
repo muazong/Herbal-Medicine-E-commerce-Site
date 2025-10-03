@@ -1,6 +1,6 @@
 import * as ms from 'ms';
 import * as bcrypt from 'bcrypt';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -159,7 +159,7 @@ export class AuthService {
           type: 'access',
           status: user.status,
         },
-        { expiresIn: '15m' },
+        { expiresIn: env.accessExpiration },
       );
 
       return { accessToken: newAccessToken };
@@ -171,6 +171,13 @@ export class AuthService {
   async getUserInfo(user: { id: string }) {
     const { password, ...result } = await this.userService.findOne(user.id);
     return result;
+  }
+
+  checkCookie(token: string) {
+    if (!token) {
+      return false;
+    }
+    return true;
   }
 
   logout(res: Response) {
