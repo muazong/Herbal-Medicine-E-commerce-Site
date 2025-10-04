@@ -43,11 +43,11 @@ export class User extends AbstractEntity<User> {
   @OneToMany(() => Order, (order) => order.user)
   order: Order;
 
-  @OneToOne(() => Media, { nullable: true, eager: true })
+  @OneToOne(() => Media, { nullable: true, eager: true, onDelete: 'SET NULL' })
   @JoinColumn()
   avatar: Media | null;
 
-  @OneToOne(() => Media, { nullable: true, eager: true })
+  @OneToOne(() => Media, { nullable: true, eager: true, onDelete: 'SET NULL' })
   @JoinColumn()
   cover: Media | null;
 
