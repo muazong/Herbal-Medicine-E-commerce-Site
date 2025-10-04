@@ -18,9 +18,9 @@ export default function Home() {
     <div className={styles.container}>
       <Hero />
       <TrustBadges />
-      <Products title="sản phẩm nổi bật" />
+      <Products title="sản phẩm nổi bật" limit={8} orderBy="sold" />
       <Categories />
-      <Products title="Sản phẩm mới nhất" />
+      <Products title="Sản phẩm mới nhất" limit={8} orderBy="createdAt" />
       <Propose />
     </div>
   );
