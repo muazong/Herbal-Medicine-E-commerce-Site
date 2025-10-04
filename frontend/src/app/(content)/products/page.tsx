@@ -2,7 +2,7 @@ import { IoIosSearch } from 'react-icons/io';
 
 import styles from './page.module.css';
 import { roboto } from '@/common/fonts';
-import { Products, Title } from '@/components';
+import { Products } from '@/components';
 import { Sidebar } from '@/components/products-page';
 import { Metadata } from 'next';
 
@@ -15,14 +15,18 @@ export const metadata: Metadata = {
   },
 };
 
-function ProductsPage() {
+async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ categoryId?: string }>;
+}) {
+  const categoryId = (await searchParams).categoryId;
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <div className={styles.sidebar}>
-          <Title text="Danh mục sản phẩm" className={styles.title} />
-          <Sidebar />
-        </div>
+        <Sidebar />
+
         <div className={styles.content}>
           <div className={styles.search}>
             <div className={styles.icon}>
@@ -36,8 +40,9 @@ function ProductsPage() {
               placeholder="Tìm kiếm sản phẩm"
             />
           </div>
+
           <div className={styles.products}>
-            <Products />
+            <Products categoryId={categoryId} />
           </div>
         </div>
       </div>
