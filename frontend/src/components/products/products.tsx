@@ -5,15 +5,23 @@ import CartProduct from '../card-product/card-product';
 import Title from '../title/title';
 import { getProducts } from '@/services/products-service';
 import { Product } from '@/common/interfaces';
+import { getProductsByCategory } from '@/services/categories-service';
 
 type ProductsProps = {
+  categoryId?: string;
   title?: string;
   limit?: number;
   orderBy?: keyof Product;
 };
 
-function Products({ title, limit, orderBy }: ProductsProps) {
-  const products = use(getProducts(limit, orderBy));
+function Products({ categoryId, title, limit, orderBy }: ProductsProps) {
+  let products: Product[] | null = null;
+
+  if (categoryId) {
+    products = use(getProductsByCategory(categoryId));
+  } else {
+    products = use(getProducts(limit, orderBy));
+  }
 
   return (
     <section className={styles.container}>

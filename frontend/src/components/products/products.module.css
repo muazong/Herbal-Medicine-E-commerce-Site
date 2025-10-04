@@ -7,6 +7,8 @@
 .content {
   margin-top: 120px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, auto));
+  gap: 50px;
   row-gap: 130px;
+  justify-content: start;
 }
