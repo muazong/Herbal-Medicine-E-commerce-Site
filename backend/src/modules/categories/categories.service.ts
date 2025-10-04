@@ -77,9 +77,13 @@ export class CategoriesService {
    */
   async findAll(limit: number): Promise<Category[]> {
     try {
-      const categories = await this.categoryRepo.find({
-        take: limit,
-      });
+      if (limit) {
+        return await this.categoryRepo.find({
+          take: limit,
+        });
+      }
+
+      const categories = await this.categoryRepo.find();
       return categories;
     } catch (error) {
       const err = error as Error;
@@ -102,12 +106,17 @@ export class CategoriesService {
       const existedCategory = await this.findOne(categoryId);
       const products = await this.productService.findAll();
 
-      return products.filter((product) => {
+      const productsFiltered = products.filter((product) => {
         if (product.category) {
           return product.category.id === existedCategory.id;
         }
         return false;
       });
+
+      if (productsFiltered.length > 0) {
+        return productsFiltered;
+      }
+      return [];
     } catch (error) {
       const err = error as Error;
       this.logger.error(
