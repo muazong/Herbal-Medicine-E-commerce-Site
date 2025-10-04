@@ -1,4 +1,5 @@
-import { api, apiWithRefreshToken } from '@/services';
+import { api } from '@/services/axios-instance-client';
+import { apiWithRefreshToken } from '@/services';
 import {
   getAccessToken,
   setAccessToken,
