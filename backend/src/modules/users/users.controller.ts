@@ -34,7 +34,7 @@ export class UsersController {
 
   // ======================GET============================
   @Get()
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   // Get all users
   findAll(
     @Query('limit') limit: number,
@@ -45,7 +45,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   // Get user by id
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
@@ -82,6 +82,7 @@ export class UsersController {
   }
 
   @Post(':userId/cover')
+  @Roles(Role.ADMIN, Role.CLIENT)
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(
     FileInterceptor('file', {
