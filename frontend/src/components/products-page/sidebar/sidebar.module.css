@@ -1,4 +1,24 @@
 .container {
+  width: fit-content;
+  height: fit-content;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--card-bg-color);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: calc(var(--header-height) + 20px);
+  scrollbar-color: var(--primary-color) var(--card-bg-color);
+}
+
+.aside {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 12px;
+}
+
+.title {
+  font-size: 13px !important;
+  margin-bottom: 20px;
 }
 
 .list {
