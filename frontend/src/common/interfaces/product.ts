@@ -8,6 +8,7 @@ export interface Product extends AbstractInterface {
   price: number;
   stock: number;
   rating: number;
+  sold: number;
   media: Media[];
   category: Category;
 }
