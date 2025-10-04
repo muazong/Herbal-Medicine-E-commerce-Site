@@ -142,10 +142,7 @@ export class UserMediaService {
         media = await this.updateMedia(media, file, type);
       }
 
-      const user = await this.userService.findOne(userId);
-      user[type] = media;
-      await this.userRepo.save(user);
-
+      await this.userRepo.update(userId, { [type]: media });
       return media;
     } catch (error) {
       const err = error as Error;
