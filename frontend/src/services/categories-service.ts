@@ -1,5 +1,5 @@
 import { api } from './axios-instance';
-import { Category } from '@/common/interfaces';
+import { Category, Product } from '@/common/interfaces';
 
 async function getCategories(limit?: number) {
   try {
@@ -10,4 +10,13 @@ async function getCategories(limit?: number) {
   }
 }
 
-export { getCategories };
+async function getProductsByCategory(categoryId: string, limit?: number) {
+  try {
+    const response = await api.get(`/categories/${categoryId}/products`);
+    return response.data as Product[];
+  } catch {
+    return null;
+  }
+}
+
+export { getCategories, getProductsByCategory };
