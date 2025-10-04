@@ -1,21 +1,27 @@
 .container {
 }
 
-.image {
-  position: relative;
-  width: 100px;
-  height: 100px;
+.link {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .image {
+    position: relative;
+    width: 100px;
+    height: 100px;
 
-  img {
-    position: absolute;
-    object-fit: cover;
-    border-radius: 100%;
+    img {
+      position: absolute;
+      object-fit: cover;
+      border-radius: 100%;
+    }
   }
-}
 
-.name {
-  margin-top: 12px;
-  text-align: center;
-  font-size: 16px;
-  text-transform: uppercase;
+  .name {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #000;
+  }
 }

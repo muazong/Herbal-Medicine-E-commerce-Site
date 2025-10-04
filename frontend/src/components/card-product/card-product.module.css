@@ -40,6 +40,7 @@
   color: inherit;
 
   .rating {
+    margin-top: 12px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -47,7 +48,7 @@
     hr {
       border-radius: 10px;
       height: 3px;
-      width: 80px;
+      width: 100px;
       background-color: var(--accent-color);
       outline: none;
       border: none;
@@ -55,8 +56,21 @@
       margin-top: 4px;
     }
 
-    .stars {
-      max-width: 80px;
+    .ratingCountWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-right: -8px;
+
+      .ratingCount {
+        font-size: 12px;
+        font-weight: lighter;
+      }
+
+      .stars {
+        scale: 0.8;
+        max-width: 80px;
+      }
     }
 
     .category {
@@ -90,6 +104,11 @@
       hyphens: auto;
       text-align: justify;
       word-spacing: -0.05em;
+    }
+
+    .sold {
+      font-size: 12px;
+      margin-bottom: 4px;
     }
 
     .price {

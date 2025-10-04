@@ -51,7 +51,11 @@ function Profile({ currentUser }: { currentUser: CurrentUser }) {
     <div className={styles.container} onClick={() => setIsOpen(!isOpen)}>
       <div className={styles.avatar}>
         <Image
-          src={currentUser.avatar ? currentUser.avatar.path : env.AVATAR_URL}
+          src={
+            currentUser.avatar
+              ? `${env.SERVER_URL}${currentUser.avatar.path}`
+              : env.AVATAR_URL
+          }
           alt="logo"
           fill
           className={styles.img}
@@ -68,9 +72,14 @@ function Profile({ currentUser }: { currentUser: CurrentUser }) {
             <Link href={''}>Tài khoản</Link>
           </li>
           <li>
-            <Link href="" onClick={handleLogout}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleLogout();
+              }}
+            >
               Đăng xuất
-            </Link>
+            </button>
           </li>
         </ul>
       </div>
