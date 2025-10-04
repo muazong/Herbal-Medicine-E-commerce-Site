@@ -9,6 +9,7 @@ import {
   Controller,
   UploadedFiles,
   UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 
@@ -27,13 +28,13 @@ export class ProductMediaController {
   constructor(private readonly productMediaService: ProductMediaService) {}
 
   @Get(':productId/images')
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   findImages(@Param('productId') productId: string) {
     return this.productMediaService.findImages(productId);
   }
 
   @Post(':productId/images')
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   @UseInterceptors(
     FilesInterceptor('files', 6, {
       storage: mediaStorage('product'),
@@ -44,6 +45,10 @@ export class ProductMediaController {
     @UploadedFiles() files: Express.Multer.File[],
     @Res() res: Response,
   ) {
+    if (!files) {
+      throw new BadRequestException('No files uploaded');
+    }
+
     const product = await this.productMediaService.uploadImages(
       productId,
       files,
