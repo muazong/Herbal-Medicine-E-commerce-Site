@@ -10,6 +10,7 @@ import { env } from '@/common/config';
 import { api } from '@/services';
 
 import { removeAccessToken } from '@/common/lib/local-storage-actions';
+import { PATH } from '@/common/enums';
 
 function Profile({ currentUser }: { currentUser: CurrentUser }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,16 +51,20 @@ function Profile({ currentUser }: { currentUser: CurrentUser }) {
   return (
     <div className={styles.container} onClick={() => setIsOpen(!isOpen)}>
       <div className={styles.avatar}>
-        <Image
-          src={
-            currentUser.avatar
-              ? `${env.SERVER_URL}${currentUser.avatar.path}`
-              : env.AVATAR_URL
-          }
-          alt="logo"
-          fill
-          className={styles.img}
-        />
+        {currentUser.avatar ? (
+          <Image
+            src={
+              currentUser.avatar.path.startsWith('https')
+                ? currentUser.avatar.path
+                : `${env.SERVER_URL}${currentUser.avatar.path}`
+            }
+            alt="logo"
+            fill
+            className={styles.img}
+          />
+        ) : (
+          <Image src={env.AVATAR_URL} alt="logo" fill className={styles.img} />
+        )}
       </div>
 
       <div
@@ -69,7 +74,7 @@ function Profile({ currentUser }: { currentUser: CurrentUser }) {
       >
         <ul className={styles.dropdownList}>
           <li>
-            <Link href={''}>Tài khoản</Link>
+            <Link href={PATH.PROFILE}>Tài khoản</Link>
           </li>
           <li>
             <button

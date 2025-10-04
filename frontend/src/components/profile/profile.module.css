@@ -34,7 +34,6 @@
   .dropdownList {
     li {
       width: 100%;
-      padding: 10px 20px;
       border-radius: var(--border-radius);
       transition: all 0.2s ease-in-out;
       font-size: 14px;
@@ -43,15 +42,21 @@
         background-color: var(--gray-color);
       }
 
+      > * {
+        padding: 10px 20px;
+      }
+
       a {
+        display: block;
         color: #fff;
       }
 
       button {
+        text-align: left;
+        width: 100%;
         background-color: transparent;
         color: #fff;
         border: none;
-        padding: 0;
         cursor: pointer;
         font-size: 14px;
       }
