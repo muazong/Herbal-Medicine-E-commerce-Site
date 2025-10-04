@@ -1,7 +1,7 @@
 import { Media } from './media';
+import { AbstractInterface } from './abstract-interface';
 
-export interface CurrentUser {
-  id: string;
+export interface CurrentUser extends AbstractInterface {
   firstName: string;
   lastName: string;
   email: string;
@@ -12,6 +12,4 @@ export interface CurrentUser {
   provider: 'local' | 'google' | 'github';
   role: 'client' | 'admin';
   status: string;
-  updatedAt: string;
-  createdAt: string;
 }
