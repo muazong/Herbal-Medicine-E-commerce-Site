@@ -12,6 +12,7 @@ import {
   HttpStatus,
   UploadedFile,
   UseInterceptors,
+  Query,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -34,22 +35,22 @@ export class CategoriesController {
   // ======================GET============================
   @Get()
   @Public()
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   // Get all categories
-  findAll() {
-    return this.categoriesService.findAll();
+  findAll(@Query('limit') limit: number = 10) {
+    return this.categoriesService.findAll(limit);
   }
 
   @Get(':categoryId/products')
   @Public()
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   // Get products of a category
   findProducts(@Param('categoryId') categoryId: string) {
     return this.categoriesService.findProductsByCategory(categoryId);
   }
 
   @Get(':categoryId')
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   // Get category by categoryId
   findOne(@Param('categoryId') categoryId: string) {
     return this.categoriesService.findOne(categoryId);

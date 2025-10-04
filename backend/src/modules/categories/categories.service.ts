@@ -75,9 +75,11 @@ export class CategoriesService {
    * @returns Promise<Category[]> - The list of categories.
    * @throws Error if any other error occurs.
    */
-  async findAll(): Promise<Category[]> {
+  async findAll(limit: number): Promise<Category[]> {
     try {
-      const categories = await this.categoryRepo.find();
+      const categories = await this.categoryRepo.find({
+        take: limit,
+      });
       return categories;
     } catch (error) {
       const err = error as Error;
