@@ -5,6 +5,11 @@
   position: relative;
   background-color: var(--card-bg-color);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+  }
 }
 
 .imageContainer {
@@ -26,6 +31,14 @@
       border-radius: 100%;
       position: absolute;
       object-fit: cover;
+      transition:
+        transform 0.4s ease,
+        box-shadow 0.4s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
     }
   }
 }

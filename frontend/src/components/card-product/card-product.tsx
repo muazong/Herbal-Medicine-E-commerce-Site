@@ -36,8 +36,6 @@ function CartProduct({ product }: { product: Product }) {
             <Rating className={styles.stars} value={rating} readOnly />
           </div>
           <hr />
-
-          {/* TODO: Redicrect to product page with category id */}
           <p className={styles.category}>{category ? category.name : ''}</p>
         </div>
         <div className={styles.text}>
