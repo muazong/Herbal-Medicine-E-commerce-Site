@@ -141,14 +141,14 @@ export class AuthService {
         secret: env.jwtSecret,
       });
 
+      if (payload.type !== 'refresh') {
+        throw new UnauthorizedException('Invalid token type');
+      }
+
       const user = await this.userService.findOne(payload.sub);
 
       if (!user) {
         throw new UnauthorizedException('User not found');
-      }
-
-      if (payload.type !== 'refresh') {
-        throw new UnauthorizedException('Invalid token type');
       }
 
       const newAccessToken = this.jwtService.sign(
