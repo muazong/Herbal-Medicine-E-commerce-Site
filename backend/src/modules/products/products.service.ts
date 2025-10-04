@@ -71,6 +71,7 @@ export class ProductsService {
   async findAll(
     limit?: number,
     page?: number,
+    orderBy: string = 'createdAt',
     sort: 'desc' | 'asc' = 'desc',
     search?: string,
   ): Promise<Product[]> {
@@ -80,7 +81,16 @@ export class ProductsService {
           take: limit,
           skip: (page - 1) * limit,
           order: {
-            createdAt: sort,
+            [orderBy]: sort,
+          },
+        });
+      }
+
+      if (limit) {
+        return await this.productRepo.find({
+          take: limit,
+          order: {
+            [orderBy]: sort,
           },
         });
       }

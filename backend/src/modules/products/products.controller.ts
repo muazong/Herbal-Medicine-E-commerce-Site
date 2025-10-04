@@ -35,20 +35,21 @@ export class ProductsController {
   // ======================GET============================
   @Get()
   @Public()
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   // Finds all products.
   findAll(
     @Query('limit') limit: number = 10,
     @Query('page') page: number = 1,
     @Query('sort') sort: 'asc' | 'desc',
+    @Query('orderBy') orderBy: string,
     @Query('search') search: string,
   ) {
-    return this.productsService.findAll(limit, page, sort, search);
+    return this.productsService.findAll(limit, page, orderBy, sort, search);
   }
 
   @Public()
   @Get(':productId')
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   // Finds a product by its ID.
   findOne(@Param('productId') productId: string) {
     return this.productsService.findOne(productId);
@@ -82,7 +83,7 @@ export class ProductsController {
   }
 
   @Post(':productId/images')
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(
     FilesInterceptor('files', 6, {
       storage: mediaStorage('product'),
