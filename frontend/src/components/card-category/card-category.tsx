@@ -4,11 +4,15 @@ import Image from 'next/image';
 import styles from './card-category.module.css';
 import { Category } from '@/common/interfaces';
 import { env } from '@/common/config';
+import { PATH } from '@/common/enums';
 
 function CardCategory({ category }: { category: Category }) {
   return (
     <div className={styles.container}>
-      <Link href="" className={styles.link}>
+      <Link
+        href={`${PATH.PRODUCTS}?categoryId=${category.id}`}
+        className={styles.link}
+      >
         <div className={styles.image}>
           <Image
             src={
