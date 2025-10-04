@@ -28,6 +28,11 @@ export class UpdateProductDto {
   stock?: number;
 
   @IsNumber()
+  @IsOptional()
+  @Min(0)
+  sold?: number;
+
+  @IsNumber()
   @Min(1)
   @Max(5)
   @IsOptional()

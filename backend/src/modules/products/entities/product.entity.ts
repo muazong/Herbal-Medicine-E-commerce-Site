@@ -22,6 +22,9 @@ export class Product extends AbstractEntity<Product> {
   @Column({ type: 'decimal', precision: 2, scale: 1 })
   rating: number;
 
+  @Column({ default: 0 })
+  sold: number;
+
   @OneToMany(() => Media, (media) => media.product, {
     cascade: true,
     eager: true,
