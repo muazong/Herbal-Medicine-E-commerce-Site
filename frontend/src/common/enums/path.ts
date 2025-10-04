@@ -6,4 +6,5 @@ export enum PATH {
   CART = '/cart',
   LOGIN = '/auth/login',
   REGISTER = '/auth/register',
+  PROFILE = '/profile',
 }
