@@ -167,7 +167,7 @@ export class UserMediaService {
       media.size = file.size;
       media.type = type;
 
-      return media;
+      return await this.mediaRepo.save(media);
     } catch (error) {
       const err = error as Error;
       this.logger.error(`Failed to update ${type}`, err.stack);
