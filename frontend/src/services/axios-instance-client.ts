@@ -1,14 +1,16 @@
 'use client';
 
-import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
+import axios, { InternalAxiosRequestConfig } from 'axios';
 import { api } from './axios-instance';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { env } from '@/common/config';
 import {
   getAccessToken,
-  getAccessTokenFromFreshToken,
+  getAccessTokenFromRefreshToken,
+  setAccessToken,
 } from '@/common/lib/local-storage-actions';
+import { isJwtExpired } from '@/common/lib/jwt';
 
 NProgress.configure({ showSpinner: false });
 
@@ -34,13 +36,17 @@ const apiWithAuth = axios.create({
 
 apiWithAuth.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    const token = await getAccessTokenFromFreshToken();
-    if (token) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${token}`,
-      } as any;
+    let token = getAccessToken();
+
+    if (!token || isJwtExpired(token)) {
+      token = await getAccessTokenFromRefreshToken();
+      if (token) setAccessToken(token);
     }
+
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${token}`,
+    } as any;
     return config;
   },
   (error) => Promise.reject(error),
