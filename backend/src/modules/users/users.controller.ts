@@ -61,6 +61,7 @@ export class UsersController {
   }
 
   @Post(':userId/avatar')
+  @Roles(Role.ADMIN, Role.CLIENT)
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(
     FileInterceptor('file', {
