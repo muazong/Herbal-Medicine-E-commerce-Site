@@ -16,22 +16,17 @@ function removeAccessToken() {
   localStorage.removeItem(env.ACCESS_TOKEN);
 }
 
-async function getAccessTokenFromFreshToken() {
-  const token = localStorage.getItem(env.ACCESS_TOKEN);
+async function getAccessTokenFromRefreshToken() {
+  const res = await apiWithRefreshToken.get('/auth/refresh');
+  if (res.data.isInvalid) return null;
 
-  if (!token || isJwtExpired(token)) {
-    const res = await apiWithRefreshToken.get('/auth/refresh');
-    if (res.data.isInvalid) return null;
-
-    setAccessToken(res.data.accessToken);
-    return res.data.accessToken;
-  }
-  return token;
+  setAccessToken(res.data.accessToken);
+  return res.data.accessToken;
 }
 
 export {
   setAccessToken,
   getAccessToken,
   removeAccessToken,
-  getAccessTokenFromFreshToken,
+  getAccessTokenFromRefreshToken,
 };
