@@ -2,85 +2,92 @@
 
 import { ChangeEvent, useEffect, useState } from 'react';
 import { FaPenToSquare } from 'react-icons/fa6';
+import Image from 'next/image';
 
+import styles from './page.module.css';
 import { CurrentUser } from '@/common/interfaces';
 import { getCurrentUser } from '@/services';
-import Image from 'next/image';
-import styles from './page.module.css';
 import { env } from '@/common/config';
 import { apiWithAuth } from '@/services/axios-instance-client';
 
-function ProfilePage() {
+export default function ProfilePage() {
   const [user, setUser] = useState<CurrentUser | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [cover, setCover] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [localAvatar, setLocalAvatar] = useState<string | null>(null);
+  const [localCover, setLocalCover] = useState<string | null>(null);
 
   useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      const currentUser = await getCurrentUser();
-
-      if (currentUser) {
+    const fetchUser = async () => {
+      try {
+        const currentUser = await getCurrentUser();
         setUser(currentUser);
+      } catch (err) {
+        console.error('Error loading user:', err);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    })();
+    };
+    fetchUser();
   }, []);
-
-  if (isLoading) return <div className={styles.container}>Đang tải...</div>;
-  if (!user)
-    return (
-      <div className={styles.container}>
-        Không tìm thấy thông tin người dùng
-      </div>
-    );
 
   const handleChangeImage = async (
     e: ChangeEvent<HTMLInputElement>,
     type: 'avatar' | 'cover',
   ) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
     const formData = new FormData();
-    const image = e.target.files?.[0];
+    formData.append('file', file);
 
-    if (image) {
-      formData.append('file', image);
+    const localURL = URL.createObjectURL(file);
+    if (type === 'avatar') setLocalAvatar(localURL);
+    else setLocalCover(localURL);
 
-      try {
-        const res = await apiWithAuth.post(
-          `/users/${user.id}/${type}`,
-          formData,
-        );
-      } finally {
-        setCover(URL.createObjectURL(image));
-      }
+    try {
+      await apiWithAuth.post(`/users/${user.id}/${type}`, formData);
+      const updatedUser = await getCurrentUser();
+      setUser(updatedUser);
+    } catch (err) {
+      console.error(`Update ${type} failed:`, err);
     }
   };
+
+  if (isLoading) return <div className={styles.container}>Đang tải...</div>;
+  if (!user)
+    return (
+      <div className={styles.container}>
+        Không tìm thấy thông tin người dùng.
+      </div>
+    );
+
+  const avatarSrc =
+    localAvatar ||
+    (user.avatar?.path
+      ? user.avatar.path.startsWith('https')
+        ? user.avatar.path
+        : `${env.SERVER_URL}${user.avatar.path}?v=${user.updatedAt || Date.now()}`
+      : env.AVATAR_URL);
+
+  const coverSrc =
+    localCover ||
+    (user.cover?.path
+      ? `${env.SERVER_URL}${user.cover.path}?v=${user.updatedAt || Date.now()}`
+      : env.COVER_URL);
 
   return (
     <div className={styles.container}>
       {/* Cover */}
       <div className={styles.cover}>
         <div className={styles.coverImageWrapper}>
-          {user.cover ? (
-            <Image
-              src={
-                cover
-                  ? cover
-                  : `${env.SERVER_URL}${user.cover.path}?v=${Date.now()}`
-              }
-              alt="cover"
-              fill
-              className={styles.coverImage}
-            />
-          ) : (
-            <Image
-              src={env.COVER_URL}
-              className={styles.coverImage}
-              alt="avatar"
-              fill
-            />
-          )}
-
+          <Image
+            key={coverSrc}
+            src={coverSrc}
+            alt="cover"
+            fill
+            className={styles.coverImage}
+            priority
+          />
           <div className={styles.button}>
             <label htmlFor="cover" className={styles.label}>
               <FaPenToSquare className={styles.icon} />
@@ -88,7 +95,6 @@ function ProfilePage() {
             <input
               type="file"
               id="cover"
-              name="cover"
               accept="image/*"
               hidden
               onChange={(e) => handleChangeImage(e, 'cover')}
@@ -100,25 +106,29 @@ function ProfilePage() {
       {/* Avatar + Info */}
       <div className={styles.profile}>
         <div className={styles.avatar}>
-          {user.avatar ? (
+          <div className={styles.avatarWrapper}>
             <Image
-              src={
-                user.avatar.path.startsWith('https')
-                  ? user.avatar.path
-                  : `${env.SERVER_URL}${user.avatar.path}`
-              }
+              key={avatarSrc}
+              src={avatarSrc}
               alt="avatar"
               fill
               className={styles.avatarImage}
+              sizes="150px"
+              priority
             />
-          ) : (
-            <Image
-              src={env.AVATAR_URL}
-              className={styles.avatarImage}
-              alt="avatar"
-              fill
-            />
-          )}
+            <div className={styles.button}>
+              <label htmlFor="avatar" className={styles.label}>
+                <FaPenToSquare className={styles.icon} />
+              </label>
+              <input
+                type="file"
+                id="avatar"
+                accept="image/*"
+                hidden
+                onChange={(e) => handleChangeImage(e, 'avatar')}
+              />
+            </div>
+          </div>
         </div>
 
         <div className={styles.info}>
@@ -138,5 +148,3 @@ function ProfilePage() {
     </div>
   );
 }
-
-export default ProfilePage;
