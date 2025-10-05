@@ -56,7 +56,7 @@ function Profile({ currentUser }: { currentUser: CurrentUser }) {
             src={
               currentUser.avatar.path.startsWith('https')
                 ? currentUser.avatar.path
-                : `${env.SERVER_URL}${currentUser.avatar.path}`
+                : `${env.SERVER_URL}${currentUser.avatar.path}?v=${Date.now()}`
             }
             alt="logo"
             fill
