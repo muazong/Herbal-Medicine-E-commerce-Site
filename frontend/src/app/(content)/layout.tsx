@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import '../globals.css';
 import { Footer, Header } from '@/components';
 import { roboto } from '@/common/fonts';
+import { ToasterWrapper } from '@/components/toaster';
 
 export const metadata: Metadata = {
   title: 'Anvita - An tâm từ thiên nhiên',
@@ -21,7 +22,7 @@ export default function HomeLayout({
   return (
     <div className={roboto.className}>
       <Header />
-      {children}
+      <ToasterWrapper>{children}</ToasterWrapper>
       <Footer />
     </div>
   );
