@@ -5,13 +5,13 @@ import { FaPenToSquare } from 'react-icons/fa6';
 import Image from 'next/image';
 
 import styles from './page.module.css';
-import { CurrentUser } from '@/common/interfaces';
+import { User } from '@/common/interfaces';
 import { getCurrentUser } from '@/services';
 import { env } from '@/common/config';
 import { apiWithAuth } from '@/services/axios-instance-client';
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<CurrentUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [localAvatar, setLocalAvatar] = useState<string | null>(null);
   const [localCover, setLocalCover] = useState<string | null>(null);
