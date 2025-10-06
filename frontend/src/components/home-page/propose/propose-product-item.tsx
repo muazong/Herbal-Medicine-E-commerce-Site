@@ -2,6 +2,8 @@ import Image from 'next/image';
 import styles from './propose.module.css';
 import { Product } from '@/common/interfaces';
 import { env } from '@/common/config';
+import Link from 'next/link';
+import { PATH } from '@/common/enums';
 
 function ProposeProductItem({
   product,
@@ -28,7 +30,7 @@ function ProposeProductItem({
       <div className={styles.text}>
         <h2>{product.name}</h2>
         <p>{product.description}</p>
-        <button>Xem chi tiết</button>
+        <Link href={`${PATH.PRODUCTS}/${product.id}`}>Xem chi tiết</Link>
       </div>
     </div>
   );
