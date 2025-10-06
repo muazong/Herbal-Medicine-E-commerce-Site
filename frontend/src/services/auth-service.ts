@@ -4,10 +4,10 @@ import {
   getAccessToken,
   setAccessToken,
 } from '@/common/lib/local-storage-actions';
-import { CurrentUser } from '@/common/interfaces';
+import { User } from '@/common/interfaces';
 import { isJwtExpired } from '@/common/lib/jwt';
 
-export async function getCurrentUser(): Promise<CurrentUser | null> {
+export async function getCurrentUser(): Promise<User | null> {
   const token = getAccessToken();
   if (!token || isJwtExpired(token))
     return await getCurrentUserByRefreshToken(); // Get new token if token was not found or expired
@@ -18,13 +18,13 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data as CurrentUser;
+    return res.data as User;
   } catch {
     return await getCurrentUserByRefreshToken(); // Get new token if token was expired
   }
 }
 
-export async function getCurrentUserByRefreshToken(): Promise<CurrentUser | null> {
+export async function getCurrentUserByRefreshToken(): Promise<User | null> {
   try {
     const res = await apiWithRefreshToken.get('/auth/refresh');
     if (res.data.isInvalid) return null;

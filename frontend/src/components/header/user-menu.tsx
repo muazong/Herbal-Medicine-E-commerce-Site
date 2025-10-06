@@ -7,10 +7,10 @@ import Button from '../button/button';
 import styles from './header.module.css';
 import Profile from '../profile/profile';
 import { getCurrentUser } from '@/services';
-import { CurrentUser } from '@/common/interfaces';
+import { User } from '@/common/interfaces';
 
 function UserMenu() {
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

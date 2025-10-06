@@ -5,14 +5,14 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 import styles from './profile.module.css';
-import { CurrentUser } from '@/common/interfaces';
+import { User } from '@/common/interfaces';
 import { env } from '@/common/config';
 import { api } from '@/services';
 
 import { removeAccessToken } from '@/common/lib/local-storage-actions';
 import { PATH } from '@/common/enums';
 
-function Profile({ currentUser }: { currentUser: CurrentUser }) {
+function Profile({ currentUser }: { currentUser: User }) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<null | HTMLDivElement>(null);
 
@@ -41,7 +41,7 @@ function Profile({ currentUser }: { currentUser: CurrentUser }) {
 
       if (res.status === 200) {
         removeAccessToken();
-        window.location.reload();
+        window.location.href = PATH.LOGIN;
       }
     } catch (error) {
       console.log(error);
