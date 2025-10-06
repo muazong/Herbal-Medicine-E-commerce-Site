@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 
 import styles from './page.module.css';
+import { ContactForm } from '@/components/contact-page';
+import { notoSerif } from '@/common/fonts';
 
 export const metadata: Metadata = {
   title: 'Liên hệ',
@@ -14,7 +16,8 @@ export const metadata: Metadata = {
 function ContactPage() {
   return (
     <div className={styles.container}>
-      <h1>Liên hệ với chúng tôi</h1>
+      <h1 className={notoSerif.className}>Liên hệ với chúng tôi</h1>
+      <ContactForm />
     </div>
   );
 }
