@@ -45,6 +45,7 @@ export class ProductMediaService {
    */
   async uploadImages(productId: string, files: Express.Multer.File[]) {
     try {
+      // PERF: Check if product image already exists
       const product = await this.productService.findOne(productId);
 
       const mediaList = files.map((file) => {
@@ -59,7 +60,7 @@ export class ProductMediaService {
       });
 
       await this.mediaRepo.save(mediaList);
-      product.media = mediaList;
+      product.media = [...product.media!, ...mediaList];
       return await this.productRepo.save(product);
     } catch (error) {
       const err = error as Error;
