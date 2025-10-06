@@ -15,4 +15,14 @@ async function getProducts(
   }
 }
 
-export { getProducts };
+async function getProduct(productId: string) {
+  try {
+    const response = await api.get(`/products/${productId}`);
+    const product = response.data as Product;
+    return product;
+  } catch {
+    return null;
+  }
+}
+
+export { getProducts, getProduct };
