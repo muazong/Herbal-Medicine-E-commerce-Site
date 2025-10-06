@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Rating } from '@smastrom/react-rating';
 import '@smastrom/react-rating/style.css';
 
 import styles from './card-product.module.css';
 import { type Product } from '@/common/interfaces';
 import { PATH } from '@/common/enums';
 import { env } from '@/common/config';
+import RatingStars from '../rating-stars/rating-stars';
 
 function CartProduct({ product }: { product: Product }) {
   const { id, name, description, price, sold, rating, category, media } =
@@ -33,7 +33,7 @@ function CartProduct({ product }: { product: Product }) {
         <div className={styles.rating}>
           <div className={styles.ratingCountWrapper}>
             <span className={styles.ratingCount}>{rating}/5</span>
-            <Rating className={styles.stars} value={rating} readOnly />
+            <RatingStars value={rating} className={styles.stars} readOnly />
           </div>
           <hr />
           <p className={styles.category}>{category ? category.name : ''}</p>

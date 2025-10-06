@@ -6,6 +6,7 @@ import Title from './title/title';
 import Categories from './categories/categories';
 import CardCategory from './card-category/card-category';
 import Footer from './footer/footer';
+import RatingStars from './rating-stars/rating-stars';
 
 export {
   Header,
@@ -16,4 +17,5 @@ export {
   Categories,
   CardCategory,
   Footer,
+  RatingStars,
 };
