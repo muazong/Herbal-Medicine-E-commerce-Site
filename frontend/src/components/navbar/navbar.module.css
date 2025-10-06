@@ -1,23 +1,42 @@
 .container {
-}
-
-.navList {
+  position: relative;
   display: flex;
-  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0;
 
-  li {
-    a {
-      color: var(--secondary-text-color);
-      transition: all 0.2s ease-in-out;
-      font-weight: 500;
+  .navList {
+    display: flex;
+    gap: 40px;
+    list-style: none;
 
-      &:hover {
-        color: var(--primary-color);
+    li {
+      a {
+        position: relative;
+        text-decoration: none;
+        color: var(--secondary-text-color);
+        font-weight: 500;
+        transition: color 0.3s ease;
+        padding: 4px 0;
+
+        &:hover {
+          color: var(--primary-color);
+        }
       }
+    }
+
+    .active {
+      color: var(--primary-color);
     }
   }
 
-  .active {
-    color: var(--primary-color);
+  .underline {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    opacity: 0;
   }
 }
