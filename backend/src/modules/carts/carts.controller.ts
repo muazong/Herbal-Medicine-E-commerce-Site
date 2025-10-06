@@ -22,8 +22,8 @@ import { RequestUser } from '../../common/interfaces';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { CurrentUser, Roles } from '../../common/decorators';
 
-@Roles(Role.ADMIN)
 @Controller('carts')
+@Roles(Role.ADMIN)
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class CartsController {
   constructor(private readonly cartsService: CartsService) {}
@@ -66,6 +66,7 @@ export class CartsController {
 
   @Post('add')
   @HttpCode(HttpStatus.CREATED)
+  @Roles(Role.ADMIN, Role.CLIENT)
   // Adds a product to a cart.
   async addProductsToCart(
     @Body() createCartDto: CreateCartDto,
