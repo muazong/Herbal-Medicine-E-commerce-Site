@@ -7,6 +7,7 @@ import styles from './product-detail.module.css';
 import { useState } from 'react';
 import { addProductToCart } from '@/services/cart-service';
 import { toast } from 'sonner';
+import useCartItemsStore from '@/stores/cart-item-store';
 
 function ProductDetailButtons({
   stock,
@@ -16,6 +17,7 @@ function ProductDetailButtons({
   productId: string;
 }) {
   const [quantity, setQuantity] = useState(1);
+  const addCartItem = useCartItemsStore((state) => state.addCartItem);
 
   const handleQuantityChange = (type: 'increase' | 'decrease') => {
     if (type === 'increase') {
@@ -26,13 +28,15 @@ function ProductDetailButtons({
       setQuantity(quantity - 1);
     }
   };
-
   const handleAddToCart = async () => {
     const res = await addProductToCart(productId, quantity);
 
     if (res.message === 'Out of stock') {
       toast.warning('Đã thêm đến giới hạn!');
-    } else toast.success(`Đã thêm ${quantity} sản phẩm vào giỏ`);
+    } else {
+      addCartItem(res.cartItem, quantity);
+      toast.success(`Đã thêm ${quantity} sản phẩm vào giỏ`);
+    }
   };
 
   return (
@@ -52,8 +56,8 @@ function ProductDetailButtons({
         </div>
       </div>
       <div className={styles.buttons}>
-        <button className="buy">Mua ngay</button>
-        <button className="cart" onClick={handleAddToCart}>
+        <button className={styles.buy}>Mua ngay</button>
+        <button className={styles.cart} onClick={handleAddToCart}>
           Thêm vào giỏ
         </button>
       </div>
