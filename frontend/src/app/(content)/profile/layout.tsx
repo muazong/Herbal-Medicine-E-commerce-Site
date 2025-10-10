@@ -1,9 +1,9 @@
-import { ProfileGuard } from '@/common/guards';
+import { UserGuard } from '@/common/guards';
 
 export default function ProfileLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <ProfileGuard>{children}</ProfileGuard>;
+  return <UserGuard>{children}</UserGuard>;
 }

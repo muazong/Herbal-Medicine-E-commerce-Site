@@ -12,22 +12,18 @@ import { apiWithAuth } from '@/services/axios-instance-client';
 
 export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [localAvatar, setLocalAvatar] = useState<string | null>(null);
   const [localCover, setLocalCover] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    (async () => {
       try {
         const currentUser = await getCurrentUser();
         setUser(currentUser);
       } catch (err) {
         console.error('Error loading user:', err);
-      } finally {
-        setIsLoading(false);
       }
-    };
-    fetchUser();
+    })();
   }, []);
 
   const handleChangeImage = async (
@@ -53,11 +49,10 @@ export default function ProfilePage() {
     }
   };
 
-  if (isLoading) return <div className={styles.container}>Đang tải...</div>;
   if (!user)
     return (
-      <div className={styles.container}>
-        Không tìm thấy thông tin người dùng.
+      <div style={{ height: '100vh', marginTop: 'var(--header-height)' }}>
+        <p>Không có thông tin của tài khoản.</p>
       </div>
     );
 
