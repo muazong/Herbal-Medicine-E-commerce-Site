@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaShoppingCart } from 'react-icons/fa';
 
 import { notoSerif } from '@/common/fonts';
 import Navbar from '../navbar/navbar';
@@ -8,6 +7,7 @@ import styles from './header.module.css';
 import logo from '@/assets/images/logo.png';
 import { PATH } from '@/common/enums';
 import UserMenu from './user-menu';
+import CartLink from './cart-link';
 
 function Header() {
   return (
@@ -26,11 +26,7 @@ function Header() {
 
         <div className={styles.nav}>
           <Navbar />
-
-          <Link href={PATH.CART} className={styles.cart}>
-            <FaShoppingCart className={styles.cartIcon} />
-          </Link>
-
+          <CartLink />
           <UserMenu />
         </div>
       </header>
