@@ -1,4 +1,4 @@
 import AuthGuard from './auth-guard';
-import ProfileGuard from './profile-guard';
+import UserGuard from './user-guard';
 
-export { AuthGuard, ProfileGuard };
+export { AuthGuard, UserGuard };

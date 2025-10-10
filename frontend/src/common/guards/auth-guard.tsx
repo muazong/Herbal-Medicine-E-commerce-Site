@@ -6,24 +6,18 @@ import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 
 function AuthGuard({ children }: { children: ReactNode }) {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
       const currentUser = await getCurrentUser();
-
-      if (currentUser) {
-        setIsLoading(true);
-        router.replace(PATH.HOME);
-      } else {
-        setIsLoading(false);
-      }
+      if (currentUser) router.replace(PATH.HOME);
+      else setIsLoading(false);
     })();
   }, [router]);
 
-  if (isLoading) return <p>Đang tải...</p>;
-
+  if (isLoading) return null;
   return <>{children}</>;
 }
 
