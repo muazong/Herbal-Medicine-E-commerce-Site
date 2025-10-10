@@ -8,7 +8,7 @@ function ToasterWrapper({ children }: { children: ReactNode }) {
     <>
       {children}
       <Toaster
-        position="top-right"
+        position="top-center"
         richColors
         toastOptions={{
           style: {
