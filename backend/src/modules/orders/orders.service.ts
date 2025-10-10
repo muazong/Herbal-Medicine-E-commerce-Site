@@ -114,8 +114,10 @@ export class OrdersService {
         return { message: 'You have no items in your cart' };
       }
 
-      const products =
+      const cartItemWithProducts =
         await this.cartsService.findUserProductsFromCartByUserId(userId);
+
+      const products = cartItemWithProducts.map((item) => item.product);
 
       const newOrder = await this.create(
         { shippingAddress: user.address },
