@@ -20,6 +20,8 @@ export const mediaStorage = (
 
       const dir = join(process.cwd(), 'uploads', folder, `${id}`);
 
+      // FIX: user avatar with different extname
+
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
       } else if (type === 'product') {
