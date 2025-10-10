@@ -136,7 +136,7 @@ export class CartsService {
    * @throws NotFoundException if the products are not found.
    * @throws Error if any other error occurs.
    */
-  async findUserProductsFromCartByUserId(userId: string): Promise<Product[]> {
+  async findUserProductsFromCartByUserId(userId: string) {
     try {
       const cart = await this.cartRepo.findOne({
         where: { user: { id: userId } },

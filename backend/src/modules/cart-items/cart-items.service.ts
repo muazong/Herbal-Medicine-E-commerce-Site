@@ -134,7 +134,7 @@ export class CartItemsService {
    * @throws BadRequestException if the ID is invalid.
    * @throws Error if any other error occurs.
    */
-  async findProductsFromCart(cartId: string): Promise<Product[]> {
+  async findProductsFromCart(cartId: string) {
     try {
       const cartItems = await this.cartItemRepo.find({
         where: { cart: { id: cartId } },
@@ -145,11 +145,7 @@ export class CartItemsService {
         return [];
       }
 
-      const products = cartItems.map((cartItem) => {
-        return cartItem.product;
-      });
-
-      return products;
+      return cartItems;
     } catch (error) {
       const err = error as Error;
       this.logger.error('Failed to find user products', err.message);
@@ -240,7 +236,6 @@ export class CartItemsService {
       if (newQuantity > cartItem.product.stock) {
         newQuantity = cartItem.product.stock;
       }
-
       cartItem.quantity = newQuantity;
 
       const updatedCartItem = await this.cartItemRepo.save(cartItem);
