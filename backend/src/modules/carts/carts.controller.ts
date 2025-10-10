@@ -30,27 +30,28 @@ export class CartsController {
 
   @Get()
   // Finds all carts from all users.
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   findAll() {
     return this.cartsService.findAll();
   }
 
   @Get(':cartId')
   // Finds a cart by cart ID.
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   findOne(@Param('cartId') cartId: string) {
     return this.cartsService.findOne(cartId);
   }
 
   @Get('user/cart-items')
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   // Finds all cart items in a user's cart.
   findUserCartItems(@CurrentUser() user: RequestUser) {
     return this.cartsService.findUserCartItems(user.id);
   }
 
   @Get('user/products')
-  @HttpCode(HttpStatus.FOUND)
+  @Roles(Role.ADMIN, Role.CLIENT)
+  @HttpCode(HttpStatus.OK)
   // Finds all products in a user's cart.
   findUserProducts(@CurrentUser() user: RequestUser) {
     return this.cartsService.findUserProductsFromCartByUserId(user.id);
@@ -108,6 +109,7 @@ export class CartsController {
   }
 
   @Delete('product/:productId')
+  @Roles(Role.ADMIN, Role.CLIENT)
   @HttpCode(HttpStatus.OK)
   // Removes a product from a user's cart.
   async removeProductFromUserCart(
@@ -119,6 +121,6 @@ export class CartsController {
       user.id,
       productId,
     );
-    return res.location(`/carts/${response.cartItem.cart.id}`).json(response);
+    return res.location(`/carts/${response.cartItem.id}`).json(response);
   }
 }
