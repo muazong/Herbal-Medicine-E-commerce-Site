@@ -84,6 +84,7 @@ export class CartsController {
   }
 
   @Patch('update-quantity')
+  @Roles(Role.ADMIN, Role.CLIENT)
   @HttpCode(HttpStatus.OK)
   // Updates the quantity of a product in a user's cart.
   async updateQuantityFromUserCart(
