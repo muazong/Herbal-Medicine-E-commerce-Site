@@ -4,13 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
+import { api } from '@/services';
+import { PATH } from '@/common/enums';
+import { env } from '@/common/config';
 import styles from './profile.module.css';
 import { User } from '@/common/interfaces';
-import { env } from '@/common/config';
-import { api } from '@/services';
-
 import { removeAccessToken } from '@/common/lib/local-storage-actions';
-import { PATH } from '@/common/enums';
 
 function Profile({ currentUser }: { currentUser: User }) {
   const [isOpen, setIsOpen] = useState(false);
