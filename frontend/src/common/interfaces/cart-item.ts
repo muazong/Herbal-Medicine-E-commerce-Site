@@ -5,4 +5,5 @@ export interface CartItem extends AbstractInterface {
   product: Product;
   productId: string;
   quantity: number;
+  isOrdered: boolean;
 }
