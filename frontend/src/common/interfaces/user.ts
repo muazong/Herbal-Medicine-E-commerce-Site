@@ -1,5 +1,6 @@
 import { Media } from './media';
 import { AbstractInterface } from './abstract-interface';
+import { ACCOUNT_PROVIDERS, USER_ROLES } from '../enums';
 
 export interface User extends AbstractInterface {
   firstName: string;
@@ -11,7 +12,7 @@ export interface User extends AbstractInterface {
   address?: string;
   avatar?: Media;
   cover?: Media;
-  provider: 'local' | 'google' | 'github';
-  role: 'client' | 'admin';
+  provider: ACCOUNT_PROVIDERS;
+  role: USER_ROLES;
   status: string;
 }
