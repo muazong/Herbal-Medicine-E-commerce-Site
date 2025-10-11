@@ -1,11 +1,11 @@
-import { api } from '@/services/axios-instance-client';
-import { apiWithRefreshToken } from '@/services';
 import {
   getAccessToken,
   setAccessToken,
 } from '@/common/lib/local-storage-actions';
 import { User } from '@/common/interfaces';
 import { isJwtExpired } from '@/common/lib/jwt';
+import { apiWithRefreshToken } from '@/services';
+import { api } from '@/services/axios-instance-client';
 
 export async function getCurrentUser(): Promise<User | null> {
   const token = getAccessToken();
