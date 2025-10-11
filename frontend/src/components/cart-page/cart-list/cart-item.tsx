@@ -12,17 +12,17 @@ import styles from './cart-list.module.css';
 import { CartItem } from '@/common/interfaces';
 import useCartItemsStore from '@/stores/cart-item-store';
 import formatCurrency from '@/common/lib/format-currency';
+import { useDebounceUpdateCartItem } from '@/common/hooks';
 import { deleteProductFromUserCart } from '@/services/cart-service';
-import { useDebounceUpdate } from '@/common/hooks/use-debounce-update';
 
 function Cart({ cartItem }: { cartItem: CartItem }) {
-  const { product } = cartItem;
+  const { product, isOrdered } = cartItem;
   const deleteCartItem = useCartItemsStore((state) => state.deleteCartItem);
   const getCartItem = useCartItemsStore((state) => state.getCartItem);
   const updateCartItemQuantity = useCartItemsStore(
     (state) => state.updateCartItemQuantity,
   );
-  const debouncedUpdateCartItemQuantity = useDebounceUpdate();
+  const debounceUpdateCartItem = useDebounceUpdateCartItem();
 
   const imgUrl =
     product.media.length > 0
@@ -46,25 +46,40 @@ function Cart({ cartItem }: { cartItem: CartItem }) {
     if (type === 'increase') {
       if (cartItem.quantity >= product.stock) return;
       isUpdated = true;
-      updateCartItemQuantity(cartItem, cartItem.quantity + 1);
+      updateCartItemQuantity(cartItem, { quantity: cartItem.quantity + 1 });
     } else {
       if (cartItem.quantity <= 1) return;
       isUpdated = true;
-      updateCartItemQuantity(cartItem, cartItem.quantity - 1);
+      updateCartItemQuantity(cartItem, { quantity: cartItem.quantity - 1 });
     }
 
     if (isUpdated) {
       const cartItemQuantity = getCartItem(cartItem.id);
       if (!cartItemQuantity) return;
-      debouncedUpdateCartItemQuantity(
-        cartItem.product.id,
-        cartItemQuantity.quantity,
-      );
+      debounceUpdateCartItem(cartItem.id, {
+        quantity: cartItemQuantity.quantity,
+      });
     }
+  };
+
+  const handleIsOrderedChange = async (isOrdered: boolean) => {
+    updateCartItemQuantity(cartItem, { isOrdered });
+
+    await debounceUpdateCartItem(cartItem.id, {
+      isOrdered,
+    });
   };
 
   return (
     <tr className={styles.cartItem}>
+      <td>
+        <input
+          type="checkbox"
+          className={styles.checkbox}
+          checked={isOrdered}
+          onChange={(e) => handleIsOrderedChange(e.target.checked)}
+        />
+      </td>
       <td className={styles.image}>
         <Image src={imgUrl} alt={product.name} fill />
       </td>

@@ -11,6 +11,7 @@ function CartList() {
     <table className={styles.cartList}>
       <thead>
         <tr>
+          <th>Đặt hàng</th>
           <th>Ảnh</th>
           <th>Tên sản phẩm</th>
           <th>Số lượng</th>
