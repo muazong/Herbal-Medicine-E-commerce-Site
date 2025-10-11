@@ -7,26 +7,25 @@ import Button from '../button/button';
 import styles from './header.module.css';
 import Profile from '../profile/profile';
 import { getCurrentUser } from '@/services';
-import { User } from '@/common/interfaces';
+import { useUserStore } from '@/stores/user-store';
 
 function UserMenu() {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const user = useUserStore((state) => state.getUser());
+  const setUser = useUserStore((state) => state.setUser);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
         const user = await getCurrentUser();
-        if (!user) {
-          setCurrentUser(null);
-        } else {
-          setCurrentUser(user);
-        }
+        if (!user) setUser(null);
+        else setUser(user);
       } finally {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [setUser]);
 
   if (loading) {
     return <p className={styles.loading}>Đang tải...</p>;
@@ -34,7 +33,7 @@ function UserMenu() {
 
   return (
     <>
-      {!currentUser ? (
+      {!user ? (
         <Button
           text="Đăng nhập"
           type="link"
@@ -42,7 +41,7 @@ function UserMenu() {
           className={styles.register}
         />
       ) : (
-        <Profile currentUser={currentUser} />
+        <Profile currentUser={user} />
       )}
     </>
   );
