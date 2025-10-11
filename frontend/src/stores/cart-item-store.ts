@@ -9,9 +9,11 @@ type CartItemStore = {
   setCartItems: (cartItems: CartItem[]) => void;
   addCartItem: (cartItem: CartItem, quantity: number) => void;
   deleteCartItem: (cartItem: CartItem) => void;
+  updateCartItemQuantity: (cartItem: CartItem, quantity: number) => void;
+  getCartItem: (cartItemId: string) => CartItem | undefined;
 };
 
-const useCartItemsStore = create<CartItemStore>((set) => {
+const useCartItemsStore = create<CartItemStore>((set, get) => {
   return {
     cartItems: [],
     length: 0,
@@ -51,6 +53,21 @@ const useCartItemsStore = create<CartItemStore>((set) => {
           length: newCart.length,
         };
       });
+    },
+    updateCartItemQuantity: (cartItem, quantity) => {
+      set((state) => {
+        const updatedItems = state.cartItems.map((item) =>
+          item.id === cartItem.id ? { ...item, quantity } : item,
+        );
+        return {
+          cartItems: updatedItems,
+          length: updatedItems.length,
+        };
+      });
+    },
+    getCartItem: (cartItemId) => {
+      const cartItem = get().cartItems.find((item) => item.id === cartItemId);
+      return cartItem;
     },
   };
 });
