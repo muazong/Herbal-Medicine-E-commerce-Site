@@ -14,9 +14,7 @@ import { CartsService } from '../carts/carts.service';
 import { CartItem } from './entities/cart-item.entity';
 import { ProductsService } from '../products/products.service';
 import { CreateCartItemDto } from './dto/create-cart-item.dto';
-import { Product } from '../products/entities/product.entity';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
-import { pickBy } from 'lodash';
 
 @Injectable()
 export class CartItemsService {
