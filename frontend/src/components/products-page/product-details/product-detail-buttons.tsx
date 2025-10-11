@@ -1,13 +1,15 @@
 'use client';
 
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { CiCircleMinus } from 'react-icons/ci';
-
-import styles from './product-detail.module.css';
-import { useState } from 'react';
-import { addProductToCart } from '@/services/cart-service';
 import { toast } from 'sonner';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { CiCircleMinus } from 'react-icons/ci';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+
+import { PATH } from '@/common/enums';
+import styles from './product-detail.module.css';
 import useCartItemsStore from '@/stores/cart-item-store';
+import { addProductToCart } from '@/services/cart-service';
 
 function ProductDetailButtons({
   stock,
@@ -16,6 +18,7 @@ function ProductDetailButtons({
   stock: number;
   productId: string;
 }) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const addCartItem = useCartItemsStore((state) => state.addCartItem);
 
@@ -38,6 +41,10 @@ function ProductDetailButtons({
       toast.success(`Đã thêm ${quantity} sản phẩm vào giỏ`);
     }
   };
+  const handleBuy = () => {
+    handleAddToCart();
+    router.push(PATH.CART);
+  };
 
   return (
     <div className={styles.actions}>
@@ -56,7 +63,9 @@ function ProductDetailButtons({
         </div>
       </div>
       <div className={styles.buttons}>
-        <button className={styles.buy}>Mua ngay</button>
+        <button className={styles.buy} onClick={handleBuy}>
+          Mua
+        </button>
         <button className={styles.cart} onClick={handleAddToCart}>
           Thêm vào giỏ
         </button>
