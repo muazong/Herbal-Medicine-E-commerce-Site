@@ -19,6 +19,7 @@ import { Roles } from '../../common/decorators';
 import { RolesGuard } from '../../common/guards';
 import { CartItemsService } from './cart-items.service';
 import { CreateCartItemDto } from './dto/create-cart-item.dto';
+import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 
 @Roles(Role.ADMIN)
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -80,10 +81,13 @@ export class CartItemsController {
   // Update a cart item
   async update(
     @Param('cartItemId') cartItemId: string,
-    @Body('quantity') quantity: number,
+    @Body() updateCartItemDto: UpdateCartItemDto,
     @Res() res: Response,
   ) {
-    const response = await this.cartItemsService.update(cartItemId, quantity);
+    const response = await this.cartItemsService.update(
+      cartItemId,
+      updateCartItemDto,
+    );
     return res.location(`/cart-items/${response.cartItem.id}`).json(response);
   }
 

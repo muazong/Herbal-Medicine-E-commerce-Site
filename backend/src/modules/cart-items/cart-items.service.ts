@@ -15,6 +15,8 @@ import { CartItem } from './entities/cart-item.entity';
 import { ProductsService } from '../products/products.service';
 import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { Product } from '../products/entities/product.entity';
+import { UpdateCartItemDto } from './dto/update-cart-item.dto';
+import { pickBy } from 'lodash';
 
 @Injectable()
 export class CartItemsService {
@@ -217,21 +219,33 @@ export class CartItemsService {
    * @throws NotFoundException if the cart item is not found.
    * @throws Error if any other error occurs.
    */
-  async update(
-    cartItemId: string,
-    quantity: number,
-  ): Promise<{
-    message: string;
-    cartItem: CartItem;
-  }> {
+  async update(cartItemId: string, updateCartItemDto: UpdateCartItemDto) {
+    const { quantity, isOrdered } = updateCartItemDto;
+    let isUpdated = false;
+
     try {
       const cartItem = await this.findOne(cartItemId);
 
-      if (cartItem.quantity >= cartItem.product.stock) {
-        return { message: 'Out of stock', cartItem: cartItem };
+      if (quantity) {
+        if (cartItem.quantity >= cartItem.product.stock) {
+          return { message: 'Out of stock', cartItem: cartItem };
+        } else {
+          cartItem.quantity = quantity;
+          isUpdated = true;
+        }
       }
 
-      cartItem.quantity = quantity;
+      if (isOrdered) {
+        cartItem.isOrdered = isOrdered;
+        isUpdated = true;
+      }
+
+      if (!isUpdated) {
+        return {
+          message: 'Nothing to update',
+          cartItem: cartItem,
+        };
+      }
 
       const updatedCartItem = await this.cartItemRepo.save(cartItem);
       const cartItemReturn = (await this.cartItemRepo.findOne({

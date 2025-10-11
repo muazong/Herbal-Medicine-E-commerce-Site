@@ -19,4 +19,7 @@ export class CartItem extends AbstractEntity<CartItem> {
 
   @Column()
   quantity: number;
+
+  @Column({ default: false })
+  isOrdered: boolean;
 }

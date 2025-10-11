@@ -19,8 +19,8 @@ import { CartsService } from './carts.service';
 import { RolesGuard } from '../../common/guards';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { RequestUser } from '../../common/interfaces';
-import { UpdateCartDto } from './dto/update-cart.dto';
 import { CurrentUser, Roles } from '../../common/decorators';
+import { UpdateCartItemDto } from '../cart-items/dto/update-cart-item.dto';
 
 @Controller('carts')
 @Roles(Role.ADMIN)
@@ -83,18 +83,20 @@ export class CartsController {
     return res.location(`/carts/${response.cartItem.id}`).json(response);
   }
 
-  @Patch('update-quantity')
+  @Patch('update/cart-item/:cartItemId')
   @Roles(Role.ADMIN, Role.CLIENT)
   @HttpCode(HttpStatus.OK)
   // Updates the quantity of a product in a user's cart.
-  async updateQuantityFromUserCart(
-    @Body() updateCartDto: UpdateCartDto,
+  async updateCartItem(
+    @Param('cartItemId') cartItemId: string,
+    @Body() updateCartItemDto: UpdateCartItemDto,
     @CurrentUser() user: RequestUser,
     @Res() res: Response,
   ) {
-    const response = await this.cartsService.updateQuantityFromUserCart(
+    const response = await this.cartsService.updateCartItem(
       user.id,
-      updateCartDto,
+      cartItemId,
+      updateCartItemDto,
     );
 
     // FIX: return cart id

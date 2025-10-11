@@ -19,6 +19,7 @@ import { ProductsService } from '../products/products.service';
 import { CartItem } from '../cart-items/entities/cart-item.entity';
 import { CartItemsService } from '../cart-items/cart-items.service';
 import { Product } from '../products/entities/product.entity';
+import { UpdateCartItemDto } from '../cart-items/dto/update-cart-item.dto';
 
 @Injectable()
 export class CartsService {
@@ -187,10 +188,9 @@ export class CartsService {
           newQuantity = existedCartItem.product.stock;
         }
 
-        return await this.cartItemService.update(
-          existedCartItem.id,
-          newQuantity,
-        );
+        return await this.cartItemService.update(existedCartItem.id, {
+          quantity: newQuantity,
+        });
       }
 
       let newQuantity = quantity;
@@ -220,30 +220,18 @@ export class CartsService {
    * @throws NotFoundException if the cart item is not found.
    * @throws Error if any other error occurs.
    */
-  async updateQuantityFromUserCart(
+  async updateCartItem(
     userId: string,
-    updateCartDto: UpdateCartDto,
+    cartItemId: string,
+    updateCartItemDto: UpdateCartItemDto,
   ): Promise<{
     message: string;
     cartItem: CartItem;
   }> {
-    const { productId, quantity } = updateCartDto;
-
     try {
       const user = await this.userService.findOne(userId);
-      const cart = await this.findCartByUserId(user.id);
-
-      const existedCartItem =
-        await this.cartItemService.findOneByCartIdAndProductId(
-          cart.id,
-          productId,
-        );
-
-      if (!existedCartItem) {
-        throw new NotFoundException('Cart item not found');
-      }
-
-      return await this.cartItemService.update(existedCartItem.id, quantity);
+      await this.findCartByUserId(user.id);
+      return await this.cartItemService.update(cartItemId, updateCartItemDto);
     } catch (error) {
       const err = error as Error;
       this.logger.error(
