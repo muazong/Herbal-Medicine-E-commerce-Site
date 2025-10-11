@@ -41,15 +41,18 @@ export async function deleteProductFromUserCart(productId: string) {
   }
 }
 
-export async function updateCartItemQuantityFromUserCart(
-  productId: string,
-  quantity: number,
+export async function updateCartItem(
+  cartItem: string,
+  { quantity, isOrdered }: { quantity?: number; isOrdered?: boolean },
 ) {
   try {
-    const response = await apiWithAuth.patch('/carts/update-quantity', {
-      productId,
-      quantity,
-    });
+    const response = await apiWithAuth.patch(
+      `/carts/update/cart-item/${cartItem}`,
+      {
+        quantity,
+        isOrdered,
+      },
+    );
 
     if (!response) return null;
     return response.data;
