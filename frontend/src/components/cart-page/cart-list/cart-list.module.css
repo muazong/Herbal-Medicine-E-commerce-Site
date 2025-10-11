@@ -57,6 +57,27 @@
             }
           }
         }
+
+        &.quantity {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          p {
+            font-size: 16px;
+          }
+
+          .icon {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+              transform: scale(1.2);
+            }
+          }
+        }
       }
 
       &:hover {
