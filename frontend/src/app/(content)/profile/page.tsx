@@ -1,13 +1,14 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState } from 'react';
-import { FaPenToSquare } from 'react-icons/fa6';
 import Image from 'next/image';
+import { FaPenToSquare } from 'react-icons/fa6';
+import { ChangeEvent, useEffect, useState } from 'react';
 
+import { env } from '@/common/config';
 import styles from './page.module.css';
 import { User } from '@/common/interfaces';
+import { USER_ROLES } from '@/common/enums';
 import { getCurrentUser } from '@/services';
-import { env } from '@/common/config';
 import { apiWithAuth } from '@/services/axios-instance-client';
 
 export default function ProfilePage() {
@@ -49,12 +50,13 @@ export default function ProfilePage() {
     }
   };
 
-  if (!user)
+  if (!user) {
     return (
       <div style={{ height: '100vh', marginTop: 'var(--header-height)' }}>
         <p>Không có thông tin của tài khoản.</p>
       </div>
     );
+  }
 
   const avatarSrc =
     localAvatar ||
@@ -131,7 +133,7 @@ export default function ProfilePage() {
             {user.firstName} {user.lastName}
           </h1>
           <p className={styles.role}>
-            {user.role === 'admin' ? 'Quản trị viên' : 'Khách hàng'}
+            {user.role === USER_ROLES.ADMIN ? 'Quản trị viên' : 'Khách hàng'}
           </p>
           <p>Email: {user.email}</p>
           {user.phone && <p>Số điện thoại: {user.phone}</p>}
