@@ -7,7 +7,7 @@ function CartPage() {
   return (
     <UserGuard>
       <div className={styles.container}>
-        <h1 className={notoSerif.className}>Giỏ hàng</h1>
+        <h1 className={notoSerif.className + ' ' + styles.title}>Giỏ hàng</h1>
         <div className={styles.cart}>
           <CartList />
           <CartSummary />

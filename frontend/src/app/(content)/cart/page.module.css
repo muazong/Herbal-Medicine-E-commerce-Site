@@ -5,7 +5,7 @@
   margin-top: var(--header-height);
   min-height: 100vh;
 
-  h1 {
+  .title {
     text-align: center;
     margin-bottom: 50px;
     text-transform: uppercase;
@@ -24,4 +24,8 @@
       border-radius: 2px;
     }
   }
+}
+
+.cart {
+  display: flex;
 }
