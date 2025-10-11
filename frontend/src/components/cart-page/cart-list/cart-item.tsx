@@ -19,9 +19,7 @@ function Cart({ cartItem }: { cartItem: CartItem }) {
   const { product, isOrdered } = cartItem;
   const deleteCartItem = useCartItemsStore((state) => state.deleteCartItem);
   const getCartItem = useCartItemsStore((state) => state.getCartItem);
-  const updateCartItemQuantity = useCartItemsStore(
-    (state) => state.updateCartItemQuantity,
-  );
+  const updateCartItem = useCartItemsStore((state) => state.updateCartItem);
   const debounceUpdateCartItem = useDebounceUpdateCartItem();
 
   const imgUrl =
@@ -46,11 +44,11 @@ function Cart({ cartItem }: { cartItem: CartItem }) {
     if (type === 'increase') {
       if (cartItem.quantity >= product.stock) return;
       isUpdated = true;
-      updateCartItemQuantity(cartItem, { quantity: cartItem.quantity + 1 });
+      updateCartItem(cartItem, { quantity: cartItem.quantity + 1 });
     } else {
       if (cartItem.quantity <= 1) return;
       isUpdated = true;
-      updateCartItemQuantity(cartItem, { quantity: cartItem.quantity - 1 });
+      updateCartItem(cartItem, { quantity: cartItem.quantity - 1 });
     }
 
     if (isUpdated) {
@@ -63,7 +61,7 @@ function Cart({ cartItem }: { cartItem: CartItem }) {
   };
 
   const handleIsOrderedChange = async (isOrdered: boolean) => {
-    updateCartItemQuantity(cartItem, { isOrdered });
+    updateCartItem(cartItem, { isOrdered });
 
     await debounceUpdateCartItem(cartItem.id, {
       isOrdered,
