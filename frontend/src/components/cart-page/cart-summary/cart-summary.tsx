@@ -20,7 +20,9 @@ function CartSummary() {
         <p>Tổng giá: {formatCurrency(totalPrice)}</p>
       </div>
 
-      <button>Đặt hàng</button>
+      <button className={styles.button} disabled={cartitems.length === 0}>
+        Đặt hàng
+      </button>
     </div>
   );
 }
