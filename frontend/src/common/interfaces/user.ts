@@ -1,6 +1,6 @@
 import { Media } from './media';
 import { AbstractInterface } from './abstract-interface';
-import { ACCOUNT_PROVIDERS, USER_ROLES } from '../enums';
+import { ACCOUNT_PROVIDERS, ACCOUNT_STATUS, USER_ROLES } from '../enums';
 
 export interface User extends AbstractInterface {
   firstName: string;
@@ -14,5 +14,5 @@ export interface User extends AbstractInterface {
   cover?: Media;
   provider: ACCOUNT_PROVIDERS;
   role: USER_ROLES;
-  status: string;
+  status: ACCOUNT_STATUS;
 }
