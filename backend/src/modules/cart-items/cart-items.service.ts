@@ -226,7 +226,7 @@ export class CartItemsService {
     try {
       const cartItem = await this.findOne(cartItemId);
 
-      if (quantity) {
+      if (quantity !== undefined) {
         if (cartItem.quantity >= cartItem.product.stock) {
           return { message: 'Out of stock', cartItem: cartItem };
         } else {
@@ -235,7 +235,7 @@ export class CartItemsService {
         }
       }
 
-      if (isOrdered) {
+      if (isOrdered !== undefined) {
         cartItem.isOrdered = isOrdered;
         isUpdated = true;
       }
