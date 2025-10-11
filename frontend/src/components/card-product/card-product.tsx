@@ -7,6 +7,7 @@ import { type Product } from '@/common/interfaces';
 import { PATH } from '@/common/enums';
 import { env } from '@/common/config';
 import RatingStars from '../rating-stars/rating-stars';
+import formatCurrency from '@/common/lib/format-currency';
 
 function CartProduct({ product }: { product: Product }) {
   const { id, name, description, price, sold, rating, category, media } =
@@ -47,7 +48,7 @@ function CartProduct({ product }: { product: Product }) {
           <div>
             <div>
               <p className={styles.sold}>Đã bán: {sold}</p>
-              <p className={styles.price}>{price}vnđ</p>
+              <p className={styles.price}>{formatCurrency(price)}</p>
             </div>
 
             {/* TODO: Add product to cart */}
