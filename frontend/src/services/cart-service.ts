@@ -40,3 +40,20 @@ export async function deleteProductFromUserCart(productId: string) {
     return null;
   }
 }
+
+export async function updateCartItemQuantityFromUserCart(
+  productId: string,
+  quantity: number,
+) {
+  try {
+    const response = await apiWithAuth.patch('/carts/update-quantity', {
+      productId,
+      quantity,
+    });
+
+    if (!response) return null;
+    return response.data;
+  } catch {
+    return null;
+  }
+}
