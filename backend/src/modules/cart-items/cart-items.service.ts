@@ -231,12 +231,7 @@ export class CartItemsService {
         return { message: 'Out of stock', cartItem: cartItem };
       }
 
-      let newQuantity = cartItem.quantity + quantity;
-
-      if (newQuantity > cartItem.product.stock) {
-        newQuantity = cartItem.product.stock;
-      }
-      cartItem.quantity = newQuantity;
+      cartItem.quantity = quantity;
 
       const updatedCartItem = await this.cartItemRepo.save(cartItem);
       const cartItemReturn = (await this.cartItemRepo.findOne({
@@ -245,7 +240,7 @@ export class CartItemsService {
       })) as CartItem;
 
       return {
-        message: `${newQuantity} item(s) added to your cart.`,
+        message: `${quantity} item(s) added to your cart.`,
         cartItem: cartItemReturn,
       };
     } catch (error) {

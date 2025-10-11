@@ -181,7 +181,16 @@ export class CartsService {
         );
 
       if (existedCartItem) {
-        return await this.cartItemService.update(existedCartItem.id, quantity);
+        let newQuantity = existedCartItem.quantity + quantity;
+
+        if (newQuantity > existedCartItem.product.stock) {
+          newQuantity = existedCartItem.product.stock;
+        }
+
+        return await this.cartItemService.update(
+          existedCartItem.id,
+          newQuantity,
+        );
       }
 
       let newQuantity = quantity;
