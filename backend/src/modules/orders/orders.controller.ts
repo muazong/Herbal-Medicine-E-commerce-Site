@@ -30,17 +30,24 @@ export class OrdersController {
 
   // ======================GET============================
   @Get()
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   // Get all orders
   findAll() {
     return this.ordersService.findAll();
   }
 
   @Get(':orderId')
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   // Get order by id
   findOne(@Param('orderId') orderId: string) {
     return this.ordersService.findOne(orderId);
+  }
+
+  @Get('user/products')
+  @Roles(Role.CLIENT, Role.ADMIN)
+  @HttpCode(HttpStatus.OK)
+  findUserProductsIsOrdered(@CurrentUser() user: RequestUser) {
+    return this.ordersService.findUserProductsIsOrdered(user.id);
   }
 
   // ======================POST============================
@@ -58,6 +65,7 @@ export class OrdersController {
 
   @Post('products')
   @HttpCode(HttpStatus.CREATED)
+  @Roles(Role.ADMIN, Role.CLIENT)
   // Order products
   async orderProducts(@CurrentUser() user: RequestUser) {
     return await this.ordersService.orderProducts(user.id);
