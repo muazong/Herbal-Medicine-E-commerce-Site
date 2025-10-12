@@ -117,10 +117,10 @@ export class CartsService {
    * @throws NotFoundException if the cart items are not found.
    * @throws Error if any other error occurs.
    */
-  async findUserCartItems(userId: string): Promise<CartItem[] | undefined> {
+  async findUserCartItems(userId: string) {
     try {
       const cart = await this.cartRepo.findOneBy({ userId });
-      if (!cart) return;
+      if (!cart) throw new NotFoundException('Cart not found');
       return await this.cartItemService.findCartItemsFromCart(cart.id);
     } catch (error) {
       const err = error as Error;
