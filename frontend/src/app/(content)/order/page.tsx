@@ -45,7 +45,7 @@ function OrderPage() {
         deleteCartItem(item);
       }
 
-      router.push(PATH.HOME);
+      router.push(PATH.ORDERED);
     } else {
       toast.error('Đặt hàng thất bại!');
     }
