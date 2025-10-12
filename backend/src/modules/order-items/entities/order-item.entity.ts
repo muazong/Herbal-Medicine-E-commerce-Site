@@ -14,7 +14,11 @@ export class OrderItem extends AbstractEntity<OrderItem> {
   @Column({ name: 'orderId' })
   orderId: string;
 
-  @ManyToOne(() => Product, { onDelete: 'SET NULL', nullable: true })
+  @ManyToOne(() => Product, {
+    onDelete: 'SET NULL',
+    nullable: true,
+    eager: true,
+  })
   @JoinColumn({ name: 'productId' })
   product: Product;
 
