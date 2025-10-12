@@ -12,6 +12,7 @@ import { notoSerif } from '@/common/fonts';
 import { useUserStore } from '@/stores/user-store';
 import useCartItemsStore from '@/stores/cart-item-store';
 import { orderProducts } from '@/services/order-service';
+import formatCurrency from '@/common/lib/format-currency';
 
 function OrderPage() {
   const router = useRouter();
@@ -81,14 +82,10 @@ function OrderPage() {
                   <p>{item.product.description}</p>
                   <div className={styles.priceRow}>
                     <span>
-                      {item.quantity} ×{' '}
-                      {item.product.price.toLocaleString('vi-VN')}₫
+                      {item.quantity} × {formatCurrency(item.product.price)}
                     </span>
                     <strong>
-                      {(item.product.price * item.quantity).toLocaleString(
-                        'vi-VN',
-                      )}
-                      ₫
+                      {formatCurrency(item.product.price * item.quantity)}
                     </strong>
                   </div>
                 </div>
@@ -124,7 +121,7 @@ function OrderPage() {
 
           <div className={styles.total}>
             <span>Tổng tiền:</span>
-            <strong>{totalPrice.toLocaleString('vi-VN')}₫</strong>
+            <strong>{formatCurrency(totalPrice)}</strong>
           </div>
 
           <button type="submit" className={styles.submitButton}>
