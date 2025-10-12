@@ -9,6 +9,7 @@ import { UsersService } from '../users/users.service';
 import { CartsService } from '../carts/carts.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { CartItemsService } from '../cart-items/cart-items.service';
 import { OrderItemsService } from '../order-items/order-items.service';
 
 @Injectable()
@@ -20,6 +21,7 @@ export class OrdersService {
 
     private readonly cartsService: CartsService,
     private readonly usersService: UsersService,
+    private readonly cartItemsService: CartItemsService,
     private readonly orderItemsService: OrderItemsService,
   ) {}
 
@@ -58,6 +60,20 @@ export class OrdersService {
       }
 
       return order;
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error('Failed to fetch order', err.stack);
+      throw err;
+    }
+  }
+
+  async findUserProductsIsOrdered(userId: string) {
+    try {
+      const user = await this.usersService.findOne(userId);
+      const orders = await this.orderRepo.find({
+        where: { user: { id: user.id } },
+      });
+      return orders;
     } catch (error) {
       const err = error as Error;
       this.logger.error('Failed to fetch order', err.stack);
@@ -117,36 +133,39 @@ export class OrdersService {
       const cartItemWithProducts =
         await this.cartsService.findUserProductsFromCartByUserId(userId);
 
-      const products = cartItemWithProducts.map((item) => item.product);
-
+      const cartItemsWithProductsIsOrdered = cartItemWithProducts.filter(
+        (item) => item.isOrdered,
+      );
       const newOrder = await this.create(
         { shippingAddress: user.address },
         userId,
       );
 
       const orderItems = await Promise.all(
-        products.map((product) => {
+        cartItemsWithProductsIsOrdered.map((cartItem) => {
           return this.orderItemsService.create({
             order: newOrder,
-            product,
+            product: cartItem.product,
             quantity:
-              cartItems.find((item) => item.productId === product.id)
+              cartItems.find((item) => item.productId === cartItem.product.id)
                 ?.quantity ?? 1,
           });
         }),
       );
-      const totalPrice = orderItems.reduce(
-        (acc, item) => acc + Number(item.totalPrice),
-        0,
-      );
+      const totalPrice = orderItems.reduce((acc, item) => {
+        if (!item) return acc;
+        return acc + Number(item.totalPrice);
+      }, 0);
 
       const order = await this.findOne(newOrder.id);
       order.totalPrice = totalPrice;
 
       await this.orderRepo.save(order);
 
-      const cart = await this.cartsService.findCartByUserId(userId);
-      await this.cartsService.remove(cart.id);
+      for (const cartItem of cartItemsWithProductsIsOrdered) {
+        await this.cartItemsService.remove(cartItem.id);
+      }
+
       return orderItems;
     } catch (error) {
       const err = error as Error;
