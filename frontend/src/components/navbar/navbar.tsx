@@ -97,6 +97,17 @@ function Navbar() {
             GIỚI THIỆU
           </Link>
         </li>
+        <li>
+          <Link
+            href={PATH.ORDERED}
+            className={
+              pathname.startsWith(PATH.ORDERED) ? styles.active : undefined
+            }
+            onMouseEnter={handleHover}
+          >
+            ĐƠN MUA
+          </Link>
+        </li>
       </ul>
 
       <span
