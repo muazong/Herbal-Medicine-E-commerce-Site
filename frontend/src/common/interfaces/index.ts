@@ -4,6 +4,8 @@ import { Product } from './product';
 import { User } from './user';
 import { Cart } from './cart';
 import { CartItem } from './cart-item';
+import { Order } from './order';
+import { OrderItem } from './order-item';
 
 export {
   type Category,
@@ -12,4 +14,6 @@ export {
   type User,
   type Cart,
   type CartItem,
+  type Order,
+  type OrderItem,
 };
