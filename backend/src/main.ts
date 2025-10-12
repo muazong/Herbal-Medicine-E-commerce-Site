@@ -1,3 +1,8 @@
+/**
+ * What the hell is this? I don't even know.
+ * I can’t even remember what the heck I coded.
+ */
+
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
