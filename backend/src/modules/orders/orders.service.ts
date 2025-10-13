@@ -136,6 +136,11 @@ export class OrdersService {
       const cartItemsWithProductsIsOrdered = cartItemWithProducts.filter(
         (item) => item.isOrdered,
       );
+
+      if (cartItemsWithProductsIsOrdered.length === 0) {
+        throw new BadRequestException('You have no items in your cart');
+      }
+
       const newOrder = await this.create(
         { shippingAddress: user.address },
         userId,
