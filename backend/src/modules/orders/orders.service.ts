@@ -67,11 +67,12 @@ export class OrdersService {
     }
   }
 
-  async findUserProductsIsOrdered(userId: string) {
+  async findUserProductsIsOrdered(userId: string, orderBy: keyof Order) {
     try {
       const user = await this.usersService.findOne(userId);
       const orders = await this.orderRepo.find({
         where: { user: { id: user.id } },
+        order: { [orderBy]: 'DESC' },
       });
       return orders;
     } catch (error) {
