@@ -28,7 +28,7 @@
       transition: 0.2s;
 
       &:focus {
-        border-color: #4caf50;
+        border-color: var(--primary-color);
         outline: none;
         box-shadow: 0 0 4px rgba(76, 175, 80, 0.3);
       }
@@ -50,15 +50,15 @@
     width: 100%;
     padding: 12px;
     font-size: 1.1rem;
-    background: #4caf50;
-    color: #fff;
+    background: #43a047;
+    color: var(--white-color);
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: 0.2s;
 
     &:hover {
-      background: #43a047;
+      background: var(--primary-color);
     }
   }
 }
