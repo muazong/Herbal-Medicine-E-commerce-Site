@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { TiTimes } from 'react-icons/ti';
 
 import { env } from '@/common/config';
 import styles from './order-list.module.css';
@@ -37,7 +38,8 @@ function OrderList() {
               <p>{item.product.description}</p>
               <div className={styles.priceRow}>
                 <span>
-                  {item.quantity} × {formatCurrency(item.product.price)}
+                  {item.quantity} <TiTimes />{' '}
+                  {formatCurrency(item.product.price)}
                 </span>
                 <strong>
                   {formatCurrency(item.product.price * item.quantity)}
