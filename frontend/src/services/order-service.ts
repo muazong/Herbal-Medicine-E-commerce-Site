@@ -1,5 +1,14 @@
+import { ORDER_STATUS, PAYMENT_METHOD } from '@/common/enums';
 import { Order } from '@/common/interfaces';
 import { apiWithAuth } from '@/services/axios-instance-client';
+
+export type OrderFormData = {
+  paymentMethod: PAYMENT_METHOD;
+  phoneNumber: string;
+  shippingAddress: string;
+  userName: string;
+  status?: ORDER_STATUS;
+};
 
 export const getOrders = async (orderBy: keyof Order) => {
   try {
@@ -23,9 +32,21 @@ export const getOrder = async (orderId: string) => {
   }
 };
 
-export const orderProducts = async () => {
+export const orderProducts = async (orderData: OrderFormData) => {
   try {
-    const response = await apiWithAuth.post('/orders/products');
+    const response = await apiWithAuth.post('/orders/products', orderData);
+    if (!response.data) return null;
+    return response.data;
+  } catch {
+    return null;
+  }
+};
+
+export const updateUserOrder = async (
+  orderData: Partial<Omit<OrderFormData, 'userName'>>,
+) => {
+  try {
+    const response = await apiWithAuth.patch('/orders', orderData);
     if (!response.data) return null;
     return response.data;
   } catch {
