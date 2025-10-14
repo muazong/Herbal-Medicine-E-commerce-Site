@@ -1,12 +1,13 @@
-import { Metadata } from 'next';
 import Image from 'next/image';
+import { Metadata } from 'next';
+
 import styles from './page.module.css';
+import { notoSerif } from '@/common/fonts';
 
 import about_image1 from '@/assets/images/abouts/about_1.png';
 import about_image2 from '@/assets/images/abouts/about_2.png';
 import about_image3 from '@/assets/images/abouts/about_3.png';
 import about_image4 from '@/assets/images/abouts/about_4.png';
-import { notoSerif } from '@/common/fonts';
 
 export const metadata: Metadata = {
   title: 'Về chúng tôi',

@@ -1,7 +1,8 @@
-import { ProductDetails } from '@/components/products-page';
+import { Metadata } from 'next';
+
 import styles from './page.module.css';
 import { getProduct } from '@/services/products-service';
-import { Metadata } from 'next';
+import { ProductDetails } from '@/components/products-page';
 
 type Props = {
   params: Promise<{ productId: string }>;

@@ -1,11 +1,12 @@
 import { use } from 'react';
+import Link from 'next/link';
+
+import { PATH } from '@/common/enums';
+import ProductGallery from './product-gallery';
 import styles from './product-detail.module.css';
 import { getProduct } from '@/services/products-service';
-import ProductGallery from './product-gallery';
-import Link from 'next/link';
-import { PATH } from '@/common/enums';
-import RatingStars from '@/components/rating-stars/rating-stars';
 import ProductDetailButtons from './product-detail-buttons';
+import RatingStars from '@/components/rating-stars/rating-stars';
 
 type Props = { productId: string };
 
