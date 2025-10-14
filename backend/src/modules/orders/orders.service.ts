@@ -207,34 +207,40 @@ export class OrdersService {
         throw new NotFoundException('Order not found');
       }
 
-      if (status) {
-        if (
-          order.status !== OrderStatus.PENDING &&
-          order.status !== OrderStatus.CONFIRMED &&
-          status === OrderStatus.CANCELLED
-        ) {
-          throw new BadRequestException('Order cannot be cancelled');
-        }
+      if (
+        order.status === OrderStatus.DELIVERED ||
+        order.status === OrderStatus.CANCELLED
+      ) {
+        throw new BadRequestException('Order cannot be updated anymore');
       }
 
-      const fieldsToUpdate = pickBy(
-        updateOrderDto,
-        (value) => value !== undefined,
-      );
-
-      Object.assign(order, fieldsToUpdate);
-
       if (status === OrderStatus.CANCELLED) {
-        order.orderItems.forEach((orderItem) => {
-          orderItem.status = OrderItemStatus.CANCELLED;
+        if (
+          (order.status as OrderStatus) === OrderStatus.SHIPPED ||
+          (order.status as OrderStatus) === OrderStatus.DELIVERED
+        ) {
+          throw new BadRequestException(
+            'Order cannot be cancelled at this stage',
+          );
+        }
+
+        order.orderItems.forEach((item) => {
+          item.status = OrderItemStatus.CANCELLED;
         });
+
+        order.status = OrderStatus.CANCELLED;
+      } else {
+        const fieldsToUpdate = pickBy(
+          updateOrderDto,
+          (value) => value !== undefined,
+        );
+        Object.assign(order, fieldsToUpdate);
       }
 
       return await this.orderRepo.save(order);
     } catch (error) {
-      const err = error as Error;
-      this.logger.error('Failed to update order', err.stack);
-      throw err;
+      this.logger.error('Failed to update order', (error as Error).stack);
+      throw error;
     }
   }
 
