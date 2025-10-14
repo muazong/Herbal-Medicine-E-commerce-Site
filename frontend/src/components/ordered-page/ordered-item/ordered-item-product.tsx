@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { PATH } from '@/common/enums';
+import { ORDER_STATUS, PATH } from '@/common/enums';
 import styles from './ordered-item.module.css';
 import { OrderItem } from '@/common/interfaces';
 import { order_status_vi } from '@/common/config';
@@ -23,12 +23,16 @@ function OrderedItemProduct({
       <td>{order_status_vi[item.status]}</td>
       <td>{formatDayVi(item.createdAt)}</td>
       <td>
-        <Link
-          className={styles.detail}
-          href={`${PATH.ORDERED}/${item.orderId}`}
-        >
-          Xem chi tiết
-        </Link>
+        {item.status === ORDER_STATUS.CANCELLED ? (
+          <p className={styles.cancelText}>Đã huỷ</p>
+        ) : (
+          <Link
+            className={styles.detail}
+            href={`${PATH.ORDERED}/${item.orderId}`}
+          >
+            Xem chi tiết
+          </Link>
+        )}
       </td>
     </tr>
   );

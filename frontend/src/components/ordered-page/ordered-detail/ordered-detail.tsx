@@ -1,9 +1,11 @@
 'use client';
 
+import { notFound } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import styles from './ordered-detail.module.css';
 
 import { Order } from '@/common/interfaces';
+import { ORDER_STATUS } from '@/common/enums';
+import styles from './ordered-detail.module.css';
 import { getOrder } from '@/services/order-service';
 import OrderedDetailForm from './ordered-detail-form';
 import OrderedDetailProducts from './ordered-detail-products';
@@ -19,6 +21,10 @@ export default function OrderedDetail({ orderId }: { orderId: string }) {
   }, [orderId]);
 
   if (!order) return <div className={styles.empty}>Đang tải đơn hàng...</div>;
+
+  if (order.status === ORDER_STATUS.CANCELLED) {
+    notFound();
+  }
 
   return (
     <div className={styles.container}>

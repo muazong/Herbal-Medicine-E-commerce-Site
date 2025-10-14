@@ -22,7 +22,7 @@ function OrderedDetailForm({ order }: { order: Order }) {
     const result = await updateUserOrder({ status: ORDER_STATUS.CANCELLED });
     if (result) {
       toast.success('Đơn hàng đã được hủy');
-      router.replace(PATH.ORDER);
+      router.replace(PATH.ORDERED);
     } else {
       toast.error('Đơn hàng không thể được hủy');
     }
