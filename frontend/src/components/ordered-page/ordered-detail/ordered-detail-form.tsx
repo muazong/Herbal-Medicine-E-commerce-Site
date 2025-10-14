@@ -18,6 +18,16 @@ function OrderedDetailForm({ order }: { order: Order }) {
     userName: order.userName,
   });
 
+  const handleSaveOrder = async () => {
+    const { userName, status, ...rest } = orderDataForm;
+    const result = await updateUserOrder(rest);
+    if (result) {
+      toast.success('Đơn hàng đã được cập nhật');
+    } else {
+      toast.error('Đơn hàng không thể được cập nhật');
+    }
+  };
+
   const handleCancelOrder = async () => {
     const result = await updateUserOrder({ status: ORDER_STATUS.CANCELLED });
     if (result) {
@@ -77,6 +87,7 @@ function OrderedDetailForm({ order }: { order: Order }) {
           type="button"
           disabled={order.status !== ORDER_STATUS.PENDING}
           className={styles.saveBtn}
+          onClick={handleSaveOrder}
         >
           Lưu thay đổi
         </button>
