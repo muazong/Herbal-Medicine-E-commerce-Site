@@ -66,6 +66,18 @@
         }
       }
 
+      .saveBtn {
+        &:disabled {
+          background-color: var(--secondary-color);
+          color: var(--gray-color);
+          cursor: not-allowed;
+        }
+
+        &:not(:disabled):hover {
+          background-color: #0e3b0e;
+        }
+      }
+
       .cancelBtn {
         background-color: var(--error-color);
         color: var(--white-color);

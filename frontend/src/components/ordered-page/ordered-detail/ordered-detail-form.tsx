@@ -50,6 +50,7 @@ function OrderedDetailForm({ order }: { order: Order }) {
         onChange={(e) =>
           setOrderDataForm({ ...orderDataForm, phoneNumber: e.target.value })
         }
+        disabled={order.status !== ORDER_STATUS.PENDING}
       />
 
       <label>Địa chỉ giao hàng:</label>
@@ -62,11 +63,13 @@ function OrderedDetailForm({ order }: { order: Order }) {
             shippingAddress: e.target.value,
           })
         }
+        disabled={order.status !== ORDER_STATUS.PENDING}
       />
 
       <label>Phương thức thanh toán:</label>
       <select
         value={orderDataForm.paymentMethod}
+        disabled={order.status !== ORDER_STATUS.PENDING}
         onChange={(e) =>
           setOrderDataForm({
             ...orderDataForm,
