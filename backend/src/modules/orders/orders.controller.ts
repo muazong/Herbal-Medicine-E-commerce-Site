@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Param,
+  Query,
   Delete,
   HttpCode,
   UseGuards,
@@ -15,6 +16,7 @@ import { Response } from 'express';
 
 import { Role } from '../../common/enums';
 import { JwtAuthGuard } from '../auth/guards';
+import { Order } from './entities/order.entity';
 import { RolesGuard } from '../../common/guards';
 import { OrdersService } from './orders.service';
 import { RequestUser } from '../../common/interfaces';
@@ -38,6 +40,7 @@ export class OrdersController {
 
   @Get(':orderId')
   @HttpCode(HttpStatus.OK)
+  @Roles(Role.CLIENT, Role.ADMIN)
   // Get order by id
   findOne(@Param('orderId') orderId: string) {
     return this.ordersService.findOne(orderId);
@@ -46,8 +49,11 @@ export class OrdersController {
   @Get('user/products')
   @Roles(Role.CLIENT, Role.ADMIN)
   @HttpCode(HttpStatus.OK)
-  findUserProductsIsOrdered(@CurrentUser() user: RequestUser) {
-    return this.ordersService.findUserProductsIsOrdered(user.id);
+  findUserProductsIsOrdered(
+    @CurrentUser() user: RequestUser,
+    @Query('orderBy') orderBy: keyof Order,
+  ) {
+    return this.ordersService.findUserProductsIsOrdered(user.id, orderBy);
   }
 
   // ======================POST============================
@@ -67,17 +73,21 @@ export class OrdersController {
   @HttpCode(HttpStatus.CREATED)
   @Roles(Role.ADMIN, Role.CLIENT)
   // Order products
-  async orderProducts(@CurrentUser() user: RequestUser) {
-    return await this.ordersService.orderProducts(user.id);
+  async orderProducts(
+    @Body() createOrderDto: CreateOrderDto,
+    @CurrentUser() user: RequestUser,
+  ) {
+    return await this.ordersService.orderProducts(createOrderDto, user.id);
   }
 
   // ======================PATCH============================
-  @Patch(':orderId')
+  @Patch()
+  @Roles(Role.ADMIN, Role.CLIENT)
   update(
-    @Param('orderId') orderId: string,
     @Body() updateOrderDto: UpdateOrderDto,
+    @CurrentUser() user: RequestUser,
   ) {
-    return this.ordersService.update(orderId, updateOrderDto);
+    return this.ordersService.update(updateOrderDto, user.id);
   }
 
   // ======================DELETE============================

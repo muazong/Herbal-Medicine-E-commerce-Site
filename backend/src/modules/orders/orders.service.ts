@@ -2,7 +2,12 @@ import { pickBy } from 'lodash';
 import { Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Logger, Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Logger,
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { Order } from './entities/order.entity';
 import { UsersService } from '../users/users.service';
@@ -11,6 +16,8 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { CartItemsService } from '../cart-items/cart-items.service';
 import { OrderItemsService } from '../order-items/order-items.service';
+import { OrderItemStatus, OrderStatus } from '../../common/enums';
+import { RequestUser } from '../../common/interfaces';
 
 @Injectable()
 export class OrdersService {
@@ -122,7 +129,10 @@ export class OrdersService {
     }
   }
 
-  async orderProducts(userId: string) {
+  async orderProducts(createOrderDto: CreateOrderDto, userId: string) {
+    const { paymentMethod, phoneNumber, userName, shippingAddress } =
+      createOrderDto;
+
     try {
       const user = await this.usersService.findOne(userId);
       const cartItems = await this.cartsService.findUserCartItems(user.id);
@@ -143,7 +153,7 @@ export class OrdersService {
       }
 
       const newOrder = await this.create(
-        { shippingAddress: user.address },
+        { paymentMethod, phoneNumber, userName, shippingAddress },
         userId,
       );
 
@@ -187,12 +197,25 @@ export class OrdersService {
    * @returns Promise<Order> - The updated order
    * @throws Error - If the order repository fails to update the order
    */
-  async update(
-    orderId: string,
-    updateOrderDto: UpdateOrderDto,
-  ): Promise<Order> {
+  async update(updateOrderDto: UpdateOrderDto, userId: string): Promise<Order> {
+    const { status } = updateOrderDto;
+
     try {
-      const order = await this.findOne(orderId);
+      const order = await this.findOneByUserId(userId);
+
+      if (!order) {
+        throw new NotFoundException('Order not found');
+      }
+
+      if (status) {
+        if (
+          order.status !== OrderStatus.PENDING &&
+          order.status !== OrderStatus.CONFIRMED &&
+          status === OrderStatus.CANCELLED
+        ) {
+          throw new BadRequestException('Order cannot be cancelled');
+        }
+      }
 
       const fieldsToUpdate = pickBy(
         updateOrderDto,
@@ -200,6 +223,13 @@ export class OrdersService {
       );
 
       Object.assign(order, fieldsToUpdate);
+
+      if (status === OrderStatus.CANCELLED) {
+        order.orderItems.forEach((orderItem) => {
+          orderItem.status = OrderItemStatus.CANCELLED;
+        });
+      }
+
       return await this.orderRepo.save(order);
     } catch (error) {
       const err = error as Error;
