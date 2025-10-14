@@ -3,6 +3,7 @@ import { OrderStatus, PaymentMethods } from '../../../common/enums';
 
 export class UpdateOrderDto {
   @IsString()
+  @IsOptional()
   @Length(1, 255)
   shippingAddress?: string;
 

@@ -8,12 +8,21 @@ import { OrderItem } from '../../order-items/entities/order-item.entity';
 
 @Entity({ name: 'orders' })
 export class Order extends AbstractEntity<Order> {
-  @ManyToOne(() => User, (user) => user.order, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.order, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
   @JoinColumn({ name: 'userId' })
   user: User;
 
   @Column({ name: 'userId' })
   userId: string;
+
+  @Column()
+  userName: string;
+
+  @Column()
+  phoneNumber: string;
 
   @Column({ nullable: true })
   shippingAddress?: string;
