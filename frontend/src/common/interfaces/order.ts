@@ -4,6 +4,8 @@ import { AbstractInterface } from './abstract-interface';
 
 export interface Order extends AbstractInterface {
   userId: string;
+  userName: string;
+  phoneNumber: string;
   shippingAddress: string;
   paymentMethod: PAYMENT_METHOD;
   status: ORDER_STATUS;
