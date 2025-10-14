@@ -1,0 +1,146 @@
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  margin-top: var(--header-height);
+  background-color: var(--white-color);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .title {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    label {
+      font-weight: 600;
+      color: var(--gray-color);
+    }
+
+    input,
+    select {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--secondary-color);
+      border-radius: 6px;
+      background-color: #fafafa;
+      outline: none;
+      transition: 0.2s;
+
+      &:focus {
+        border-color: var(--primary-color);
+        background-color: var(--white-color);
+      }
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+
+      .saveBtn,
+      .cancelBtn {
+        margin-top: 1rem;
+        padding: 0.6rem 1rem;
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        font-weight: 600;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+          background-color: #144d18;
+        }
+      }
+
+      .cancelBtn {
+        background-color: var(--error-color);
+        color: var(--white-color);
+
+        &:disabled {
+          background-color: var(--secondary-color);
+          color: var(--gray-color);
+          cursor: not-allowed;
+        }
+
+        &:not(:disabled):hover {
+          background-color: #a41b1b;
+        }
+      }
+    }
+  }
+
+  .products {
+    h2 {
+      color: var(--brown-color);
+      margin-bottom: 0.75rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: var(--white-color);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+
+      thead {
+        background-color: var(--primary-color);
+        color: var(--white-color);
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--secondary-color);
+      }
+
+      td {
+        color: var(--gray-color);
+        font-size: 0.9rem;
+
+        .link {
+          color: var(--primary-color);
+          text-decoration: underline;
+          transition: 0.2s ease;
+        }
+      }
+
+      tr:hover td {
+        background-color: var(--secondary-color);
+        transition: 0.2s ease;
+      }
+    }
+
+    .total {
+      text-align: right;
+      font-weight: 600;
+      color: var(--brown-color);
+      font-size: 1.1rem;
+
+      span {
+        color: var(--primary-color);
+      }
+    }
+  }
+
+  .empty {
+    color: var(--gray-color);
+    text-align: center;
+    font-style: italic;
+    margin-top: 3rem;
+  }
+}
