@@ -2,10 +2,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import '@smastrom/react-rating/style.css';
 
-import styles from './card-product.module.css';
-import { type Product } from '@/common/interfaces';
 import { PATH } from '@/common/enums';
 import { env } from '@/common/config';
+import styles from './card-product.module.css';
+import { type Product } from '@/common/interfaces';
 import RatingStars from '../rating-stars/rating-stars';
 import formatCurrency from '@/common/lib/format-currency';
 
