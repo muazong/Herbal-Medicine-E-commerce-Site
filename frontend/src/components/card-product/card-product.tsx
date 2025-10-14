@@ -50,9 +50,7 @@ function CartProduct({ product }: { product: Product }) {
               <p className={styles.sold}>Đã bán: {sold}</p>
               <p className={styles.price}>{formatCurrency(price)}</p>
             </div>
-
-            {/* TODO: Add product to cart */}
-            <button className={styles.btn}>Thêm vào giỏ hàng</button>
+            <button className={styles.btn}>Xem chi tiết</button>
           </div>
         </div>
       </Link>
