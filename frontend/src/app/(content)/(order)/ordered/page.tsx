@@ -1,13 +1,29 @@
-import Link from 'next/link';
+'use client';
 
-import { PATH } from '@/common/enums';
+import Link from 'next/link';
+import { useEffect } from 'react';
+
 import styles from './page.module.css';
 import { notoSerif } from '@/common/fonts';
+import { ORDER_STATUS, PATH } from '@/common/enums';
+import { useOrderStore } from '@/stores/order-store';
+import { getOrders } from '@/services/order-service';
 import { OrderedList } from '@/components/ordered-page';
 
-// TODO: Xếp loại order đã huỷ hoặc chưa huỷ ở đây và truyền thông qua OrderedList
-
 function OrderedPage() {
+  const orders = useOrderStore((state) => state.orders);
+  const ordersWithoutCanceled = orders.filter(
+    (order) => order.status !== ORDER_STATUS.CANCELLED,
+  );
+  const setOrders = useOrderStore((state) => state.setOrders);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getOrders('createdAt');
+      setOrders(data || []);
+    })();
+  }, [setOrders]);
+
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
@@ -17,7 +33,7 @@ function OrderedPage() {
           Đơn hàng đã huỷ
         </Link>
       </div>
-      <OrderedList />
+      <OrderedList orders={ordersWithoutCanceled} />
     </div>
   );
 }
