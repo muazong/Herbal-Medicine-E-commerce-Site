@@ -1,6 +1,7 @@
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
+  padding-top: 60px;
   margin-top: var(--header-height);
   background-color: var(--white-color);
   border-radius: 12px;
