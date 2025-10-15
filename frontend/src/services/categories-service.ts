@@ -24,4 +24,14 @@ async function getProductsByCategory(categoryId: string, limit?: number) {
   }
 }
 
-export { getCategories, getProductsByCategory };
+async function searchProducts(search: string) {
+  try {
+    const response = await api.get(`/products?search=${search}`);
+    if (!response.data) return null;
+    return response.data as Product[];
+  } catch {
+    return null;
+  }
+}
+
+export { getCategories, getProductsByCategory, searchProducts };
