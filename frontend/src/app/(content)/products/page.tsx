@@ -1,10 +1,8 @@
-import { IoIosSearch } from 'react-icons/io';
+import { Metadata } from 'next';
 
 import styles from './page.module.css';
-import { roboto } from '@/common/fonts';
-import { Products } from '@/components';
 import { Sidebar } from '@/components/products-page';
-import { Metadata } from 'next';
+import ProductContent from '@/components/products-page/product-content/product-content';
 
 export const metadata: Metadata = {
   title: 'Sản phẩm',
@@ -26,25 +24,7 @@ async function ProductsPage({
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <Sidebar />
-
-        <div className={styles.content}>
-          <div className={styles.search}>
-            <div className={styles.icon}>
-              <IoIosSearch />
-              <p>Tìm kiểm</p>
-            </div>
-
-            <input
-              type="search"
-              className={roboto.className}
-              placeholder="Tìm kiếm sản phẩm"
-            />
-          </div>
-
-          <div className={styles.products}>
-            <Products categoryId={categoryId} limit={9} />
-          </div>
-        </div>
+        <ProductContent categoryId={categoryId} />
       </div>
     </div>
   );

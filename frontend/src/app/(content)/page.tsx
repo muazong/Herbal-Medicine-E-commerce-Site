@@ -1,8 +1,14 @@
 import { Metadata } from 'next';
 
+import {
+  Hero,
+  Propose,
+  TrustBadges,
+  NewestProducts,
+  OutstandingProducts,
+} from '@/components/home-page';
 import styles from './page.module.css';
-import { Categories, Products } from '@/components';
-import { Hero, Propose, TrustBadges } from '@/components/home-page';
+import { Categories } from '@/components';
 
 export const metadata: Metadata = {
   title: 'Trang chủ',
@@ -18,9 +24,9 @@ export default function Home() {
     <div className={styles.container}>
       <Hero />
       <TrustBadges />
-      <Products title="sản phẩm nổi bật" limit={8} orderBy="sold" />
+      <OutstandingProducts />
       <Categories />
-      <Products title="Sản phẩm mới nhất" limit={8} orderBy="createdAt" />
+      <NewestProducts />
       <Propose />
     </div>
   );
