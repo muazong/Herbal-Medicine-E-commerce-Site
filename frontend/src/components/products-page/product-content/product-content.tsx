@@ -3,15 +3,17 @@
 import { useEffect, useState } from 'react';
 import { IoIosSearch } from 'react-icons/io';
 
+import {
+  searchProducts,
+  getProductsByCategory,
+} from '@/services/categories-service';
 import { roboto } from '@/common/fonts';
 import { Products } from '@/components';
 import styles from './product-content.module.css';
 import { getProducts } from '@/services/products-service';
 import { useProductsStore } from '@/stores/products-store';
-import {
-  getProductsByCategory,
-  searchProducts,
-} from '@/services/categories-service';
+
+// FIX: Xử lý khi nhấn tất cả thì sẽ hiển thị toàn bộ các sản phẩm
 
 function ProductContent({ categoryId }: { categoryId?: string }) {
   const products = useProductsStore((state) => state.products);
