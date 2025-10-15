@@ -8,15 +8,15 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { pickBy } from 'lodash';
-import { Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
+import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Product } from './entities/product.entity';
+import { ProductMediaService } from '../media/services';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CategoriesService } from '../categories/categories.service';
-import { ProductMediaService } from '../media/services';
 
 @Injectable()
 export class ProductsService {
@@ -76,6 +76,17 @@ export class ProductsService {
     search?: string,
   ): Promise<Product[]> {
     try {
+      if (search) {
+        return await this.productRepo.find({
+          where: {
+            name: ILike(`%${search}%`),
+          },
+          order: {
+            [orderBy]: sort,
+          },
+        });
+      }
+
       if (limit && page) {
         return await this.productRepo.find({
           take: limit,
