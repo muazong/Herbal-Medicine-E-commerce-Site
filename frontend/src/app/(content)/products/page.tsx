@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 import styles from './page.module.css';
-import { Sidebar } from '@/components/products-page';
-import ProductContent from '@/components/products-page/product-content/product-content';
+import { Pagination, Sidebar } from '@/components/products-page';
+import { ProductContent } from '@/components/products-page';
 
 export const metadata: Metadata = {
   title: 'Sản phẩm',
@@ -20,6 +20,7 @@ async function ProductsPage() {
         <Sidebar />
         <ProductContent />
       </div>
+      <Pagination />
     </div>
   );
 }

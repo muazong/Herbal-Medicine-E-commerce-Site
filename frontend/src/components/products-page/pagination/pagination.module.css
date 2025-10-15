@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.item {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--gray-color);
+  background-color: var(--secondary-color);
+  transition: all 0.25s ease;
+  user-select: none;
+  border: 1px solid transparent;
+}
+
+.item:hover {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  transform: translateY(-2px);
+}
+
+.item.active {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: 1px solid var(--accent-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}

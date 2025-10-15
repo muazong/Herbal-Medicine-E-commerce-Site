@@ -2,32 +2,35 @@
 
 import { useEffect, useState } from 'react';
 import { IoIosSearch } from 'react-icons/io';
+import { useSearchParams } from 'next/navigation';
 
-import {
-  searchProducts,
-  getProductsByCategory,
-} from '@/services/categories-service';
 import { roboto } from '@/common/fonts';
 import { Products } from '@/components';
 import styles from './product-content.module.css';
-import { getProducts } from '@/services/products-service';
 import { useProductsStore } from '@/stores/products-store';
-import { useSearchParams } from 'next/navigation';
+import { usePaginationStore } from '@/stores/pagination-store';
+import { getProductsByCategory } from '@/services/categories-service';
+import { getProducts, searchProducts } from '@/services/products-service';
 
 function ProductContent() {
   const categoryId = useSearchParams().get('categoryId') || null;
+  const currentPage = usePaginationStore((state) => state.currentPage);
   const products = useProductsStore((state) => state.products);
   const setProducts = useProductsStore((state) => state.setProducts);
   const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
     (async () => {
+      if (!categoryId) {
+        setSearch('');
+      }
+
       const products = categoryId
         ? await getProductsByCategory(categoryId, 9)
-        : await getProducts(9);
+        : await getProducts(9, currentPage);
       setProducts(products || []);
     })();
-  }, [categoryId, setProducts]);
+  }, [categoryId, setProducts, currentPage]);
 
   const handleSearchProducts = async () => {
     const products = await searchProducts(search);
@@ -58,7 +61,7 @@ function ProductContent() {
 
       <div className={styles.products}>
         {!(products.length > 0) ? (
-          <p>Đang tải...</p>
+          <p>Không có sản phẩm nào.</p>
         ) : (
           <Products products={products} />
         )}
