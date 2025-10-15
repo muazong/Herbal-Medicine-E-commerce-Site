@@ -45,8 +45,11 @@ export class CategoriesController {
   @Public()
   @HttpCode(HttpStatus.OK)
   // Get products of a category
-  findProducts(@Param('categoryId') categoryId: string) {
-    return this.categoriesService.findProductsByCategory(categoryId);
+  findProducts(
+    @Param('categoryId') categoryId: string,
+    @Query('limit') limit: number,
+  ) {
+    return this.categoriesService.findProductsByCategory(categoryId, limit);
   }
 
   @Get(':categoryId')

@@ -101,22 +101,19 @@ export class CategoriesService {
    * @returns Promise<Product[]> - The list of products in the category.
    * @throws Error if any other error occurs.
    */
-  async findProductsByCategory(categoryId: string): Promise<Product[]> {
+  async findProductsByCategory(
+    categoryId: string,
+    limit: number,
+  ): Promise<Product[]> {
     try {
-      const existedCategory = await this.findOne(categoryId);
-      const products = await this.productService.findAll();
-
-      const productsFiltered = products.filter((product) => {
-        if (product.category) {
-          return product.category.id === existedCategory.id;
-        }
-        return false;
+      const existedCategory = await this.categoryRepo.findOne({
+        relations: ['products'],
+        where: { id: categoryId },
       });
 
-      if (productsFiltered.length > 0) {
-        return productsFiltered;
-      }
-      return [];
+      const products = existedCategory?.products;
+      if (!products) return [];
+      return products.slice(0, limit);
     } catch (error) {
       const err = error as Error;
       this.logger.error(
