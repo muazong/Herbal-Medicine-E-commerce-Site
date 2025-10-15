@@ -42,7 +42,7 @@ async function ProductsPage({
           </div>
 
           <div className={styles.products}>
-            <Products categoryId={categoryId} />
+            <Products categoryId={categoryId} limit={9} />
           </div>
         </div>
       </div>

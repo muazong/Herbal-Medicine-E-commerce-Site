@@ -12,7 +12,12 @@ async function getCategories(limit?: number) {
 
 async function getProductsByCategory(categoryId: string, limit?: number) {
   try {
-    const response = await api.get(`/categories/${categoryId}/products`);
+    const response = await api.get(
+      `/categories/${categoryId}/products?limit=${limit}`,
+    );
+
+    console.log(response.data);
+
     return response.data as Product[];
   } catch {
     return null;
