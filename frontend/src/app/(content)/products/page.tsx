@@ -13,18 +13,12 @@ export const metadata: Metadata = {
   },
 };
 
-async function ProductsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ categoryId?: string }>;
-}) {
-  const categoryId = (await searchParams).categoryId;
-
+async function ProductsPage() {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <Sidebar />
-        <ProductContent categoryId={categoryId} />
+        <ProductContent />
       </div>
     </div>
   );

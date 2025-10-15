@@ -12,10 +12,10 @@ import { Products } from '@/components';
 import styles from './product-content.module.css';
 import { getProducts } from '@/services/products-service';
 import { useProductsStore } from '@/stores/products-store';
+import { useSearchParams } from 'next/navigation';
 
-// FIX: Xử lý khi nhấn tất cả thì sẽ hiển thị toàn bộ các sản phẩm
-
-function ProductContent({ categoryId }: { categoryId?: string }) {
+function ProductContent() {
+  const categoryId = useSearchParams().get('categoryId') || null;
   const products = useProductsStore((state) => state.products);
   const setProducts = useProductsStore((state) => state.setProducts);
   const [search, setSearch] = useState<string>('');
