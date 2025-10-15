@@ -125,6 +125,21 @@ export class ProductsService {
     }
   }
 
+  async findAllPages() {
+    try {
+      const count = await this.productRepo.count();
+      const pages = Math.ceil(count / 9);
+      return pages;
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(
+        `Failed to find all products pages: ${err.message}`,
+        err.stack,
+      );
+      throw err;
+    }
+  }
+
   /**
    * Finds a product by its ID.
    * @param id - The ID of the product to find.

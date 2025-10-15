@@ -38,13 +38,21 @@ export class ProductsController {
   @HttpCode(HttpStatus.OK)
   // Finds all products.
   findAll(
-    @Query('limit') limit: number = 10,
+    @Query('limit') limit: number = 9,
     @Query('page') page: number = 1,
     @Query('sort') sort: 'asc' | 'desc',
     @Query('orderBy') orderBy: string,
     @Query('search') search: string,
   ) {
     return this.productsService.findAll(limit, page, orderBy, sort, search);
+  }
+
+  @Public()
+  @Get('pages')
+  @HttpCode(HttpStatus.OK)
+  // Finds all product pages.
+  findAllPages() {
+    return this.productsService.findAllPages();
   }
 
   @Public()
