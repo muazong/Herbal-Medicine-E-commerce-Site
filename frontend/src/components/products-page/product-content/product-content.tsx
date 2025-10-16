@@ -50,7 +50,7 @@ function ProductContent() {
 
           <select
             value={filter}
-            onChange={(e) => setFilter(e.target.value as Filter)}
+            onChange={(e) => setFilter(e.target.value as ProductFilter)}
           >
             <option value="createdAt">Mới nhất</option>
             <option value="price">Giá</option>
