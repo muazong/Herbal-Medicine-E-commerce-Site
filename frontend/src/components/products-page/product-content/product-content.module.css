@@ -4,8 +4,39 @@
   .search {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 10px;
+
+    .searchBar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 1.1rem;
+      }
+
+      select {
+        background-color: var(--secondary-color);
+        border: 1px solid var(--gray-color);
+        outline: none;
+        border-radius: 2px;
+        padding: 3px;
+
+        &:focus {
+          border-color: var(--primary-color);
+        }
+      }
+    }
 
     .icon {
       display: flex;
