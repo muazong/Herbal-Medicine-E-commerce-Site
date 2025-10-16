@@ -1,4 +1,5 @@
 export enum PATH {
+  // Client
   HOME = '/',
   ABOUT = '/about',
   CONTACT = '/contact',
@@ -10,4 +11,10 @@ export enum PATH {
   LOGIN = '/auth/login',
   REGISTER = '/auth/register',
   PROFILE = '/profile',
+
+  // Admin
+  DASHBOARD = '/admin/dashboard',
+  USERS_MANAGEMENT = '/admin/dashboard/users',
+  PRODUCTS_MANAGEMENT = '/admin/dashboard/products',
+  CATEGORIES_MANAGEMENT = '/admin/dashboard/categories',
 }
