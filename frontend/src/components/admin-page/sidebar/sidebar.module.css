@@ -1,0 +1,37 @@
+.container {
+  width: fit-content;
+  height: 100vh;
+  background-color: var(--dashboard-sidebar-bg-color);
+  padding: 20px;
+  border-radius: 10px;
+
+  .title {
+    color: var(--white-color);
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+
+  .list {
+    li {
+      width: 100%;
+      margin-bottom: 10px;
+
+      a {
+        font-size: 18px;
+        border-radius: 5px;
+        padding: 10px 20px;
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: 12px;
+        color: var(--white-color);
+        background-color: #777c6daa;
+        transition: all 0.2s ease-in-out;
+      }
+
+      a:hover {
+        background-color: var(--primary-color);
+      }
+    }
+  }
+}
