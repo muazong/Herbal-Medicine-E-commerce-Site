@@ -150,3 +150,26 @@ let a: number = 1;
 - Tuân thủ **chuẩn SQL** và hỗ trợ các kiểu dữ liệu nâng cao như **JSON**, **ARRAY**, **HSTORE**.
 - Đảm bảo **tính toàn vẹn dữ liệu (ACID)**, an toàn và bảo mật cao.
 - Hiệu năng tốt, phù hợp với các ứng dụng web có lượng dữ liệu lớn.
+
+## II. Xây dựng website
+
+### 1. Module backend: Nest.js
+
+```mermaid
+graph TD
+    A[App Module] --> B[Users Module]
+    A --> C[Auth Module]
+    A --> D[Media Module]
+    A --> E[Products Module]
+    A --> F[Categories Module]
+    A --> G[Carts Module]
+    A --> H[CartItems Module]
+    A --> I[Orders Module]
+    A --> J[OrderItems Module]
+
+    B --> B1[Users Controller]
+    B --> B2[Users Service]
+
+    C --> C1[Auth Controller]
+    C --> C2[Auth Service]
+```
