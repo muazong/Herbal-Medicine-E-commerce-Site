@@ -172,4 +172,30 @@ graph TD
 
     C --> C1[Auth Controller]
     C --> C2[Auth Service]
+
+    D --> D1[Category Media Controller]
+    D --> D2[User Media Controller]
+    D --> D3[Product Media Controller]
+
+    D --> D4[Category Media Service]
+    D --> D5[User Media Service]
+    D --> D6[Product Media Service]
+
+    E --> E1[Products Controller]
+    E --> E2[Products Service]
+
+    F --> F1[Categories Controller]
+    F --> F2[Categories Service]
+
+    G --> G1[Carts Controller]
+    G --> G2[Carts Service]
+
+    H --> H1[CartItems Controller]
+    H --> H2[CartItems Service]
+
+    I --> I1[Orders Controller]
+    I --> I2[Orders Service]
+
+    J --> J1[OrderItems Controller]
+    J --> J2[OrderItems Service]
 ```
