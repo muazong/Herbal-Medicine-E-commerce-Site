@@ -155,6 +155,8 @@ let a: number = 1;
 
 ### 1. Module backend: Nest.js
 
+[Mô hình module](https://www.mermaidchart.com/app/projects/68aca4d9-0e01-4d79-af9c-6ca11704e286/diagrams/faac7e9d-648a-41ff-b8a1-3757800a5398/share/invite/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkb2N1bWVudElEIjoiZmFhYzdlOWQtNjQ4YS00MWZmLWI4YTEtMzc1NzgwMGE1Mzk4IiwiYWNjZXNzIjoiRWRpdCIsImlhdCI6MTc2MDY3MzM3Nn0.5ee77Dc60_mtEWLT2zT3xH0PIptYy28jdUBSGio6-Lg)
+
 ```mermaid
 graph TD
     A[App Module] --> B[Users Module]
@@ -199,3 +201,5 @@ graph TD
     J --> J1[OrderItems Controller]
     J --> J2[OrderItems Service]
 ```
+
+### 1. Giao diện: Next.js
