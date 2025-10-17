@@ -81,9 +81,72 @@
     - [ ] Xử lý khi ảnh khi sai định dạng
     - [ ] ...
 
-## I. Công nghệ sử dụng
+## I. CÔNG NGHỆ SỬ DỤNG
 
-1. Ngôn ngữ lập trình: Javascript/Typescript
-2. Frontend: NextJS
-3. Backend: Nest.js
-4. Database: PostgreSQL
+### 1. Ngôn ngữ lập trình: JavaScript / TypeScript
+
+#### **JavaScript**
+
+JavaScript là ngôn ngữ lập trình phổ biến nhất hiện nay, chủ yếu được sử dụng để phát triển các ứng dụng web trên nền tảng client-side và server-side. JavaScript cho phép xây dựng các giao diện tương tác, linh hoạt và có khả năng xử lý sự kiện trực tiếp trên trình duyệt.
+
+```js
+let a = 1;
+```
+
+**Đặc điểm nổi bật:**
+
+- Hỗ trợ mô hình **event-driven** và **non-blocking I/O**, phù hợp cho ứng dụng thời gian thực.
+- Có **hệ sinh thái phong phú (npm)** với nhiều thư viện và framework hỗ trợ.
+- Dễ học, dễ tích hợp và được hỗ trợ bởi hầu hết các trình duyệt hiện nay.
+
+#### **TypeScript**
+
+TypeScript là phiên bản mở rộng của JavaScript, được phát triển bởi Microsoft, bổ sung tính năng **kiểm tra kiểu tĩnh (static typing)** và **hỗ trợ lập trình hướng đối tượng**.
+
+```ts
+let a: number = 1;
+```
+
+**Đặc điểm nổi bật:**
+
+- Giúp phát hiện lỗi trong quá trình biên dịch, giảm thiểu lỗi runtime.
+- Cải thiện khả năng bảo trì và mở rộng đối với các dự án lớn.
+- Tích hợp tốt với các framework hiện đại như **Next.js** và **Nest.js**.
+
+---
+
+### 2. Frontend: Next.js
+
+**Next.js** là một framework mạnh mẽ dựa trên **React**, được phát triển bởi **Vercel**, dùng để xây dựng các ứng dụng web hiện đại, hiệu năng cao và thân thiện với SEO.
+
+**Công nghệ nền tảng:**
+
+- **React.js:** Thư viện JavaScript dùng để xây dựng giao diện người dùng (UI) thông qua các **component** có thể tái sử dụng.
+- **Node.js:** Nền tảng chạy JavaScript phía server, giúp Next.js thực hiện **Server-Side Rendering (SSR)** và xử lý logic phía backend.
+- **Webpack / Turbopack:** Công cụ **bundler** và **compiler** giúp tối ưu, đóng gói mã nguồn, tăng tốc độ build và load trang.
+- **Babel:** Trình biên dịch JavaScript, giúp chuyển mã ES6/ESNext sang phiên bản tương thích với trình duyệt.
+- **TypeScript:** Giúp định nghĩa kiểu dữ liệu, tăng tính an toàn và dễ bảo trì khi phát triển ứng dụng lớn.
+
+---
+
+### 3. Backend: Nest.js
+
+**Nest.js** là framework backend mạnh mẽ được xây dựng trên nền **Node.js** và viết hoàn toàn bằng **TypeScript**. Framework này áp dụng kiến trúc **modular** và **dependency injection**, giúp tổ chức mã nguồn rõ ràng, dễ bảo trì.
+
+**Đặc điểm nổi bật:**
+
+- Hỗ trợ nhiều mô hình phát triển như **REST API**, **GraphQL**, **WebSockets**, và **Microservices**.
+- Kiến trúc hướng module, dễ mở rộng và tái sử dụng.
+- Tích hợp tốt với cơ sở dữ liệu thông qua các ORM như **TypeORM**, **Prisma**, hoặc **Sequelize**.
+
+---
+
+### 4. Database: PostgreSQL
+
+**PostgreSQL** là hệ quản trị cơ sở dữ liệu quan hệ (RDBMS) mã nguồn mở mạnh mẽ, đáng tin cậy và có khả năng mở rộng cao.
+
+**Đặc điểm nổi bật:**
+
+- Tuân thủ **chuẩn SQL** và hỗ trợ các kiểu dữ liệu nâng cao như **JSON**, **ARRAY**, **HSTORE**.
+- Đảm bảo **tính toàn vẹn dữ liệu (ACID)**, an toàn và bảo mật cao.
+- Hiệu năng tốt, phù hợp với các ứng dụng web có lượng dữ liệu lớn.
