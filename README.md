@@ -202,4 +202,44 @@ graph TD
     J --> J2[OrderItems Service]
 ```
 
-### 1. Giao diện: Next.js
+### 2. Giao diện: Next.js
+
+1. Trang Đăng ký/Đăng nhập
+
+- Trang đăng nhập
+  ![Trang đăng nhập](./images/login_page.png)
+
+- Trang đăng ký
+  ![Trang đăng ký](./images/register_page.png)
+
+2. Trang chủ
+   ![Trang chủ](./images/home_page.png)
+
+3. Trang Sản phẩm
+   ![Trang sản phẩm](./images/products_page.png)
+
+4. Trang Chi tiết sản phẩm
+   ![Trang chi tiết sản phẩm](./images/product_detail.png)
+
+5. Trang Liên hệ
+   ![Trang liên hệ](./images/contact_page.png)
+
+6. Trang Giới thiệu
+   ![Trang giới thiệu](./images/about_page.png)
+
+7. Trang Thông tin người dùng
+   ![Trang thông tin người dùng](./images/profile_page.png)
+
+8. Trang Giỏ hàng
+   ![Trang giỏ hàng](./images/cart_page.png)
+
+9. Trang Đặt hàng
+   ![Trang đặt hàng](./images/order_page.png)
+
+10. Trang Đơn mua
+    - Đơn đã đặt
+      ![Trang đơn đã đặt](./images/ordered_page.png)
+    - Chi tiết đơn đã đặt
+      ![Trang chi tiết đơn đã đặt](./images/ordered_detail_page.png)
+    - Đơn đã huỷ
+      ![Trang đơn đã huỷ](./images/ordered_canceled_page.png)
