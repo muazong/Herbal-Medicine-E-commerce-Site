@@ -35,7 +35,7 @@ function Pagination({
             <li
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`${styles.item} ${isActive ? styles.active + ' ' + styles[theme] : ''}`}
+              className={`${styles.item} ${styles[theme]} ${isActive ? styles.active : ''}`}
             >
               {page}
             </li>
