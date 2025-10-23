@@ -1,19 +1,27 @@
 'use client';
 
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { useEffect } from 'react';
 
 import { PATH } from '@/common/enums';
 import styles from './dashboard-products.module.css';
 import formatDayVi from '@/common/lib/format-day-vi';
-import { getProducts } from '@/services/products-service';
 import { useProductsStore } from '@/stores/products-store';
 import { usePaginationStore } from '@/stores/pagination-store';
+import {
+  deleteProduct,
+  getProducts,
+  getProductsPages,
+} from '@/services/products-service';
 
 function DashboardProducts() {
   const products = useProductsStore((state) => state.products);
   const currentPage = usePaginationStore((state) => state.currentPage);
+  const setCurrentPage = usePaginationStore((state) => state.setCurrentPage);
+  const setPages = usePaginationStore((state) => state.setPages);
   const setProducts = useProductsStore((state) => state.setProducts);
+  const deleteProductStore = useProductsStore((state) => state.deleteProduct);
 
   useEffect(() => {
     (async () => {
@@ -21,6 +29,24 @@ function DashboardProducts() {
       setProducts(products || []);
     })();
   }, [setProducts, currentPage]);
+
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      const result = await deleteProduct(productId);
+      if (result) {
+        deleteProductStore(productId);
+        toast.success('Sản phẩm đã được xóa thành công');
+
+        const pages = await getProductsPages();
+        setPages(pages || 1);
+
+        const products = await getProducts(9, currentPage);
+        setProducts(products || []);
+      }
+    } catch {
+      toast.error('Lỗi trong quá trình xoá sản phẩm');
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -62,7 +88,10 @@ function DashboardProducts() {
                       Sửa
                     </Link>
                   </button>
-                  <button className={`${styles.btn} ${styles.delete}`}>
+                  <button
+                    className={`${styles.btn} ${styles.delete}`}
+                    onClick={() => handleDeleteProduct(product.id)}
+                  >
                     Xóa
                   </button>
                 </td>

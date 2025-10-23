@@ -1,5 +1,11 @@
 import { Product } from '@/common/interfaces';
 import { api } from './axios-instance';
+import { apiWithAuth } from './axios-instance-client';
+
+export type CreateProduct = Pick<
+  Product,
+  'name' | 'price' | 'stock' | 'description'
+>;
 
 async function getProducts(
   limit?: number,
@@ -45,4 +51,42 @@ async function searchProducts(search: string) {
   }
 }
 
-export { getProducts, getProduct, getProductsPages, searchProducts };
+async function createProduct(product: CreateProduct) {
+  try {
+    const response = await apiWithAuth.post('/products', product);
+    return response.data;
+  } catch {
+    throw new Error('Lỗi tạo sản phẩm');
+  }
+}
+
+async function addProductImages(productId: string, files: File[]) {
+  try {
+    const response = await apiWithAuth.post(
+      `/products/${productId}/images`,
+      files,
+    );
+    return response.data;
+  } catch {
+    return null;
+  }
+}
+
+async function deleteProduct(productId: string) {
+  try {
+    const response = await apiWithAuth.delete(`/products/${productId}`);
+    return response.data;
+  } catch {
+    throw new Error('Lỗi xóa sản phẩm');
+  }
+}
+
+export {
+  getProducts,
+  getProduct,
+  getProductsPages,
+  searchProducts,
+  createProduct,
+  addProductImages,
+  deleteProduct,
+};
