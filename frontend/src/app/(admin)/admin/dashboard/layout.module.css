@@ -1,16 +1,21 @@
 .container {
-  background-color: var(--dashboard-bg-color);
-  min-height: 100vh;
-
   .wrapper {
-    max-width: var(--max-width);
-    padding: 40px 20px;
+    margin: 0 auto;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     gap: 20px;
 
     .content {
+      max-width: calc(100% - var(--dashboard-sidebar-width) - 40px);
+      padding: 20px;
       flex: 1;
+      background: rgba(60, 70, 123, 0.26);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(4.1px);
+      -webkit-backdrop-filter: blur(4.1px);
+      border: 1px solid rgba(60, 90, 123, 0.26);
     }
   }
 }

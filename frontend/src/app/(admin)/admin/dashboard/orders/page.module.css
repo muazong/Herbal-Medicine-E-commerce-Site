@@ -1,0 +1,50 @@
+.container {
+  min-height: 100vh;
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #132440;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+    thead {
+      background-color: #3c467b;
+
+      th {
+        text-align: center;
+        padding: 1rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--white-color);
+      }
+    }
+
+    tbody {
+      td {
+        padding: 1rem;
+        color: var(--white-color);
+        font-size: 0.9rem;
+      }
+
+      tr:hover {
+        transition: background-color 0.2s ease;
+      }
+
+      .empty {
+        text-align: center;
+        padding: 2rem;
+        color: #64748b;
+        font-style: italic;
+      }
+
+      .status {
+        font-weight: 600;
+        text-transform: capitalize;
+        border-radius: 6px;
+        padding: 0.25rem 0.5rem;
+      }
+    }
+  }
+}

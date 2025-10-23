@@ -10,7 +10,17 @@ export type OrderFormData = {
   status?: ORDER_STATUS;
 };
 
-export const getOrders = async (orderBy: keyof Order) => {
+export const getOrders = async () => {
+  try {
+    const response = await apiWithAuth.get('orders');
+    if (!response.data) return null;
+    return response.data as Order[];
+  } catch {
+    return null;
+  }
+};
+
+export const getUserOrders = async (orderBy: keyof Order) => {
   try {
     const response = await apiWithAuth.get(
       `orders/user/products?orderBy=${orderBy}`,
@@ -22,7 +32,7 @@ export const getOrders = async (orderBy: keyof Order) => {
   }
 };
 
-export const getOrder = async (orderId: string) => {
+export const getUserOrder = async (orderId: string) => {
   try {
     const response = await apiWithAuth.get(`orders/${orderId}`);
     if (!response.data) return null;
@@ -32,7 +42,7 @@ export const getOrder = async (orderId: string) => {
   }
 };
 
-export const orderProducts = async (orderData: OrderFormData) => {
+export const orderUserProducts = async (orderData: OrderFormData) => {
   try {
     const response = await apiWithAuth.post('/orders/products', orderData);
     if (!response.data) return null;

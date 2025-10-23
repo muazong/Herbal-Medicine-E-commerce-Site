@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FaHome, FaUserCircle } from 'react-icons/fa';
 import { AiFillProduct } from 'react-icons/ai';
+import { IoMdCart } from 'react-icons/io';
 import { MdCategory } from 'react-icons/md';
 
 import { PATH } from '@/common/enums';
@@ -35,6 +36,12 @@ function Sidebar() {
           <Link href={PATH.CATEGORIES_MANAGEMENT}>
             <MdCategory className={styles.icon} />
             Quản lý danh mục sản phẩm
+          </Link>
+        </li>
+        <li>
+          <Link href={PATH.ORDERS_MANAGEMENT}>
+            <IoMdCart className={styles.icon} />
+            Quản lý đơn hàng
           </Link>
         </li>
       </ul>

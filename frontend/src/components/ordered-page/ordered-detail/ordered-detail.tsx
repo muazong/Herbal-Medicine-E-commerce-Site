@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { Order } from '@/common/interfaces';
 import { ORDER_STATUS } from '@/common/enums';
 import styles from './ordered-detail.module.css';
-import { getOrder } from '@/services/order-service';
+import { getUserOrder } from '@/services/order-service';
 import OrderedDetailForm from './ordered-detail-form';
 import OrderedDetailProducts from './ordered-detail-products';
 
@@ -15,7 +15,7 @@ export default function OrderedDetail({ orderId }: { orderId: string }) {
 
   useEffect(() => {
     (async () => {
-      const data = await getOrder(orderId);
+      const data = await getUserOrder(orderId);
       setOrder(data);
     })();
   }, [orderId]);

@@ -3,21 +3,23 @@
 import { useEffect } from 'react';
 import styles from './pagination.module.css';
 import { usePaginationStore } from '@/stores/pagination-store';
-import { getProductsPages } from '@/services/products-service';
 
-function Pagination() {
+function Pagination({
+  pagesFromServer,
+  theme = 'primary',
+}: {
+  pagesFromServer: number | null;
+  theme?: 'primary' | 'secondary';
+}) {
   const pages = usePaginationStore((state) => state.pages);
   const currentPage = usePaginationStore((state) => state.currentPage);
   const setPages = usePaginationStore((state) => state.setPages);
   const setCurrentPage = usePaginationStore((state) => state.setCurrentPage);
 
   useEffect(() => {
-    (async () => {
-      const pages = await getProductsPages();
-      setPages(pages || 1);
-      setCurrentPage(1);
-    })();
-  }, [setPages, setCurrentPage]);
+    setPages(pagesFromServer || 1);
+    setCurrentPage(1);
+  }, [setPages, setCurrentPage, pagesFromServer]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -33,7 +35,7 @@ function Pagination() {
             <li
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`${styles.item} ${isActive ? styles.active : ''}`}
+              className={`${styles.item} ${isActive ? styles.active + ' ' + styles[theme] : ''}`}
             >
               {page}
             </li>

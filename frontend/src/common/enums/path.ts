@@ -16,5 +16,7 @@ export enum PATH {
   DASHBOARD = '/admin/dashboard',
   USERS_MANAGEMENT = '/admin/dashboard/users',
   PRODUCTS_MANAGEMENT = '/admin/dashboard/products',
+  ADD_PRODUCT = '/admin/dashboard/products/add',
   CATEGORIES_MANAGEMENT = '/admin/dashboard/categories',
+  ORDERS_MANAGEMENT = '/admin/dashboard/orders',
 }

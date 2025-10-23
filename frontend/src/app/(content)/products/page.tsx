@@ -1,8 +1,10 @@
+import { use } from 'react';
 import { Metadata } from 'next';
 
 import styles from './page.module.css';
 import { Pagination, Sidebar } from '@/components/products-page';
 import { ProductContent } from '@/components/products-page';
+import { getProductsPages } from '@/services/products-service';
 
 export const metadata: Metadata = {
   title: 'Sản phẩm',
@@ -13,14 +15,16 @@ export const metadata: Metadata = {
   },
 };
 
-async function ProductsPage() {
+function ProductsPage() {
+  const pages = use(getProductsPages());
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <Sidebar />
         <ProductContent />
       </div>
-      <Pagination />
+      <Pagination pagesFromServer={pages} />
     </div>
   );
 }

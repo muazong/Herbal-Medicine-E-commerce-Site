@@ -1,9 +1,14 @@
 .container {
-  width: fit-content;
+  min-width: var(--dashboard-sidebar-width);
   height: 100vh;
-  background-color: var(--dashboard-sidebar-bg-color);
+  background: rgba(60, 70, 123, 0.26);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4.1px);
+  -webkit-backdrop-filter: blur(4.1px);
   padding: 20px;
   border-radius: 10px;
+  border: 1px solid rgba(60, 90, 123, 0.26);
 
   .title {
     color: var(--white-color);
@@ -25,12 +30,20 @@
         align-items: center;
         gap: 12px;
         color: var(--white-color);
-        background-color: #777c6daa;
+        background: rgba(19, 36, 64, 0.67);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(4.1px);
+        -webkit-backdrop-filter: blur(4.1px);
         transition: all 0.2s ease-in-out;
       }
 
       a:hover {
-        background-color: var(--primary-color);
+        background: rgba(33, 50, 80, 0.8);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(4.1px);
+        -webkit-backdrop-filter: blur(4.1px);
       }
     }
   }

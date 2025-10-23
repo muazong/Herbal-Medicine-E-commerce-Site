@@ -8,7 +8,7 @@ import { PATH, PAYMENT_METHOD } from '@/common/enums';
 import styles from './order-form.module.css';
 import { useUserStore } from '@/stores/user-store';
 import useCartItemsStore from '@/stores/cart-item-store';
-import { OrderFormData, orderProducts } from '@/services/order-service';
+import { OrderFormData, orderUserProducts } from '@/services/order-service';
 import formatCurrency from '@/common/lib/format-currency';
 import { paymen_method_vi } from '@/common/config/paymen-method-vi';
 
@@ -49,7 +49,7 @@ function OrderForm() {
       userName,
     };
 
-    const orders = await orderProducts(orderFormData);
+    const orders = await orderUserProducts(orderFormData);
 
     if (orders) {
       toast.success('Đặt hàng thành công!');
