@@ -19,7 +19,7 @@ export class Product extends AbstractEntity<Product> {
   @Column()
   stock: number;
 
-  @Column({ type: 'decimal', precision: 2, scale: 1 })
+  @Column({ type: 'decimal', precision: 2, scale: 1, default: 0 })
   rating: number;
 
   @Column({ default: 0 })
