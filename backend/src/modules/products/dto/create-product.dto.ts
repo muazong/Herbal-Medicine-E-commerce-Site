@@ -15,9 +15,4 @@ export class CreateProductDto {
   @IsNumber()
   @Min(0)
   stock: number;
-
-  @IsNumber()
-  @Min(1)
-  @Max(5)
-  rating: number;
 }
