@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PATH } from '@/common/enums';
 import styles from './page.module.css';
 import { DashboardTitle } from '@/components/admin-page';
-import { DashboardAddProductForm } from '@/components/admin-page';
+import { DashboardProductForm } from '@/components/admin-page';
 
 function AddProductPage() {
   return (
@@ -15,7 +15,7 @@ function AddProductPage() {
         <p>Thêm sản phẩm</p>
       </div>
 
-      <DashboardAddProductForm />
+      <DashboardProductForm />
     </div>
   );
 }

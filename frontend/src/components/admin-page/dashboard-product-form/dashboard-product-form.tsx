@@ -9,11 +9,11 @@ import {
   getCategories,
   assignCategoryToProduct,
 } from '@/services/categories-service';
-import styles from './dashboard-add-product.module.css';
+import styles from './dashboard-product-form.module.css';
 import { useCategoryStore } from '@/stores/category-store';
 import { addProductImages, createProduct } from '@/services/products-service';
 
-function DashboardAddProductForm() {
+function DashboardProductForm() {
   const [images, setImages] = useState<string[]>([]);
   const categories = useCategoryStore((state) => state.categories);
   const setCategories = useCategoryStore((state) => state.setCategories);
@@ -188,4 +188,4 @@ function DashboardAddProductForm() {
   );
 }
 
-export default DashboardAddProductForm;
+export default DashboardProductForm;

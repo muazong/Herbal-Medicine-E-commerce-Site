@@ -10,10 +10,11 @@ import formatDayVi from '@/common/lib/format-day-vi';
 import { useProductsStore } from '@/stores/products-store';
 import { usePaginationStore } from '@/stores/pagination-store';
 import {
-  deleteProduct,
   getProducts,
+  deleteProduct,
   getProductsPages,
 } from '@/services/products-service';
+import formatCurrency from '@/common/lib/format-currency';
 
 function DashboardProducts() {
   const products = useProductsStore((state) => state.products);
@@ -75,7 +76,7 @@ function DashboardProducts() {
               <tr key={product.id}>
                 <td>{index + 1}</td>
                 <td>{product.name}</td>
-                <td>{product.price.toLocaleString('vi-VN')}₫</td>
+                <td>{formatCurrency(product.price)}</td>
                 <td>{product.sold}</td>
                 <td>
                   {product.category ? product.category.name : 'Chưa chọn'}
