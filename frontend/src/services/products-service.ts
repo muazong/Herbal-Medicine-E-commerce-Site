@@ -7,6 +7,8 @@ export type CreateProduct = Pick<
   'name' | 'price' | 'stock' | 'description'
 >;
 
+export type UpdateProduct = CreateProduct;
+
 async function getProducts(
   limit?: number,
   page: number = 1,
@@ -72,6 +74,15 @@ async function addProductImages(productId: string, files: FormData) {
   }
 }
 
+async function updateProduct(productId: string, product: UpdateProduct) {
+  try {
+    const response = await apiWithAuth.patch(`/products/${productId}`, product);
+    return response.data as Product;
+  } catch {
+    throw new Error('Lỗi cập nhật sản phẩm');
+  }
+}
+
 async function deleteProduct(productId: string) {
   try {
     const response = await apiWithAuth.delete(`/products/${productId}`);
@@ -89,4 +100,5 @@ export {
   createProduct,
   addProductImages,
   deleteProduct,
+  updateProduct,
 };

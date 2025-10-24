@@ -40,4 +40,21 @@ async function assignCategoryToProduct(productId: string, categoryId: string) {
   }
 }
 
-export { getCategories, getProductsByCategory, assignCategoryToProduct };
+async function unssignCategoryToProduct(productId: string) {
+  try {
+    const response = await apiWithAuth.delete(
+      `/products/${productId}/category`,
+    );
+    if (!response.data) return null;
+    return response.data;
+  } catch {
+    return null;
+  }
+}
+
+export {
+  getCategories,
+  getProductsByCategory,
+  assignCategoryToProduct,
+  unssignCategoryToProduct,
+};

@@ -15,7 +15,7 @@ function AddProductPage() {
         <p>Thêm sản phẩm</p>
       </div>
 
-      <DashboardProductForm />
+      <DashboardProductForm type="create" />
     </div>
   );
 }

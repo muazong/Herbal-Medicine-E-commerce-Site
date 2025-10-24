@@ -40,11 +40,11 @@ ul {
 
 #nprogress .bar {
   height: 4px !important;
-  background: var(--primary-color) !important;
+  background: var(--error-color) !important;
 }
 
 #nprogress .peg {
   box-shadow:
-    0 0 10px var(--primary-color),
-    0 0 5px var(--primary-color) !important;
+    0 0 10px var(--error-color),
+    0 0 5px var(--error-color) !important;
 }

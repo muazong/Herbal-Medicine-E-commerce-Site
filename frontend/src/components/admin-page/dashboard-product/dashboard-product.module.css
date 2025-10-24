@@ -1,0 +1,20 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 12px;
+
+  a,
+  p,
+  span {
+    color: var(--white-color);
+  }
+
+  a {
+    color: var(--blue-color);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
