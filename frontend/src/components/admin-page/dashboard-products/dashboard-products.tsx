@@ -82,7 +82,7 @@ function DashboardProducts() {
                 </td>
                 <td>{formatDayVi(product.createdAt, false)}</td>
                 <td>{formatDayVi(product.updatedAt, false)}</td>
-                <td>
+                <td className={styles.actions}>
                   <button className={`${styles.btn} ${styles.edit}`}>
                     <Link href={`${PATH.PRODUCTS_MANAGEMENT}/${product.id}`}>
                       Sửa

@@ -96,7 +96,7 @@ function DashboardAddProductForm() {
 
       const result = await addProductImages(productId, filesFormData);
       if (result) {
-        toast.success('Ảnh đã được thêm thành công');
+        return;
       }
     }
   };

@@ -46,7 +46,7 @@
             width: 50px;
           }
 
-          &:last-child {
+          &.actions {
             display: flex;
             gap: 0.5rem;
           }
