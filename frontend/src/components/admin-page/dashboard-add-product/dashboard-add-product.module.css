@@ -21,7 +21,8 @@
     }
 
     input,
-    textarea {
+    textarea,
+    select {
       padding: 12px 16px;
       border-radius: 10px;
       border: 1px solid #3b4a7a;

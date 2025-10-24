@@ -2,14 +2,28 @@
 
 import Image from 'next/image';
 import { toast } from 'sonner';
-import { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 
+import {
+  getCategories,
+  assignCategoryToProduct,
+} from '@/services/categories-service';
 import styles from './dashboard-add-product.module.css';
-import { createProduct } from '@/services/products-service';
+import { useCategoryStore } from '@/stores/category-store';
+import { addProductImages, createProduct } from '@/services/products-service';
 
 function DashboardAddProductForm() {
   const [images, setImages] = useState<string[]>([]);
+  const categories = useCategoryStore((state) => state.categories);
+  const setCategories = useCategoryStore((state) => state.setCategories);
+
+  useEffect(() => {
+    (async () => {
+      const categories = await getCategories();
+      setCategories(categories || []);
+    })();
+  }, [setCategories]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -27,8 +41,12 @@ function DashboardAddProductForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
+    const newProduct = await handleCreateProduct(formData);
+    if (newProduct !== null) await handleAddImage(newProduct.id, formData);
+  };
+
+  const handleCreateProduct = async (formData: FormData) => {
     const productName = formData.get('productName') as string;
     const productPrice = formData.get('productPrice') as string;
     const productStock = formData.get('productStock') as string;
@@ -44,10 +62,42 @@ function DashboardAddProductForm() {
     try {
       const newProduct = await createProduct(product);
       if (newProduct) {
-        toast.success('Sản phẩm đã được tạo thành công');
+        const categoryId = formData.get('productCategoryId') as string;
+        if (categoryId) {
+          const result = await assignCategoryToProduct(
+            newProduct.id,
+            categoryId,
+          );
+          if (result) {
+            toast.success('Sản phẩm đã được tạo thành công');
+          }
+        } else {
+          toast.success('Sản phẩm đã được tạo thành công');
+        }
+
+        return newProduct;
       }
+      return null;
     } catch {
       toast.error('Lỗi khi tạo sản phẩm');
+      return null;
+    }
+  };
+
+  const handleAddImage = async (productId: string, formData: FormData) => {
+    const images = formData.getAll('productImages') as File[];
+
+    if (images.length > 0) {
+      const filesFormData = new FormData();
+
+      images.forEach((image) => {
+        filesFormData.append('files', image);
+      });
+
+      const result = await addProductImages(productId, filesFormData);
+      if (result) {
+        toast.success('Ảnh đã được thêm thành công');
+      }
     }
   };
 
@@ -90,6 +140,18 @@ function DashboardAddProductForm() {
           name="productDescription"
           placeholder="Mô tả sản phẩm"
         ></textarea>
+      </div>
+
+      <div className={styles.input}>
+        <label>Loại sản phẩm</label>
+        <select name="productCategoryId" id="productCategoryId">
+          <option value="">Chọn loại sản phẩm</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className={styles.input}>

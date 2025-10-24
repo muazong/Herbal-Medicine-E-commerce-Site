@@ -54,13 +54,13 @@ async function searchProducts(search: string) {
 async function createProduct(product: CreateProduct) {
   try {
     const response = await apiWithAuth.post('/products', product);
-    return response.data;
+    return response.data as Product;
   } catch {
     throw new Error('Lỗi tạo sản phẩm');
   }
 }
 
-async function addProductImages(productId: string, files: File[]) {
+async function addProductImages(productId: string, files: FormData) {
   try {
     const response = await apiWithAuth.post(
       `/products/${productId}/images`,
