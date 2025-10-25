@@ -7,6 +7,8 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
+import * as fs from 'fs';
+import { join } from 'path';
 import { pickBy } from 'lodash';
 import { isUUID } from 'class-validator';
 import { ILike, Repository } from 'typeorm';
@@ -282,8 +284,14 @@ export class ProductsService {
    */
   async remove(id: string): Promise<{ message: string }> {
     try {
-      await this.findOne(id);
-      await this.productRepo.delete(id);
+      const dir = join(process.cwd(), 'uploads', 'products', id);
+
+      const existedProduct = await this.findOne(id);
+      const result = await this.productRepo.delete(existedProduct.id);
+
+      if (result) {
+        fs.rmdirSync(dir, { recursive: true });
+      }
 
       return { message: 'Product deleted successfully' };
     } catch (error) {
