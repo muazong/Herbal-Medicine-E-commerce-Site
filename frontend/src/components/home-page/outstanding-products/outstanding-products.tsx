@@ -5,7 +5,7 @@ import Products from '@/components/products/products';
 import { getProducts } from '@/services/products-service';
 
 function OutstandingProducts() {
-  const products = use(getProducts(8, 'sold'));
+  const products = use(getProducts(8, 1, 'sold'));
 
   if (!products) {
     return <p>Đang tải...</p>;
