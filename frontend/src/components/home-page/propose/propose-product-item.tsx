@@ -4,6 +4,7 @@ import { Product } from '@/common/interfaces';
 import { env } from '@/common/config';
 import Link from 'next/link';
 import { PATH } from '@/common/enums';
+import { shortDesc } from '@/common/lib/short-desc';
 
 function ProposeProductItem({
   product,
@@ -29,7 +30,7 @@ function ProposeProductItem({
 
       <div className={styles.text}>
         <h2>{product.name}</h2>
-        <p>{product.description}</p>
+        <p>{shortDesc(product.description, 30)}</p>
         <Link href={`${PATH.PRODUCTS}/${product.id}`}>Xem chi tiết</Link>
       </div>
     </div>
