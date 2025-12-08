@@ -17,7 +17,7 @@ function CardCategory({ category }: { category: Category }) {
           <Image
             src={
               category.image
-                ? `${env.SERVER_URL}${category.image}`
+                ? `${env.SERVER_URL}${category.image.path}`
                 : env.PRODUCT_URL
             }
             alt={category.name}
