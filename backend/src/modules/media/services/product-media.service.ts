@@ -1,3 +1,5 @@
+import { extname, join } from 'path';
+import * as fs from 'fs';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Logger, Injectable } from '@nestjs/common';
@@ -44,27 +46,103 @@ export class ProductMediaService {
    * @throws Error if any other error occurs.
    */
   async uploadImages(productId: string, files: Express.Multer.File[]) {
-    try {
-      // PERF: Check if product image already exists
-      const product = await this.productService.findOne(productId);
+    const product = await this.productService.findOne(productId);
 
-      const mediaList = files.map((file) => {
-        return this.mediaRepo.create({
-          path: file.path.replace(/^.*products/, '/products'),
+    const savedMediaList: Media[] = [];
+
+    for (const file of files) {
+      const media = this.mediaRepo.create({
+        path: '',
+        filename: '',
+        mimetype: file.mimetype,
+        size: file.size,
+        type: MediaType.PRODUCT,
+        product,
+      });
+
+      const savedMedia = await this.mediaRepo.save(media);
+
+      const ext = extname(file.originalname);
+      const newFilename = `${savedMedia.id}${ext}`;
+      const oldPath = file.path;
+      const newPath = join(file.destination, newFilename);
+
+      fs.renameSync(oldPath, newPath);
+
+      savedMedia.filename = newFilename;
+      savedMedia.path = newPath.replace(/^.*products/, '/products');
+      await this.mediaRepo.save(savedMedia);
+
+      savedMediaList.push(savedMedia);
+    }
+
+    product.media = [...product.media!, ...savedMediaList];
+    return await this.productRepo.save(product);
+  }
+
+  async updateImages(productId: string, files: Express.Multer.File[]) {
+    try {
+      const product = await this.productService.findOne(productId);
+      if (!product.media) {
+        return;
+      }
+
+      const savedMediaList: Media[] = [];
+
+      for (const file of files) {
+        const media = this.mediaRepo.create({
+          path: '',
+          filename: '',
           mimetype: file.mimetype,
-          filename: file.filename,
           size: file.size,
           type: MediaType.PRODUCT,
           product,
         });
-      });
 
-      await this.mediaRepo.save(mediaList);
-      product.media = [...product.media!, ...mediaList];
+        const savedMedia = await this.mediaRepo.save(media);
+
+        const ext = extname(file.originalname);
+        const newFilename = `${savedMedia.id}${ext}`;
+        const oldPath = file.path;
+        const newPath = join(file.destination, newFilename);
+
+        fs.renameSync(oldPath, newPath);
+
+        savedMedia.filename = newFilename;
+        savedMedia.path = newPath.replace(/^.*products/, '/products');
+        await this.mediaRepo.save(savedMedia);
+
+        savedMediaList.push(savedMedia);
+      }
+
+      product.media = [...product.media!, ...savedMediaList];
       return await this.productRepo.save(product);
     } catch (error) {
       const err = error as Error;
-      this.logger.error(`Failed to upload product images`, err.stack);
+      this.logger.error(`Failed to update product images`, err.stack);
+      throw err;
+    }
+  }
+
+  async deleteImages(productId: string) {
+    try {
+      const product = await this.productService.findOne(productId);
+      if (!product.media) {
+        return;
+      }
+
+      const mediaList = product.media;
+
+      for (const media of mediaList) {
+        const dir = join(process.cwd(), 'uploads', 'products', productId);
+        fs.unlinkSync(join(dir, media.filename));
+      }
+
+      product.media = [];
+      return await this.productRepo.save(product);
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(`Failed to delete product images`, err.stack);
       throw err;
     }
   }
