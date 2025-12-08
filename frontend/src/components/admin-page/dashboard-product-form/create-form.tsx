@@ -3,14 +3,17 @@
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import { PATH } from '@/common/enums';
 import { FaTimes } from 'react-icons/fa';
 
+import { useRouter } from 'next-nprogress-bar';
 import { Category } from '@/common/interfaces';
 import styles from './dashboard-product-form.module.css';
 import { assignCategoryToProduct } from '@/services/categories-service';
 import { addProductImages, createProduct } from '@/services/products-service';
 
 function CreateForm({ categories }: { categories: Category[] | null }) {
+  const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
 
   const handleCreateProduct = async (formData: FormData) => {
@@ -84,6 +87,8 @@ function CreateForm({ categories }: { categories: Category[] | null }) {
     const formData = new FormData(e.currentTarget);
     const newProduct = await handleCreateProduct(formData);
     if (newProduct !== null) await handleAddImage(newProduct.id, formData);
+
+    router.push(PATH.PRODUCTS_MANAGEMENT);
   };
 
   return (
@@ -131,11 +136,12 @@ function CreateForm({ categories }: { categories: Category[] | null }) {
         <label>Loại sản phẩm</label>
         <select name="productCategoryId" id="productCategoryId">
           <option value="">Chọn loại sản phẩm</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
+          {categories &&
+            categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
         </select>
       </div>
 
@@ -168,7 +174,9 @@ function CreateForm({ categories }: { categories: Category[] | null }) {
         </div>
       )}
 
-      <button type="submit">Thêm sản phẩm</button>
+      <button type="submit" className={styles.submitBtn}>
+        Thêm sản phẩm
+      </button>
     </form>
   );
 }
