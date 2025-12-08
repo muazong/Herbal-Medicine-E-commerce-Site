@@ -6,6 +6,7 @@ import { PATH } from '@/common/enums';
 import { env } from '@/common/config';
 import styles from './card-product.module.css';
 import { type Product } from '@/common/interfaces';
+import { shortDesc } from '@/common/lib/short-desc';
 import RatingStars from '../rating-stars/rating-stars';
 import formatCurrency from '@/common/lib/format-currency';
 
@@ -42,7 +43,7 @@ function CartProduct({ product }: { product: Product }) {
         <div className={styles.text}>
           <div>
             <h2>{name}</h2>
-            <p>{description}</p>
+            <p>{shortDesc(description, 15)}</p>
           </div>
 
           <div>
