@@ -85,11 +85,18 @@ export default function RegisterForm() {
       return;
     }
 
-    const { confirmPassword: _, ...formData } = formState;
+    const { address, phone, firstName, lastName, email, password } = formState;
 
     try {
       setIsLoading(true);
-      const response = await api.post('/auth/register', formData);
+      const response = await api.post('/auth/register', {
+        address,
+        phone,
+        firstName,
+        lastName,
+        email,
+        password,
+      });
 
       if (response.status === 201) {
         router.push(PATH.LOGIN);

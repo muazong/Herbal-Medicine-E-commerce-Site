@@ -19,7 +19,7 @@ import formatCurrency from '@/common/lib/format-currency';
 function DashboardProducts() {
   const products = useProductsStore((state) => state.products);
   const currentPage = usePaginationStore((state) => state.currentPage);
-  const setCurrentPage = usePaginationStore((state) => state.setCurrentPage);
+  // const setCurrentPage = usePaginationStore((state) => state.setCurrentPage);
   const setPages = usePaginationStore((state) => state.setPages);
   const setProducts = useProductsStore((state) => state.setProducts);
   const deleteProductStore = useProductsStore((state) => state.deleteProduct);

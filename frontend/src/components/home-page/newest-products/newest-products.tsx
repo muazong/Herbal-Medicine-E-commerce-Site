@@ -5,7 +5,7 @@ import Products from '@/components/products/products';
 import { getProducts } from '@/services/products-service';
 
 function NewestProducts() {
-  const products = use(getProducts(8, 'createdAt'));
+  const products = use(getProducts(8, 1, 'createdAt'));
 
   if (!products) {
     return <p>Đang tải...</p>;

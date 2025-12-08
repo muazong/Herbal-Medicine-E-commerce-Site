@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 
 type JwtPayload = {
   exp: number;
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 function isJwtExpired(token: string): boolean {

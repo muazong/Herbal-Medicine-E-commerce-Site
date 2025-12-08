@@ -2,7 +2,6 @@
 
 import { apiWithRefreshToken } from '@/services';
 import { env } from '../config';
-import { isJwtExpired } from './jwt';
 
 function setAccessToken(value: string) {
   localStorage.setItem(env.ACCESS_TOKEN, value);

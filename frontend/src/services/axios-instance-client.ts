@@ -1,6 +1,6 @@
 'use client';
 
-import axios, { InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosHeaders, InternalAxiosRequestConfig } from 'axios';
 import { api } from './axios-instance';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
@@ -43,10 +43,10 @@ apiWithAuth.interceptors.request.use(
       if (token) setAccessToken(token);
     }
 
-    config.headers = {
+    config.headers = new AxiosHeaders({
       ...config.headers,
       Authorization: `Bearer ${token}`,
-    } as any;
+    });
     return config;
   },
   (error) => Promise.reject(error),

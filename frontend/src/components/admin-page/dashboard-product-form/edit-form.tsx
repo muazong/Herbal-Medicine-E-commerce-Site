@@ -32,7 +32,7 @@ function EditForm({
   const [imagesLength, setImagesLength] = useState<number>(0);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [product, setProduct] = useState<Product | null>(null);
-  const [oldImagesToKeep, setOldImagesToKeep] = useState<string[]>([]);
+  // const [oldImagesToKeep, setOldImagesToKeep] = useState<string[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -40,7 +40,7 @@ function EditForm({
       if (product) {
         setProduct(product);
         setImagesLength(product.media.length);
-        setOldImagesToKeep(product.media.map((m) => m.id));
+        // setOldImagesToKeep(product.media.map((m) => m.id));
       }
     })();
   }, [productId]);
@@ -117,7 +117,7 @@ function EditForm({
     const mediaId = product?.media[index].id;
     if (!mediaId) return;
 
-    setOldImagesToKeep((prev) => prev.filter((id) => id !== mediaId));
+    // setOldImagesToKeep((prev) => prev.filter((id) => id !== mediaId));
     setProduct((prev) => {
       if (!prev) return prev;
       const newMedia = prev.media.filter((_, i) => i !== index);

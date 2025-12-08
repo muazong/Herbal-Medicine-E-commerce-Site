@@ -19,8 +19,12 @@ function OrderedDetailForm({ order }: { order: Order }) {
   });
 
   const handleSaveOrder = async () => {
-    const { userName, status, ...rest } = orderDataForm;
-    const result = await updateUserOrder(rest);
+    const { paymentMethod, phoneNumber, shippingAddress } = orderDataForm;
+    const result = await updateUserOrder({
+      paymentMethod,
+      phoneNumber,
+      shippingAddress,
+    });
     if (result) {
       toast.success('Đơn hàng đã được cập nhật');
     } else {

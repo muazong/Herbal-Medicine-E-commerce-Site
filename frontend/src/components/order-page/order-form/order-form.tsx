@@ -1,7 +1,7 @@
 'use client';
 
 import { toast } from 'sonner';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { PATH, PAYMENT_METHOD } from '@/common/enums';
