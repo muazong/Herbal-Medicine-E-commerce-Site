@@ -1,7 +1,13 @@
+import { Metadata } from 'next';
+
 import { PATH } from '@/common/enums';
 import styles from './page.module.css';
 import { DashboardProductForm } from '@/components/admin-page';
 import { DashboardBreadcrumb, DashboardTitle } from '@/components/admin-page';
+
+export const metadata: Metadata = {
+  title: 'Thêm sản phẩm - Quản lý Anvita',
+};
 
 function AddProductPage() {
   return (

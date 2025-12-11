@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Quản lý người dùng - Quản lý Anvita',
+};
+
 function UsersDashboard() {
   return (
     <div>
