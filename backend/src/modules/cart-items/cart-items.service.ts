@@ -163,7 +163,7 @@ export class CartItemsService {
     message: string;
     cartItem: CartItem;
   }> {
-    const { cartId, productId, quantity } = createCartItemDto;
+    const { cartId, productId, quantity, isOrdered } = createCartItemDto;
 
     try {
       const cart = await this.cartService.findOne(cartId);
@@ -175,6 +175,7 @@ export class CartItemsService {
 
       if (existedCartItem) {
         existedCartItem.quantity += quantity;
+        existedCartItem.isOrdered = isOrdered;
 
         const newCartItem = await this.cartItemRepo.save(existedCartItem);
         return {
@@ -187,6 +188,7 @@ export class CartItemsService {
         cart,
         product,
         quantity,
+        isOrdered,
       });
 
       const newCartItem = await this.cartItemRepo.save(cartItem);

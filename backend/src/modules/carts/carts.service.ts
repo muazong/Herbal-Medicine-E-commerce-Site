@@ -14,11 +14,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Cart } from './entities/cart.entity';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UsersService } from '../users/users.service';
-import { UpdateCartDto } from './dto/update-cart.dto';
 import { ProductsService } from '../products/products.service';
 import { CartItem } from '../cart-items/entities/cart-item.entity';
 import { CartItemsService } from '../cart-items/cart-items.service';
-import { Product } from '../products/entities/product.entity';
 import { UpdateCartItemDto } from '../cart-items/dto/update-cart-item.dto';
 
 @Injectable()
@@ -170,7 +168,7 @@ export class CartsService {
     message: string;
     cartItem: CartItem;
   }> {
-    const { productId, quantity } = createCartDto;
+    const { productId, quantity, isOrdered } = createCartDto;
 
     try {
       const cart = await this.findCartByUserId(userId);
@@ -190,6 +188,7 @@ export class CartsService {
 
         return await this.cartItemService.update(existedCartItem.id, {
           quantity: newQuantity,
+          isOrdered,
         });
       }
 
@@ -203,6 +202,7 @@ export class CartsService {
         cartId: cart.id,
         productId,
         quantity: newQuantity,
+        isOrdered,
       });
     } catch (error) {
       const err = error as Error;
