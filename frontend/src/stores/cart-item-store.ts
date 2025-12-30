@@ -32,7 +32,11 @@ const useCartItemsStore = create<CartItemStore>((set, get) => {
         if (existingCartItem) {
           const updatedItems = state.cartItems.map((item) =>
             item.id === cartItem.id
-              ? { ...item, quantity: item.quantity + quantity }
+              ? {
+                  ...item,
+                  quantity: item.quantity + quantity,
+                  isOrdered: cartItem.isOrdered,
+                }
               : item,
           );
 

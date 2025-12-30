@@ -3,11 +3,16 @@ import { apiWithAuth } from './axios-instance-client';
 import { PATH } from '@/common/enums';
 import { CartItem } from '@/common/interfaces';
 
-export async function addProductToCart(productId: string, quantity: number) {
+export async function addProductToCart(
+  productId: string,
+  quantity: number,
+  isOrdered: boolean = false,
+) {
   try {
     const res = await apiWithAuth.post('/carts/add', {
       productId,
       quantity,
+      isOrdered,
     });
 
     return res.data;

@@ -31,8 +31,8 @@ function ProductDetailButtons({
       setQuantity(quantity - 1);
     }
   };
-  const handleAddToCart = async () => {
-    const res = await addProductToCart(productId, quantity);
+  const handleAddToCart = async (isOrdered: boolean = false) => {
+    const res = await addProductToCart(productId, quantity, isOrdered);
 
     if (res.message === 'Out of stock') {
       toast.warning('Đã thêm đến giới hạn!');
@@ -41,8 +41,8 @@ function ProductDetailButtons({
       toast.success(`Đã thêm ${quantity} sản phẩm vào giỏ`);
     }
   };
-  const handleBuy = () => {
-    handleAddToCart();
+  const handleBuy = async () => {
+    await handleAddToCart(true);
     router.push(PATH.CART);
   };
 
@@ -66,7 +66,7 @@ function ProductDetailButtons({
         <button className={styles.buy} onClick={handleBuy}>
           Mua
         </button>
-        <button className={styles.cart} onClick={handleAddToCart}>
+        <button className={styles.cart} onClick={() => handleAddToCart()}>
           Thêm vào giỏ
         </button>
       </div>
