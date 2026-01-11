@@ -37,8 +37,16 @@ export class CategoriesController {
   @Public()
   @HttpCode(HttpStatus.OK)
   // Get all categories
-  findAll(@Query('limit') limit: number) {
-    return this.categoriesService.findAll(limit);
+  findAll(@Query('limit') limit: number, @Query('page') page: number) {
+    return this.categoriesService.findAll(limit, page);
+  }
+
+  @Get()
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  // Get all categories pages
+  findAllPages() {
+    return this.categoriesService.findAllPages();
   }
 
   @Get(':categoryId/products')

@@ -75,11 +75,15 @@ export class CategoriesService {
    * @returns Promise<Category[]> - The list of categories.
    * @throws Error if any other error occurs.
    */
-  async findAll(limit: number): Promise<Category[]> {
+  async findAll(limit: number, page: number = 1): Promise<Category[]> {
     try {
       if (limit) {
         return await this.categoryRepo.find({
           take: limit,
+          skip: (page - 1) * limit,
+          order: {
+            createdAt: 'DESC',
+          },
         });
       }
 
@@ -89,6 +93,26 @@ export class CategoriesService {
       const err = error as Error;
       this.logger.error(
         `Failed to find all categories: ${err.message}`,
+        err.stack,
+      );
+      throw err;
+    }
+  }
+
+  /**
+   * Finds all categories pages
+   * @returns Promise<number> - The number of pages
+   * @throws Error if any other error occurs.
+   */
+  async findAllPages() {
+    try {
+      const count = await this.categoryRepo.count();
+      const pages = Math.ceil(count / 9);
+      return pages;
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(
+        `Failed to find all categories pages: ${err.message}`,
         err.stack,
       );
       throw err;
