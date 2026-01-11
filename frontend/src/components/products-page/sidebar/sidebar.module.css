@@ -32,6 +32,12 @@
     border-radius: var(--border-radius);
     border: 1px solid #b8c4a9;
 
+    &.active {
+      color: var(--primary-color);
+      background-color: var(--secondary-color);
+      border-radius: var(--border-radius);
+    }
+
     button {
       width: 100%;
       border: none;

@@ -1,9 +1,8 @@
 import { use } from 'react';
-import Link from 'next/link';
 import styles from './sidebar.module.css';
 
 import ShowAll from './show-all';
-import { PATH } from '@/common/enums';
+import SidebarItem from './sidebar-item';
 import Title from '@/components/title/title';
 import { getCategories } from '@/services/categories-service';
 
@@ -18,13 +17,7 @@ function Sidebar() {
           <ShowAll />
           {categories &&
             categories.map((category) => {
-              return (
-                <li key={category.id} className={styles.item}>
-                  <Link href={`${PATH.PRODUCTS}?categoryId=${category.id}`}>
-                    {category.name}
-                  </Link>
-                </li>
-              );
+              return <SidebarItem key={category.id} category={category} />;
             })}
         </ul>
       </aside>
