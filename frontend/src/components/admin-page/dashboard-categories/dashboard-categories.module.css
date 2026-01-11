@@ -17,13 +17,13 @@
 
       tr {
         th {
+          text-wrap: nowrap;
           text-align: left;
           padding: 1rem;
           font-weight: 600;
           color: var(--white-color);
           font-size: 0.9rem;
           border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-          text-wrap: nowrap;
         }
       }
     }
@@ -62,33 +62,33 @@
       }
     }
   }
+}
 
-  .btn {
-    border: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.8rem;
+.btn {
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
 
-    &.edit,
-    a {
-      background-color: var(--blue-color);
-      color: var(--white-color);
+  &.edit,
+  a {
+    background-color: var(--blue-color);
+    color: var(--white-color);
 
-      &:hover {
-        background-color: #0a84ff;
-      }
+    &:hover {
+      background-color: #0a84ff;
     }
+  }
 
-    &.delete {
-      background-color: var(--error-color);
-      color: var(--white-color);
+  &.delete {
+    background-color: var(--error-color);
+    color: var(--white-color);
 
-      &:hover {
-        background-color: #ff3b30;
-      }
+    &:hover {
+      background-color: #ff3b30;
     }
   }
 }
