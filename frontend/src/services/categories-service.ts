@@ -2,12 +2,21 @@ import { api } from './axios-instance';
 import { Category, Product } from '@/common/interfaces';
 import { apiWithAuth } from './axios-instance-client';
 
-async function getCategories(limit?: number) {
+async function getCategories(limit?: number, page: number = 1) {
   try {
     const response = await api.get(
-      `/categories${limit ? `?limit=${limit}` : ''}`,
+      `/categories${limit ? `?limit=${limit}` : ''}&page=${page}`,
     );
     return response.data as Category[];
+  } catch {
+    return null;
+  }
+}
+
+async function getCategoriesPages() {
+  try {
+    const response = await api.get('/categories/pages');
+    return response.data as number;
   } catch {
     return null;
   }
@@ -52,8 +61,19 @@ async function unssignCategoryToProduct(productId: string) {
   }
 }
 
+async function deleteCategory(categoryId: string) {
+  try {
+    const response = await apiWithAuth.delete(`/categories/${categoryId}`);
+    return response.data;
+  } catch {
+    return null;
+  }
+}
+
 export {
   getCategories,
+  deleteCategory,
+  getCategoriesPages,
   getProductsByCategory,
   assignCategoryToProduct,
   unssignCategoryToProduct,
