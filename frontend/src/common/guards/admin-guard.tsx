@@ -19,10 +19,7 @@ function AdminGuard({ children }: { children: ReactNode }) {
     })();
   }, [router]);
 
-  if (isLoading)
-    return (
-      <div style={{ height: '100vh', marginTop: 'var(--header-height)' }}></div>
-    );
+  if (isLoading) return <div>Đang tải...</div>;
   return <>{children}</>;
 }
 
