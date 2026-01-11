@@ -41,7 +41,7 @@ export class CategoriesController {
     return this.categoriesService.findAll(limit, page);
   }
 
-  @Get()
+  @Get('pages')
   @Public()
   @HttpCode(HttpStatus.OK)
   // Get all categories pages
