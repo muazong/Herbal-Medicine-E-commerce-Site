@@ -1,8 +1,11 @@
+import { use } from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
 
 import { PATH } from '@/common/enums';
 import styles from './page.module.css';
+import { Pagination } from '@/components/products-page';
+import { getCategoriesPages } from '@/services/categories-service';
 import { DashboardCategories, DashboardTitle } from '@/components/admin-page';
 
 export const metadata: Metadata = {
@@ -11,6 +14,8 @@ export const metadata: Metadata = {
 };
 
 function CategoriesDashboard() {
+  const pages = use(getCategoriesPages());
+
   return (
     <div>
       <div className={styles.title}>
@@ -18,7 +23,7 @@ function CategoriesDashboard() {
         <Link href={PATH.ADD_CATEGORY}>Thêm danh mục sản phẩm</Link>
       </div>
       <DashboardCategories />
-      {/* <Pagination pagesFromServer={pages} theme="secondary" /> */}
+      <Pagination pagesFromServer={pages} theme="secondary" />
     </div>
   );
 }
