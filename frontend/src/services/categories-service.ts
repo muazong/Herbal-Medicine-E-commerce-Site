@@ -2,11 +2,14 @@ import { api } from './axios-instance';
 import { Category, Product } from '@/common/interfaces';
 import { apiWithAuth } from './axios-instance-client';
 
-async function getCategories(limit?: number, page: number = 1) {
+async function getCategories(limit?: number, page?: number) {
   try {
-    const response = await api.get(
-      `/categories${limit ? `?limit=${limit}` : ''}&page=${page}`,
-    );
+    if (limit && page) {
+      const response = await api.get(`/categories?limit=${limit}&page=${page}`);
+      return response.data as Category[];
+    }
+
+    const response = await api.get('/categories');
     return response.data as Category[];
   } catch {
     return null;
