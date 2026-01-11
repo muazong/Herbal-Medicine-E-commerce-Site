@@ -15,6 +15,7 @@ import {
   getProductsPages,
 } from '@/services/products-service';
 import formatCurrency from '@/common/lib/format-currency';
+import { shortDesc } from '@/common/lib/short-desc';
 
 function DashboardProducts() {
   const products = useProductsStore((state) => state.products);
@@ -75,7 +76,7 @@ function DashboardProducts() {
             products.map((product, index) => (
               <tr key={product.id}>
                 <td>{index + 1}</td>
-                <td>{product.name}</td>
+                <td>{shortDesc(product.name, 5)}</td>
                 <td>{formatCurrency(product.price)}</td>
                 <td>{product.sold}</td>
                 <td>
