@@ -20,6 +20,16 @@ export const getOrders = async () => {
   }
 };
 
+export const getOrder = async (orderId: string) => {
+  try {
+    const response = await apiWithAuth.get(`/orders/${orderId}`);
+    if (!response.data) return null;
+    return response.data;
+  } catch {
+    return null;
+  }
+};
+
 export const getUserOrders = async (orderBy: keyof Order) => {
   try {
     const response = await apiWithAuth.get(
@@ -59,6 +69,16 @@ export const updateUserOrder = async (
     const response = await apiWithAuth.patch('/orders', orderData);
     if (!response.data) return null;
     return response.data;
+  } catch {
+    return null;
+  }
+};
+
+export const updateOrderStatus = async (
+  orderId: string,
+  status: ORDER_STATUS,
+) => {
+  try {
   } catch {
     return null;
   }

@@ -26,6 +26,12 @@
         padding: 1rem;
         color: var(--white-color);
         font-size: 0.9rem;
+
+        .action {
+          text-align: center;
+          color: var(--white-color);
+          text-decoration: underline;
+        }
       }
 
       tr:hover {
