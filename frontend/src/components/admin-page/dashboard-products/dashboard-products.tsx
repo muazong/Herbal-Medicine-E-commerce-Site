@@ -75,8 +75,12 @@ function DashboardProducts() {
           ) : (
             products.map((product, index) => (
               <tr key={product.id}>
-                <td>{index + 1}</td>
-                <td>{shortDesc(product.name, 5)}</td>
+                <td>
+                  {currentPage === 1
+                    ? index + 1
+                    : index + 1 + 9 * (currentPage - 1)}
+                </td>
+                <td>{shortDesc(product.name, 4)}</td>
                 <td>{formatCurrency(product.price)}</td>
                 <td>{product.sold}</td>
                 <td>

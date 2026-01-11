@@ -23,10 +23,10 @@ function DashboardCategories() {
 
   useEffect(() => {
     (async () => {
-      const categories = await getCategories(9);
+      const categories = await getCategories(9, currentPage);
       setCategories(categories || []);
     })();
-  }, [setCategories]);
+  }, [setCategories, currentPage]);
 
   const handleDeleteCategory = async (categoryId: string) => {
     try {
@@ -69,7 +69,11 @@ function DashboardCategories() {
           ) : (
             categories.map((category, index) => (
               <tr key={category.id}>
-                <td>{index + 1}</td>
+                <td>
+                  {currentPage === 1
+                    ? index + 1
+                    : index + 1 + 9 * (currentPage - 1)}
+                </td>
                 <td>{category.name}</td>
                 <td>{shortDesc(category.description, 12)}</td>
                 <td>{formatDayVi(category.createdAt, false)}</td>

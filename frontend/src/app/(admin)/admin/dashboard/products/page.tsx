@@ -10,6 +10,7 @@ import { DashboardTitle, DashboardProducts } from '@/components/admin-page';
 
 export const metadata: Metadata = {
   title: 'Quản lý sản phẩm - Quản lý Anvita',
+  description: 'Quản lý sản phẩm của Anvita',
 };
 
 function ProductsDashboard() {

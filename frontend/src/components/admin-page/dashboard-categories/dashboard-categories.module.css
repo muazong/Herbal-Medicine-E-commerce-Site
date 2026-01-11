@@ -38,6 +38,7 @@
         }
 
         td {
+          text-wrap: nowrap;
           padding: 0.9rem 1rem;
           font-size: 0.85rem;
           color: var(--white-color);

@@ -28,8 +28,6 @@ async function getProductsByCategory(categoryId: string, limit?: number) {
       `/categories/${categoryId}/products?limit=${limit}`,
     );
 
-    console.log(response.data);
-
     return response.data as Product[];
   } catch {
     return null;
