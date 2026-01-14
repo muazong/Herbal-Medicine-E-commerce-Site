@@ -1,4 +1,4 @@
-import { use } from 'react';
+import { Suspense, use } from 'react';
 import styles from './sidebar.module.css';
 
 import ShowAll from './show-all';
@@ -14,11 +14,13 @@ function Sidebar() {
       <Title text="Danh mục sản phẩm" className={styles.title} />
       <aside className={styles.aside}>
         <ul className={styles.list}>
-          <ShowAll />
-          {categories &&
-            categories.map((category) => {
-              return <SidebarItem key={category.id} category={category} />;
-            })}
+          <Suspense fallback={<p>Đang tải...</p>}>
+            <ShowAll />
+            {categories &&
+              categories.map((category) => {
+                return <SidebarItem key={category.id} category={category} />;
+              })}
+          </Suspense>
         </ul>
       </aside>
     </div>
