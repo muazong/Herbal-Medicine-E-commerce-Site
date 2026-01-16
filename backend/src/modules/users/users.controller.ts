@@ -44,6 +44,13 @@ export class UsersController {
     return this.usersService.findAll(limit, page, sort);
   }
 
+  @Get('pages')
+  @HttpCode(HttpStatus.OK)
+  // Get all pages
+  getPages() {
+    return this.usersService.getPages();
+  }
+
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   // Get user by id

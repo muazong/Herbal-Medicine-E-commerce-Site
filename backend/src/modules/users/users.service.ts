@@ -125,6 +125,26 @@ export class UsersService {
   }
 
   /**
+   * Finds all users pages.
+   * @returns Promise<number> - The number of pages.
+   * @throws Error if any other error occurs.
+   */
+  async getPages() {
+    try {
+      const count = await this.userRepo.count();
+      const pages = Math.ceil(count / 9);
+      return pages;
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(
+        `Failed to find all users pages: ${err.message}`,
+        err.stack,
+      );
+      throw err;
+    }
+  }
+
+  /**
    * Updates a user.
    * @param id - The ID of the user to update.
    * @param updateUserDto - The updated user data.
