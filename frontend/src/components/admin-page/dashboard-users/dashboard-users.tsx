@@ -9,20 +9,24 @@ import formatDayVi from '@/common/lib/format-day-vi';
 import { useUsersStore } from '@/stores/users-store';
 import { deleteUser, getUsers } from '@/services/user-service';
 import { account_status_vi, user_role_vi } from '@/common/config';
+import { usePaginationStore } from '@/stores/pagination-store';
+import { PATH } from '@/common/enums';
+import Link from 'next/link';
 
 function DashboardUsers() {
   const users = useUsersStore((state) => state.users);
   const setUsers = useUsersStore((state) => state.setUsers);
+  const currentPage = usePaginationStore((state) => state.currentPage);
   // const getUsersStore = useUsersStore((state) => state.getUsers);
 
   useEffect(() => {
     (async () => {
-      const res = await getUsers();
+      const res = await getUsers(currentPage);
       if (res) {
         setUsers(res);
       }
     })();
-  }, [setUsers]);
+  }, [setUsers, currentPage]);
 
   const handleDeleteUser = async (userId: string) => {
     Swal.fire({
@@ -76,7 +80,11 @@ function DashboardUsers() {
           ) : (
             users.map((user, index) => (
               <tr key={user.id}>
-                <td>{index + 1}</td>
+                <td>
+                  {currentPage === 1
+                    ? index + 1
+                    : index + 1 + 9 * (currentPage - 1)}
+                </td>
                 <td>{user.fullName}</td>
                 <td>{user_role_vi[user.role]}</td>
                 <td>{user.email}</td>
@@ -87,7 +95,9 @@ function DashboardUsers() {
                 <td>{formatDayVi(user.updatedAt)}</td>
                 <td className={styles.actions}>
                   <button className={`${styles.btn} ${styles.edit}`}>
-                    Sửa
+                    <Link href={`${PATH.USERS_MANAGEMENT}/${user.id}`}>
+                      Sửa
+                    </Link>
                   </button>
                   <button
                     className={`${styles.btn} ${styles.delete}`}

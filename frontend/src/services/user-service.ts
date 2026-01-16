@@ -1,13 +1,23 @@
 import { User } from '@/common/interfaces';
 import { apiWithAuth } from './axios-instance-client';
 
-export async function getUsers() {
+export async function getUsers(page: number = 1) {
   try {
-    const res = await apiWithAuth.get('/users');
+    const res = await apiWithAuth.get(`/users?page=${page}`);
     if (!res.data) return [];
     return res.data as User[];
   } catch {
     return [];
+  }
+}
+
+export async function getUsersPages() {
+  try {
+    const res = await apiWithAuth.get('/users/pages');
+    if (!res.data) return null;
+    return res.data;
+  } catch {
+    return null;
   }
 }
 
