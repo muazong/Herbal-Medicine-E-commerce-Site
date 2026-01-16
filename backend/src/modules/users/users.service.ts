@@ -77,7 +77,7 @@ export class UsersService {
    * @throws Error if any other error occurs.
    */
   async findAll(
-    limit: number = 10,
+    limit: number = 9,
     page = 1,
     sort: 'desc' | 'asc' = 'desc',
   ): Promise<User[]> {
