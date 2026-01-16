@@ -1,0 +1,15 @@
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  a {
+    color: var(--white-color);
+    font-weight: 600;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: var(--blue-color);
+    }
+  }
+}

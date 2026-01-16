@@ -1,15 +1,23 @@
 import { Metadata } from 'next';
 
+import styles from './page.module.css';
+import { DashboardTitle, DashboardUsers } from '@/components/admin-page';
+
 export const metadata: Metadata = {
   title: 'Quản lý người dùng - Quản lý Anvita',
+  description: 'Quản lý người dùng của Anvita',
 };
 
-function UsersDashboard() {
+function UsersDashboardPage() {
   return (
     <div>
-      <h1>Users Dashboard</h1>
+      <div className={styles.title}>
+        <DashboardTitle title="Quản lý người dùng" />
+      </div>
+      <DashboardUsers />
+      {/* <Pagination pagesFromServer={pages} theme="secondary" /> */}
     </div>
   );
 }
 
-export default UsersDashboard;
+export default UsersDashboardPage;
