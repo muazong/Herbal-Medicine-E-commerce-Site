@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { FaPenToSquare } from 'react-icons/fa6';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
-import { env } from '@/common/config';
+import { env, user_role_vi } from '@/common/config';
 import styles from './page.module.css';
 import { getCurrentUser } from '@/services';
 import { useUserStore } from '@/stores/user-store';
@@ -176,10 +176,7 @@ export default function ProfilePage() {
             </label>
 
             <label htmlFor="role">
-              Vai trò:{' '}
-              <p>
-                {user.role === USER_ROLES.ADMIN ? 'Quản trị' : 'Khách hàng'}
-              </p>
+              Vai trò: <p>{user_role_vi[user.role]}</p>
             </label>
 
             <label htmlFor="email">

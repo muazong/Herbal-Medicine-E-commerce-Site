@@ -6,6 +6,7 @@ import styles from './dashboard-users.module.css';
 import { User } from '@/common/interfaces';
 import { getUsers } from '@/services/user-service';
 import formatDayVi from '@/common/lib/format-day-vi';
+import { account_status_vi, user_role_vi } from '@/common/config';
 
 function DashboardUsers() {
   const [users, setUsers] = useState<User[]>([]);
@@ -49,11 +50,11 @@ function DashboardUsers() {
               <tr key={user.id}>
                 <td>{index + 1}</td>
                 <td>{user.fullName}</td>
-                <td>{user.role}</td>
+                <td>{user_role_vi[user.role]}</td>
                 <td>{user.email}</td>
                 <td>{user.phone}</td>
                 <td>{user.provider}</td>
-                <td>{user.status}</td>
+                <td>{account_status_vi[user.status]}</td>
                 <td>{formatDayVi(user.createdAt)}</td>
                 <td>{formatDayVi(user.updatedAt)}</td>
                 <td className={styles.actions}>
