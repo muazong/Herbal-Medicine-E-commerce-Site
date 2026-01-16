@@ -31,3 +31,13 @@ export async function updateUser(
     return null;
   }
 }
+
+export async function deleteUser(userId: string) {
+  try {
+    const res = await apiWithAuth.delete(`/users/${userId}`);
+    if (!res.data) return null;
+    return res.data as User;
+  } catch {
+    return null;
+  }
+}

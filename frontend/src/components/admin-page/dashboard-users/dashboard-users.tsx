@@ -1,25 +1,53 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import styles from './dashboard-users.module.css';
+import { toast } from 'sonner';
+import { useEffect } from 'react';
+import Swal from 'sweetalert2';
 
-import { User } from '@/common/interfaces';
-import { getUsers } from '@/services/user-service';
+import styles from './dashboard-users.module.css';
 import formatDayVi from '@/common/lib/format-day-vi';
+import { useUsersStore } from '@/stores/users-store';
+import { deleteUser, getUsers } from '@/services/user-service';
 import { account_status_vi, user_role_vi } from '@/common/config';
 
 function DashboardUsers() {
-  const [users, setUsers] = useState<User[]>([]);
+  const users = useUsersStore((state) => state.users);
+  const setUsers = useUsersStore((state) => state.setUsers);
+  // const getUsersStore = useUsersStore((state) => state.getUsers);
 
   useEffect(() => {
     (async () => {
       const res = await getUsers();
-
       if (res) {
         setUsers(res);
       }
     })();
-  }, [users]);
+  }, [setUsers]);
+
+  const handleDeleteUser = async (userId: string) => {
+    Swal.fire({
+      title: 'Bạn có chắc chắn xoá người dùng này không?',
+      text: 'Hành động này không thể hoàn tác!',
+      icon: 'warning',
+      color: '#ffffff',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Huỷ',
+      background: 'rgba(60, 70, 123)',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await deleteUser(userId);
+        if (res) {
+          setUsers(users.filter((user) => user.id !== userId));
+          toast.success('Người dùng đã được xóa thành công!');
+        } else {
+          toast.error('Xóa người dùng thất bại!');
+        }
+      }
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -61,7 +89,10 @@ function DashboardUsers() {
                   <button className={`${styles.btn} ${styles.edit}`}>
                     Sửa
                   </button>
-                  <button className={`${styles.btn} ${styles.delete}`}>
+                  <button
+                    className={`${styles.btn} ${styles.delete}`}
+                    onClick={() => handleDeleteUser(user.id)}
+                  >
                     Xóa
                   </button>
                 </td>
