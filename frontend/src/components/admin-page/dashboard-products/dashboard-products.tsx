@@ -4,18 +4,19 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 
-import { PATH } from '@/common/enums';
-import styles from './dashboard-products.module.css';
-import formatDayVi from '@/common/lib/format-day-vi';
-import { useProductsStore } from '@/stores/products-store';
-import { usePaginationStore } from '@/stores/pagination-store';
 import {
   getProducts,
   deleteProduct,
   getProductsPages,
 } from '@/services/products-service';
-import formatCurrency from '@/common/lib/format-currency';
+import { PATH } from '@/common/enums';
+import { swal_fire } from '@/common/lib/swal';
 import { shortDesc } from '@/common/lib/short-desc';
+import styles from './dashboard-products.module.css';
+import formatDayVi from '@/common/lib/format-day-vi';
+import formatCurrency from '@/common/lib/format-currency';
+import { useProductsStore } from '@/stores/products-store';
+import { usePaginationStore } from '@/stores/pagination-store';
 
 function DashboardProducts() {
   const products = useProductsStore((state) => state.products);
@@ -32,21 +33,25 @@ function DashboardProducts() {
   }, [setProducts, currentPage]);
 
   const handleDeleteProduct = async (productId: string) => {
-    try {
-      const result = await deleteProduct(productId);
-      if (result) {
-        deleteProductStore(productId);
-        toast.success('Sản phẩm đã được xóa thành công');
+    swal_fire('Bạn có chắc chắn xoá sản phẩm này không?').then(
+      async (result) => {
+        if (result.isConfirmed) {
+          const res = await deleteProduct(productId);
+          if (res) {
+            deleteProductStore(productId);
+            toast.success('Sản phẩm đã được xóa thành công');
 
-        const pages = await getProductsPages();
-        setPages(pages || 1);
+            const pages = await getProductsPages();
+            setPages(pages || 1);
 
-        const products = await getProducts(9, currentPage);
-        setProducts(products || []);
-      }
-    } catch {
-      toast.error('Lỗi trong quá trình xoá sản phẩm');
-    }
+            const products = await getProducts(9, currentPage);
+            setProducts(products || []);
+          } else {
+            toast.error('Xóa sản phẩm thất bại!');
+          }
+        }
+      },
+    );
   };
 
   return (

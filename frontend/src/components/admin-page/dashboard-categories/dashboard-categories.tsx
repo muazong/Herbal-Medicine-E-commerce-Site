@@ -13,6 +13,7 @@ import {
 } from '@/services/categories-service';
 import { toast } from 'sonner';
 import { usePaginationStore } from '@/stores/pagination-store';
+import { swal_fire } from '@/common/lib/swal';
 
 function DashboardCategories() {
   const categories = useCategoryStore((state) => state.categories);
@@ -29,21 +30,25 @@ function DashboardCategories() {
   }, [setCategories, currentPage]);
 
   const handleDeleteCategory = async (categoryId: string) => {
-    try {
-      const result = await deleteCategory(categoryId);
-      if (result) {
-        deleteCategoryStore(categoryId);
-        toast.success('Danh mục đã được xóa thành công');
+    swal_fire('Bạn có chắc chắn xoá danh mục này không?').then(
+      async (result) => {
+        if (result.isConfirmed) {
+          const res = await deleteCategory(categoryId);
+          if (res) {
+            deleteCategoryStore(categoryId);
+            toast.success('Danh mục đã được xóa thành công');
 
-        const pages = await getCategoriesPages();
-        setPages(pages || 1);
+            const pages = await getCategoriesPages();
+            setPages(pages || 1);
 
-        const categories = await getCategories(9, currentPage);
-        setCategories(categories || []);
-      }
-    } catch {
-      toast.error('Lỗi trong quá trình xoá danh mục');
-    }
+            const categories = await getCategories(9, currentPage);
+            setCategories(categories || []);
+          } else {
+            toast.error('Xóa danh mục thất bại!');
+          }
+        }
+      },
+    );
   };
 
   return (

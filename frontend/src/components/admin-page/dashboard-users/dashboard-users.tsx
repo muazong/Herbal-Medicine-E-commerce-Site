@@ -1,17 +1,17 @@
 'use client';
 
+import Link from 'next/link';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
-import Swal from 'sweetalert2';
 
+import { PATH } from '@/common/enums';
+import { swal_fire } from '@/common/lib/swal';
 import styles from './dashboard-users.module.css';
 import formatDayVi from '@/common/lib/format-day-vi';
 import { useUsersStore } from '@/stores/users-store';
 import { deleteUser, getUsers } from '@/services/user-service';
 import { account_status_vi, user_role_vi } from '@/common/config';
 import { usePaginationStore } from '@/stores/pagination-store';
-import { PATH } from '@/common/enums';
-import Link from 'next/link';
 
 function DashboardUsers() {
   const users = useUsersStore((state) => state.users);
@@ -29,28 +29,19 @@ function DashboardUsers() {
   }, [setUsers, currentPage]);
 
   const handleDeleteUser = async (userId: string) => {
-    Swal.fire({
-      title: 'Bạn có chắc chắn xoá người dùng này không?',
-      text: 'Hành động này không thể hoàn tác!',
-      icon: 'warning',
-      color: '#ffffff',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Huỷ',
-      background: 'rgba(60, 70, 123)',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const res = await deleteUser(userId);
-        if (res) {
-          setUsers(users.filter((user) => user.id !== userId));
-          toast.success('Người dùng đã được xóa thành công!');
-        } else {
-          toast.error('Xóa người dùng thất bại!');
+    swal_fire('Bạn có chắc chắn xoá người dùng này không?').then(
+      async (result) => {
+        if (result.isConfirmed) {
+          const res = await deleteUser(userId);
+          if (res) {
+            setUsers(users.filter((user) => user.id !== userId));
+            toast.success('Người dùng đã được xóa thành công!');
+          } else {
+            toast.error('Xóa người dùng thất bại!');
+          }
         }
-      }
-    });
+      },
+    );
   };
 
   return (
