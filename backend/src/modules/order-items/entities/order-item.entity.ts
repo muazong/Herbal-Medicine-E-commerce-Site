@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import { OrderItemStatus } from '../../../common/enums';
+import { OrderStatus } from '../../../common/enums';
 import { Order } from '../../orders/entities/order.entity';
 import { AbstractEntity } from '../../database/abstract.entity';
 import { Product } from '../../products/entities/product.entity';
@@ -33,8 +33,8 @@ export class OrderItem extends AbstractEntity<OrderItem> {
 
   @Column({
     type: 'enum',
-    enum: OrderItemStatus,
-    default: OrderItemStatus.PENDING,
+    enum: OrderStatus,
+    default: OrderStatus.PENDING,
   })
-  status: OrderItemStatus;
+  status: OrderStatus;
 }

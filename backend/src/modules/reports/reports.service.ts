@@ -13,9 +13,10 @@ export class ReportsService {
   async getOverview() {
     const [soldProducts, cancelledProducts, shippingProducts, totalUsers] =
       await Promise.all([
-        this.ordersService.countProductsByStatus(OrderStatus.SHIPPED),
-        this.ordersService.countProductsByStatus(OrderStatus.CANCELLED),
         this.ordersService.countProductsByStatus(OrderStatus.DELIVERED),
+        this.ordersService.countProductsByStatus(OrderStatus.CANCELLED),
+        this.ordersService.countProductsByStatus(OrderStatus.SHIPPING),
+
         this.usersService.countActiveUsers(),
       ]);
 

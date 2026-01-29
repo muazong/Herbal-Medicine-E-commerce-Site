@@ -17,6 +17,7 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { CartItemsService } from '../cart-items/cart-items.service';
 import { OrderItemsService } from '../order-items/order-items.service';
 import { OrderItemStatus, OrderStatus } from '../../common/enums';
+import { OrderItem } from '../order-items/entities/order-item.entity';
 
 @Injectable()
 export class OrdersService {
@@ -38,7 +39,9 @@ export class OrdersService {
    */
   async findAll(): Promise<Order[]> {
     try {
-      return await this.orderRepo.find();
+      return await this.orderRepo.find({
+        order: { createdAt: 'DESC' },
+      });
     } catch (error) {
       const err = error as Error;
       this.logger.error('Failed to fetch orders', err.stack);
@@ -243,8 +246,31 @@ export class OrdersService {
     }
   }
 
-  async updateOrderStatus(orderId: string, status: OrderStatus) {
-    return await this.orderRepo.update({ id: orderId }, { status });
+  async updateOrderStatus(
+    orderId: string,
+    status: OrderStatus,
+  ): Promise<boolean> {
+    await this.orderRepo.manager.transaction(async (manager) => {
+      const orderResult = await manager.update(
+        Order,
+        { id: orderId },
+        { status },
+      );
+
+      if (orderResult.affected === 0) {
+        throw new Error('Order not found');
+      }
+
+      await manager.update(
+        OrderItem,
+        {
+          order: { id: orderId },
+        },
+        { status },
+      );
+    });
+
+    return true;
   }
 
   async countProductsByStatus(status: OrderStatus): Promise<number> {
