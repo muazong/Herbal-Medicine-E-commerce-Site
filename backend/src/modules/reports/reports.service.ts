@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReportDto } from './dto/create-report.dto';
-import { UpdateReportDto } from './dto/update-report.dto';
+import { OrdersService } from '../orders/orders.service';
+import { UsersService } from '../users/users.service';
+import { OrderStatus } from '../../common/enums';
 
 @Injectable()
 export class ReportsService {
-  create(createReportDto: CreateReportDto) {
-    return 'This action adds a new report';
+  constructor(
+    private readonly ordersService: OrdersService,
+    private readonly usersService: UsersService,
+  ) {}
+
+  async getOverview() {
+    const [soldProducts, cancelledProducts, shippingProducts, totalUsers] =
+      await Promise.all([
+        this.ordersService.countProductsByStatus(OrderStatus.SHIPPED),
+        this.ordersService.countProductsByStatus(OrderStatus.CANCELLED),
+        this.ordersService.countProductsByStatus(OrderStatus.DELIVERED),
+        this.usersService.countActiveUsers(),
+      ]);
+
+    return {
+      soldProducts,
+      cancelledProducts,
+      shippingProducts,
+      totalUsers,
+    };
   }
 
-  findAll() {
-    return `This action returns all reports`;
-  }
+  async getMonthlySalesReport() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
 
-  findOne(id: number) {
-    return `This action returns a #${id} report`;
-  }
+    const revenue = await this.ordersService.getMonthlyRevenue(year, month);
 
-  update(id: number, updateReportDto: UpdateReportDto) {
-    return `This action updates a #${id} report`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} report`;
+    return {
+      year,
+      month,
+      revenue,
+    };
   }
 }

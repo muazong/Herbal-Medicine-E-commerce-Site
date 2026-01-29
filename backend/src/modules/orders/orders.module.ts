@@ -20,5 +20,6 @@ import { OrderItem } from '../order-items/entities/order-item.entity';
   ],
   controllers: [OrdersController],
   providers: [OrdersService],
+  exports: [OrdersService],
 })
 export class OrdersModule {}

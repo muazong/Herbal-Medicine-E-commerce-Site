@@ -19,7 +19,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Media } from '../media/entities/media.entity';
 import { generateHashedPassword } from '../../common/utils';
-import { MediaType } from '../../common/enums';
+import { AccountStatus, MediaType } from '../../common/enums';
 import { UserMediaService } from '../media/services';
 
 @Injectable()
@@ -192,6 +192,14 @@ export class UsersService {
     type: MediaType,
   ) {
     return this.userMediaService.uploadMedia(userId, file, type);
+  }
+
+  async countActiveUsers(): Promise<number> {
+    return this.userRepo.count({
+      where: {
+        status: AccountStatus.ACTIVE,
+      },
+    });
   }
 
   /**

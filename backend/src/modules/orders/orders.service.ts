@@ -17,7 +17,6 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { CartItemsService } from '../cart-items/cart-items.service';
 import { OrderItemsService } from '../order-items/order-items.service';
 import { OrderItemStatus, OrderStatus } from '../../common/enums';
-import { RequestUser } from '../../common/interfaces';
 
 @Injectable()
 export class OrdersService {
@@ -242,6 +241,17 @@ export class OrdersService {
       this.logger.error('Failed to update order', (error as Error).stack);
       throw error;
     }
+  }
+
+  async countProductsByStatus(status: OrderStatus): Promise<number> {
+    return this.orderItemsService.countProductsByStatus(status);
+  }
+
+  async getMonthlyRevenue(
+    year: number,
+    month: number, // 1 - 12
+  ): Promise<number> {
+    return this.orderItemsService.getMonthlyRevenue(year, month);
   }
 
   /**
