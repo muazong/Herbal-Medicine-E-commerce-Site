@@ -50,7 +50,7 @@ const DashboardPage = () => {
 
   return (
     <div className={styles.dashboard}>
-      <DashboardTitle title="Quản lý Anvita" />
+      <DashboardTitle title="Tổng quan" />
 
       {/* SUMMARY CARDS */}
       <div className={styles.cards}>

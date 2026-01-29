@@ -1,5 +1,5 @@
 .card {
-  background-color: var(--card-bg-color);
+  background-color: var(--dashboard-bg-color);
   border-radius: 16px;
   padding: 20px;
   display: flex;
@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--gray-color);
+  color: var(--white-color);
   font-size: 14px;
   font-weight: 600;
 }
@@ -28,7 +28,7 @@
 .value {
   font-size: 28px;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--white-color);
 }
 
 .suffix {
