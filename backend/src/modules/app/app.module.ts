@@ -12,6 +12,7 @@ import { CategoriesModule } from '../categories/categories.module';
 import { CartItemsModule } from '../cart-items/cart-items.module';
 import { OrdersModule } from '../orders/orders.module';
 import { OrderItemsModule } from '../order-items/order-items.module';
+import { ReportsModule } from '../reports/reports.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { OrderItemsModule } from '../order-items/order-items.module';
     CategoriesModule,
     OrdersModule,
     OrderItemsModule,
+    ReportsModule,
   ],
   controllers: [],
   providers: [Logger],
