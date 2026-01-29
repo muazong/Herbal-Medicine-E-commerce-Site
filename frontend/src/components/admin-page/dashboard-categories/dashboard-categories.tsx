@@ -14,6 +14,7 @@ import {
 import { toast } from 'sonner';
 import { usePaginationStore } from '@/stores/pagination-store';
 import { swal_fire } from '@/common/lib/swal';
+import { PATH } from '@/common/enums';
 
 function DashboardCategories() {
   const categories = useCategoryStore((state) => state.categories);
@@ -85,7 +86,11 @@ function DashboardCategories() {
                 <td>{formatDayVi(category.updatedAt, false)}</td>
                 <td className={styles.actions}>
                   <button className={`${styles.btn} ${styles.edit}`}>
-                    <Link href="">Sửa</Link>
+                    <Link
+                      href={`${PATH.EDIT_CATEGORY}?categoryId=${category.id}`}
+                    >
+                      Sửa
+                    </Link>
                   </button>
                   <button
                     className={`${styles.btn} ${styles.delete}`}

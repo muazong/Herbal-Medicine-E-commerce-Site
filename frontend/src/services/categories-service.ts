@@ -2,6 +2,15 @@ import { api } from './axios-instance';
 import { Category, Product } from '@/common/interfaces';
 import { apiWithAuth } from './axios-instance-client';
 
+async function getCategoryById(categoryId: string) {
+  try {
+    const response = await apiWithAuth.get(`/categories/${categoryId}`);
+    return response.data;
+  } catch {
+    return null;
+  }
+}
+
 async function getCategories(limit?: number, page?: number) {
   try {
     if (limit && page) {
@@ -37,6 +46,28 @@ async function getProductsByCategory(categoryId: string, limit?: number) {
   }
 }
 
+async function createCategory(category: { name: string; description: string }) {
+  try {
+    const response = await apiWithAuth.post('/categories', category);
+    return response.data as Category;
+  } catch {
+    return null;
+  }
+}
+
+async function addImagesToCategory(categoryId: string, file: FormData) {
+  try {
+    const response = await apiWithAuth.post(
+      `/categories/${categoryId}/image`,
+      file,
+    );
+
+    return response.data;
+  } catch {
+    return null;
+  }
+}
+
 async function assignCategoryToProduct(productId: string, categoryId: string) {
   try {
     const response = await apiWithAuth.post(
@@ -62,6 +93,22 @@ async function unssignCategoryToProduct(productId: string) {
   }
 }
 
+async function updateCategory(
+  categoryId: string,
+  name: string,
+  description: string,
+) {
+  try {
+    const response = await apiWithAuth.patch(`/categories/${categoryId}`, {
+      name,
+      description,
+    });
+    return response.data;
+  } catch {
+    return null;
+  }
+}
+
 async function deleteCategory(categoryId: string) {
   try {
     const response = await apiWithAuth.delete(`/categories/${categoryId}`);
@@ -72,10 +119,14 @@ async function deleteCategory(categoryId: string) {
 }
 
 export {
+  getCategoryById,
   getCategories,
+  createCategory,
+  updateCategory,
   deleteCategory,
   getCategoriesPages,
   getProductsByCategory,
   assignCategoryToProduct,
   unssignCategoryToProduct,
+  addImagesToCategory,
 };
