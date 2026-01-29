@@ -7,11 +7,7 @@ async function AdminOrderDetailPage({
 }) {
   const orderId = (await params).orderId;
 
-  return (
-    <>
-      <DashboardOrder orderId={orderId} />
-    </>
-  );
+  return <DashboardOrder orderId={orderId} />;
 }
 
 export default AdminOrderDetailPage;
