@@ -227,7 +227,7 @@ export class OrdersService {
         }
 
         order.orderItems.forEach((item) => {
-          item.status = OrderItemStatus.CANCELLED;
+          item.status = OrderStatus.CANCELLED;
         });
 
         order.status = OrderStatus.CANCELLED;
