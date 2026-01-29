@@ -10,7 +10,7 @@ import styles from './page.module.css';
 import { getCurrentUser } from '@/services';
 import { useUserStore } from '@/stores/user-store';
 import { updateUser } from '@/services/user-service';
-import { ACCOUNT_STATUS, USER_ROLES } from '@/common/enums';
+import { ACCOUNT_STATUS } from '@/common/enums';
 import { apiWithAuth } from '@/services/axios-instance-client';
 
 export default function ProfilePage() {
