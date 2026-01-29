@@ -6,7 +6,7 @@ export class UpdateOrderDto {
     message: 'Phone number is invalid',
   })
   @IsOptional()
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @IsString()
   @IsOptional()

@@ -90,6 +90,18 @@ export class OrdersController {
     return this.ordersService.update(updateOrderDto, user.id);
   }
 
+  @Patch(':orderId/status')
+  @Roles(Role.ADMIN, Role.CLIENT)
+  updateOrderStatus(
+    @Param('orderId') orderId: string,
+    @Body() updateOrderDto: UpdateOrderDto,
+  ) {
+    return this.ordersService.updateOrderStatus(
+      orderId,
+      updateOrderDto.status!,
+    );
+  }
+
   // ======================DELETE============================
   @Delete(':orderId')
   remove(@Param('orderId') orderId: string) {

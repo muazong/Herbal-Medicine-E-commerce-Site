@@ -243,6 +243,10 @@ export class OrdersService {
     }
   }
 
+  async updateOrderStatus(orderId: string, status: OrderStatus) {
+    return await this.orderRepo.update({ id: orderId }, { status });
+  }
+
   async countProductsByStatus(status: OrderStatus): Promise<number> {
     return this.orderItemsService.countProductsByStatus(status);
   }
