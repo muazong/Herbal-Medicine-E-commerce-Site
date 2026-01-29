@@ -82,14 +82,29 @@ const DashboardPage = () => {
         />
       </div>
 
-      {/* BIỂU ĐỒ */}
       <div className={styles.chart}>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="value" />
+            <XAxis
+              dataKey="name"
+              stroke="#ffffff"
+              tick={{ fill: '#ffffff', fontSize: 14 }}
+            />
+            <YAxis stroke="#ffffff" tick={{ fill: '#ffffff', fontSize: 14 }} />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#1f2a44',
+                borderRadius: 8,
+                border: 'none',
+                color: '#fff',
+              }}
+              cursor={{ fill: 'rgba(255,255,255,0.08)' }}
+            />
+            <Bar
+              dataKey="value"
+              fill="var(--accent-color)"
+              radius={[6, 6, 0, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

@@ -79,6 +79,11 @@ export const updateOrderStatus = async (
   status: ORDER_STATUS,
 ) => {
   try {
+    const response = await apiWithAuth.patch(`/orders/${orderId}/status`, {
+      status,
+    });
+    if (!response.data) return null;
+    return response.data;
   } catch {
     return null;
   }
